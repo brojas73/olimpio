@@ -1,5 +1,5 @@
 import { STATUS_TAREA, useTareasExternas, useTareasExternasUpdate } from "../context/TareasExternasContext"
-import TareaExternaTable from "./TareaExternaTable"
+import TareaExterna from "./TareaExternaTable"
 
 const PendienteRecoleccion = () => {
   const { tareasExternas, sucursalActual  } = useTareasExternas()
@@ -11,7 +11,7 @@ const PendienteRecoleccion = () => {
             <h2>Pendiente de Recolección</h2>
         </div>
         <div className='container layout__body tareas'>
-          <table border='0'>
+          <table>
             <tr>
               <th>Ticket</th>
               <th>Descripción</th>
@@ -25,7 +25,7 @@ const PendienteRecoleccion = () => {
                                                     // eslint-disable-next-line eqeqeq
                                                     tareaExterna.sucursalOrigen == sucursalActual)
                             .map(tareaExterna => (
-                <TareaExternaTable tareaExterna={tareaExterna} tituloBoton="Recolectar" accionBoton={recolectaParaAtenderse} key={tareaExterna.id} />
+                <TareaExterna tareaExterna={tareaExterna} tituloBoton="Recolectar" accionBoton={recolectaParaAtenderse} key={tareaExterna.id} />
               ))
             }
           </table>

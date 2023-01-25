@@ -92,18 +92,18 @@ export function TareasExternasProvider({children}) {
     }
 
     function getSucursal(id) {
-        const { nombre: sucursal } = sucursales.filter(sucursal => sucursal.id == id)[0]
+        const { nombre: sucursal } = sucursales.filter(sucursal => sucursal.id === id)[0]
         return sucursal
     }
 
     function getTipoTrabajo(id) {
-        const { nombre: tipoTrabajo } = tiposTrabajo.filter(tipoTrabajo => tipoTrabajo.id == id)[0]
+        const { nombre: tipoTrabajo } = tiposTrabajo.filter(tipoTrabajo => tipoTrabajo.id === id)[0]
         return tipoTrabajo
     }
 
     function getTipoServicio(id) {
         console.log('getTipoServicio', id)
-        const { nombre: tipoServicio } = tiposServicio.filter(tipoServicio => tipoServicio.id == id)[0]
+        const { nombre: tipoServicio } = tiposServicio.filter(tipoServicio => tipoServicio.id === id)[0]
         return tipoServicio
     }
 

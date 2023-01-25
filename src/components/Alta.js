@@ -83,6 +83,7 @@ const Alta = () => {
                 <select id='sucursal_destino' name='sucursal_destino' onChange={(e => setSucursalDestino(e.target.value))}>
                     <option key='0' value='0'>Selecciona la Sucursal Destino</option>
                     {
+                        // eslint-disable-next-line eqeqeq
                         sucursales.filter(sucursal => sucursal.id != sucursalActual).map(sucursal => (
                             <option key={sucursal.id} value={sucursal.id}>{sucursal.nombre}</option>
                         ))
