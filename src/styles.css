@@ -295,6 +295,19 @@ a {
   gap: 9.5rem;
 }
 
+.header select {
+  color: var(--color-gray);
+  font-weight: 400;
+  margin-left: 2px;
+}
+
+.header select option {
+  background-color: var(--color-dark-light);
+  color: var(--color-light);
+  padding: 0 10rem;
+}
+
+
 .header__logo,
 .header__user {
   display: flex;
@@ -481,6 +494,18 @@ a {
 
 .layout__body {
   margin: 3rem;
+}
+
+.tareas {
+  overflow-x: auto;
+}
+
+.tareas table {
+  width: 100%;
+}
+
+.tareas table th {
+  text-align: left;
 }
 
 @media screen and (max-width: 900px) {

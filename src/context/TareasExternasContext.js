@@ -4,24 +4,33 @@ const TareasExternasContext = React.createContext()
 const TareasExternasUpdateContext = React.createContext()
 
 export const STATUS_TAREA = {
-    PENDIENTE_RECOLECCION: 'pendite-de-recoleccion',
-    RECOLECTADO_PARA_ATENDERSE: 'recolectado-para-atenderse',
-    RECIBIDO_PARA_ATENDERSE: 'recibido-para_atenderse',
-    TERMINADO_PARA_RECOLECTAR: 'terminado-para-recolectar',
-    RECOLECTADO_PARA_ENTREGA: 'recolectado-para-entrega',
-    ENTREGADO_A_SUCURSAL_ORIGEN: 'entregado-a-sucursal-origen'
+    PENDIENTE_RECOLECCION: 1,
+    RECOLECTADO_PARA_ATENDERSE: 2,
+    RECIBIDO_PARA_ATENDERSE: 3,
+    TERMINADO_PARA_RECOLECTAR: 4,
+    RECOLECTADO_PARA_ENTREGA: 5,
+    ENTREGADO_A_SUCURSAL_ORIGEN: 6
 } 
 
 const tareasIniciales = [
-    {id: 1, ticket: '11111', descripcion: 'descripcion 1', tipoTrabajo: '1', sucursalDestino: 1, fechaRequerida: '12345', tipoServicio: 'normal', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 2, ticket: '22222', descripcion: 'descripcion 2', tipoTrabajo: '2', sucursalDestino: 2, fechaRequerida: '12345', tipoServicio: 'normal', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 3, ticket: '33333', descripcion: 'descripcion 3', tipoTrabajo: '3', sucursalDestino: 3, fechaRequerida: '12345', tipoServicio: 'normal', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 4, ticket: '44444', descripcion: 'descripcion 4', tipoTrabajo: '4', sucursalDestino: 4, fechaRequerida: '12345', tipoServicio: 'normal', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 5, ticket: '55555', descripcion: 'descripcion 5', tipoTrabajo: '1', sucursalDestino: 1, fechaRequerida: '12345', tipoServicio: 'normal', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 6, ticket: '66666', descripcion: 'descripcion 6', tipoTrabajo: '2', sucursalDestino: 2, fechaRequerida: '12345', tipoServicio: 'normal', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 7, ticket: '77777', descripcion: 'descripcion 7', tipoTrabajo: '3', sucursalDestino: 3, fechaRequerida: '12345', tipoServicio: 'normal', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 8, ticket: '88888', descripcion: 'descripcion 8', tipoTrabajo: '4', sucursalDestino: 4, fechaRequerida: '12345', tipoServicio: 'normal', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 9, ticket: '99999', descripcion: 'descripcion 9', tipoTrabajo: '1', sucursalDestino: 1, fechaRequerida: '12345', tipoServicio: 'normal', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
+    {id: 1,  ticket: '11111', descripcion: 'descripcion 1', tipoTrabajo: 1, sucursalOrigen: 2, sucursalDestino: 1, fechaRequerida: '12345', tipoServicio: 1, status: STATUS_TAREA.PENDIENTE_RECOLECCION},
+    {id: 2,  ticket: '22222', descripcion: 'descripcion 2', tipoTrabajo: 2, sucursalOrigen: 1, sucursalDestino: 2, fechaRequerida: '12345', tipoServicio: 1, status: STATUS_TAREA.PENDIENTE_RECOLECCION},
+    {id: 3,  ticket: '33333', descripcion: 'descripcion 3', tipoTrabajo: 3, sucursalOrigen: 1, sucursalDestino: 3, fechaRequerida: '12345', tipoServicio: 1, status: STATUS_TAREA.PENDIENTE_RECOLECCION},
+    {id: 4,  ticket: '44444', descripcion: 'descripcion 4', tipoTrabajo: 4, sucursalOrigen: 1, sucursalDestino: 4, fechaRequerida: '12345', tipoServicio: 1, status: STATUS_TAREA.PENDIENTE_RECOLECCION},
+    {id: 5,  ticket: '55555', descripcion: 'descripcion 5', tipoTrabajo: 1, sucursalOrigen: 2, sucursalDestino: 1, fechaRequerida: '12345', tipoServicio: 1, status: STATUS_TAREA.PENDIENTE_RECOLECCION},
+    {id: 6,  ticket: '66666', descripcion: 'descripcion 6', tipoTrabajo: 2, sucursalOrigen: 3, sucursalDestino: 2, fechaRequerida: '12345', tipoServicio: 1, status: STATUS_TAREA.PENDIENTE_RECOLECCION},
+    {id: 7,  ticket: '77777', descripcion: 'descripcion 7', tipoTrabajo: 3, sucursalOrigen: 4, sucursalDestino: 3, fechaRequerida: '12345', tipoServicio: 1, status: STATUS_TAREA.PENDIENTE_RECOLECCION},
+    {id: 8,  ticket: '88888', descripcion: 'descripcion 8', tipoTrabajo: 4, sucursalOrigen: 3, sucursalDestino: 4, fechaRequerida: '12345', tipoServicio: 1, status: STATUS_TAREA.PENDIENTE_RECOLECCION},
+    {id: 9,  ticket: '99999', descripcion: 'descripcion 9', tipoTrabajo: 1, sucursalOrigen: 4, sucursalDestino: 1, fechaRequerida: '12345', tipoServicio: 1, status: STATUS_TAREA.PENDIENTE_RECOLECCION},
+    {id: 11, ticket: 'AAAAA', descripcion: 'descripcion A', tipoTrabajo: 1, sucursalOrigen: 2, sucursalDestino: 1, fechaRequerida: '12345', tipoServicio: 2, status: STATUS_TAREA.PENDIENTE_RECOLECCION},
+    {id: 12, ticket: 'BBBBB', descripcion: 'descripcion B', tipoTrabajo: 2, sucursalOrigen: 1, sucursalDestino: 2, fechaRequerida: '12345', tipoServicio: 2, status: STATUS_TAREA.PENDIENTE_RECOLECCION},
+    {id: 13, ticket: 'CCCCC', descripcion: 'descripcion C', tipoTrabajo: 3, sucursalOrigen: 1, sucursalDestino: 3, fechaRequerida: '12345', tipoServicio: 2, status: STATUS_TAREA.PENDIENTE_RECOLECCION},
+    {id: 14, ticket: 'DDDDD', descripcion: 'descripcion D', tipoTrabajo: 4, sucursalOrigen: 1, sucursalDestino: 4, fechaRequerida: '12345', tipoServicio: 2, status: STATUS_TAREA.PENDIENTE_RECOLECCION},
+    {id: 15, ticket: 'EEEEE', descripcion: 'descripcion E', tipoTrabajo: 1, sucursalOrigen: 2, sucursalDestino: 1, fechaRequerida: '12345', tipoServicio: 2, status: STATUS_TAREA.PENDIENTE_RECOLECCION},
+    {id: 16, ticket: 'FFFFF', descripcion: 'descripcion F', tipoTrabajo: 2, sucursalOrigen: 3, sucursalDestino: 2, fechaRequerida: '12345', tipoServicio: 2, status: STATUS_TAREA.PENDIENTE_RECOLECCION},
+    {id: 17, ticket: 'GGGGG', descripcion: 'descripcion G', tipoTrabajo: 3, sucursalOrigen: 4, sucursalDestino: 3, fechaRequerida: '12345', tipoServicio: 2, status: STATUS_TAREA.PENDIENTE_RECOLECCION},
+    {id: 18, ticket: 'HHHHH', descripcion: 'descripcion H', tipoTrabajo: 4, sucursalOrigen: 3, sucursalDestino: 4, fechaRequerida: '12345', tipoServicio: 2, status: STATUS_TAREA.PENDIENTE_RECOLECCION},
+    {id: 19, ticket: 'IIIII', descripcion: 'descripcion I', tipoTrabajo: 1, sucursalOrigen: 4, sucursalDestino: 1, fechaRequerida: '12345', tipoServicio: 2, status: STATUS_TAREA.PENDIENTE_RECOLECCION},
 ]
 
 export function useTareasExternas() {
@@ -36,10 +45,10 @@ export function TareasExternasProvider({children}) {
     const [sucursalActual, setSucursalActual] = useState(1)
     const [tareasExternas, setTareasExternas] = useState(tareasIniciales)
     const sucursales = [
-        {id: 1, nombre: 'Sucursal 1'},
-        {id: 2, nombre: 'Sucursal 2'},
-        {id: 3, nombre: 'Sucursal 3'},
-        {id: 4, nombre: 'Sucursal 4'}
+        {id: 1, nombre: 'Balbuena'},
+        {id: 2, nombre: 'Eje 1 Norte'},
+        {id: 3, nombre: 'Moctezuma'},
+        {id: 4, nombre: 'Oceanía'}
     ]
 
     const tiposTrabajo = [
@@ -53,10 +62,6 @@ export function TareasExternasProvider({children}) {
         { id: 1, nombre: 'Normal' },
         { id: 2, nombre: 'Exprés' },
     ]
-
-    function inicializaTareasExternas(tareas) {
-        setTareasExternas(tareas.map(tarea => tarea))
-    }
 
     function agregaTareaExterna(tareaExterna) {
         setTareasExternas([...tareasExternas, tareaExterna])
@@ -84,7 +89,22 @@ export function TareasExternasProvider({children}) {
 
     function asignaSucursalActual(id) {
         setSucursalActual(id)
-        inicializaTareasExternas(tareasExternas)
+    }
+
+    function getSucursal(id) {
+        const { nombre: sucursal } = sucursales.filter(sucursal => sucursal.id == id)[0]
+        return sucursal
+    }
+
+    function getTipoTrabajo(id) {
+        const { nombre: tipoTrabajo } = tiposTrabajo.filter(tipoTrabajo => tipoTrabajo.id == id)[0]
+        return tipoTrabajo
+    }
+
+    function getTipoServicio(id) {
+        console.log('getTipoServicio', id)
+        const { nombre: tipoServicio } = tiposServicio.filter(tipoServicio => tipoServicio.id == id)[0]
+        return tipoServicio
     }
 
     return (
@@ -93,7 +113,8 @@ export function TareasExternasProvider({children}) {
                 agregaTareaExterna, recolectaParaAtenderse, 
                 recibeParaAtenderse, terminadoParaRecolectar, 
                 recolectaParaEntrega, entregaASucursalOrigen,
-                asignaSucursalActual
+                asignaSucursalActual, 
+                getSucursal, getTipoTrabajo, getTipoServicio
             }}>
                 {children}
             </TareasExternasUpdateContext.Provider>

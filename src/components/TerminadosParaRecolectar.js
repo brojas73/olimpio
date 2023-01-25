@@ -2,7 +2,7 @@ import { STATUS_TAREA, useTareasExternas, useTareasExternasUpdate } from "../con
 import TareaExterna from "./TareaExterna"
 
 const TerminadosParaRecolectar = () => {
-  const { tareasExternas } = useTareasExternas()
+  const { tareasExternas, sucursalActual } = useTareasExternas()
   const { recolectaParaEntrega } = useTareasExternasUpdate()
 
   return (
@@ -10,7 +10,9 @@ const TerminadosParaRecolectar = () => {
         <div className='container layout__body'>
             <h2>Terminados para Recolectar</h2>
             {
-              tareasExternas.filter(tareaExterna => tareaExterna.status === STATUS_TAREA.TERMINADO_PARA_RECOLECTAR)
+              tareasExternas.filter(tareaExterna => tareaExterna.status === STATUS_TAREA.TERMINADO_PARA_RECOLECTAR &&
+                                                    // eslint-disable-next-line eqeqeq
+                                                    tareaExterna.sucursalDestino == sucursalActual)
                             .map(tareaExterna => (
                 <TareaExterna tareaExterna={tareaExterna} tituloBoton="Recolectar" accionBoton={recolectaParaEntrega} key={tareaExterna.id} />
               ))

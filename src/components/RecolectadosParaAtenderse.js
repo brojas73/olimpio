@@ -2,19 +2,31 @@ import { STATUS_TAREA, useTareasExternas, useTareasExternasUpdate } from "../con
 import TareaExterna from "./TareaExterna"
 
 const RecolectadosParaAtenderse = () => {
-  const { tareasExternas } = useTareasExternas()
+  const { tareasExternas, sucursalActual } = useTareasExternas()
   const { recibeParaAtenderse } = useTareasExternasUpdate()
 
   return (
     <main className='main-container'>
-        <div className='container layout__body'>
+        <div className='container layout__body tareas'>
             <h2>Recolectados para Atenderse</h2>
-            {
-              tareasExternas.filter(tareaExterna => tareaExterna.status === STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE)
-                            .map(tareaExterna => (
-                <TareaExterna tareaExterna={tareaExterna} tituloBoton="Recibir" accionBoton={recibeParaAtenderse} key={tareaExterna.id} />
-              ))
-            }            
+            {/* <table border='0'>
+              <tr>
+                <th>Ticket</th>
+                <th>Descripción</th>
+                <th>Tipo de Trabajo</th>
+                <th>Sucursal Destino</th>
+                <th>Tipo de Servicio</th>
+                <th></th>
+              </tr>              { */}
+              {
+                  tareasExternas.filter(tareaExterna => tareaExterna.status === STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE &&
+                                                        // eslint-disable-next-line eqeqeq
+                                                        tareaExterna.sucursalDestino == sucursalActual)
+                                .map(tareaExterna => (
+                    <TareaExterna tareaExterna={tareaExterna} tituloBoton="Recibir" accionBoton={recibeParaAtenderse} key={tareaExterna.id} />
+                  ))
+                }       
+            {/* </table>      */}
         </div>
     </main>
   )

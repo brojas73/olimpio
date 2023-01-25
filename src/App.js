@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { TareasExternasProvider } from "./context/TareasExternasContext";
 import Header from "./components/Header";
 import Home from "./components/Home";
 import Navbar from "./components/Navbar";
@@ -8,7 +9,6 @@ import RecibidosParaAtenderse from './components/RecibidosParaAtenderse';
 import TerminadosParaRecolectar from './components/TerminadosParaRecolectar';
 import RecolectadosParaEntrega from './components/RecolectadosParaEntrega';
 import EntregadosASucursalOrigen from './components/EntregadosASucursalOrigen';
-import { TareasExternasProvider } from "./context/TareasExternasContext";
 
 
 function App() {

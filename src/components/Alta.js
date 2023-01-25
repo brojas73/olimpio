@@ -81,10 +81,10 @@ const Alta = () => {
             <div className='form__group'>
                 <label>Sucursal Destino</label>
                 <select id='sucursal_destino' name='sucursal_destino' onChange={(e => setSucursalDestino(e.target.value))}>
-                    <option value='0'>Selecciona la Sucursal Destino</option>
+                    <option key='0' value='0'>Selecciona la Sucursal Destino</option>
                     {
-                        sucursales.filter(sucursal => sucursal.id !== sucursalActual.id).map(sucursal => (
-                            <option value={sucursal.id}>{sucursal.nombre}</option>
+                        sucursales.filter(sucursal => sucursal.id != sucursalActual).map(sucursal => (
+                            <option key={sucursal.id} value={sucursal.id}>{sucursal.nombre}</option>
                         ))
                     }
                 </select>
@@ -102,10 +102,10 @@ const Alta = () => {
             <div className='form__group'>
                 <label>Tipo de Servicio</label>
                 <select id='tipo_servicio' name='tipo_servicio' onChange={e => setTipoServicio(e.target.value)}>
-                    <option value='0'>Selecciona el Tipo de Servicio</option>
+                    <option key='0' value='0'>Selecciona el Tipo de Servicio</option>
                     {
                         tiposServicio.map(tipoServicio => (
-                            <option value={tipoServicio.id}>{tipoServicio.nombre}</option>        
+                            <option key={tipoServicio.id} value={tipoServicio.id}>{tipoServicio.nombre}</option>        
                         ))
                     }
                 </select>

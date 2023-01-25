@@ -10,8 +10,9 @@ const RecibidosParaAtenderse = () => {
         <div className='container layout__body'>
             <h2>Recibidos para Atenderse</h2>
             {
-              tareasExternas.filter(tareaExterna => tareaExterna.status === STATUS_TAREA.RECIBIDO_PARA_ATENDERSE &&
-                                                    tareaExterna.sucursalDestino === sucursalActual)
+              tareasExternas.filter(tareaExterna => tareaExterna.status === STATUS_TAREA.RECIBIDO_PARA_ATENDERSE  &&
+                                                    // eslint-disable-next-line eqeqeq
+                                                    tareaExterna.sucursalDestino == sucursalActual)
                             .map(tareaExterna => (
                 <TareaExterna tareaExterna={tareaExterna} tituloBoton="Terminar" accionBoton={terminadoParaRecolectar} key={tareaExterna.id} />
               ))

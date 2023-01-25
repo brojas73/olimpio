@@ -7,9 +7,7 @@ const Header = () => {
             <a href='/' className='header__logo'>
                 <h1>Olimpio</h1>
             </a>
-            <div className='sucursal'> 
-                <Sucursales />
-            </div>
+            <Sucursales />
             <nav className='header__menu'>
                 <div className='dropdown-menus'>
                     <a href="/" className="dropdown-link">
