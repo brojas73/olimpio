@@ -1,5 +1,5 @@
 import { STATUS_TAREA, useTareasExternas, useTareasExternasUpdate } from "../context/TareasExternasContext"
-import TareaExterna from "./TareaExterna"
+import TareaExterna from "./TareaExternaTable"
 
 const RecolectadosParaAtenderse = () => {
   const { tareasExternas, sucursalActual } = useTareasExternas()
@@ -9,7 +9,9 @@ const RecolectadosParaAtenderse = () => {
     <main className='main-container'>
         <div className='container layout__body tareas'>
             <h2>Recolectados para Atenderse</h2>
-            {/* <table border='0'>
+        </div>
+        <div className='container layout__body tareas'>
+            <table>
               <tr>
                 <th>Ticket</th>
                 <th>Descripción</th>
@@ -17,7 +19,7 @@ const RecolectadosParaAtenderse = () => {
                 <th>Sucursal Destino</th>
                 <th>Tipo de Servicio</th>
                 <th></th>
-              </tr>              { */}
+              </tr>              
               {
                   tareasExternas.filter(tareaExterna => tareaExterna.status === STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE &&
                                                         // eslint-disable-next-line eqeqeq
@@ -26,7 +28,7 @@ const RecolectadosParaAtenderse = () => {
                     <TareaExterna tareaExterna={tareaExterna} tituloBoton="Recibir" accionBoton={recibeParaAtenderse} key={tareaExterna.id} />
                   ))
                 }       
-            {/* </table>      */}
+            </table>
         </div>
     </main>
   )
