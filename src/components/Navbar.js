@@ -16,6 +16,7 @@ const Navbar = () => {
                     <li><NavLink to='/terminados-para-recolectar'>Terminados para Recolectar</NavLink></li>
                     <li><NavLink to='/recolectados-para-entrega'>Recolectados para Entrega</NavLink></li>
                     <li><NavLink to='/entregados-a-sucursal-origen'>Entregados a Sucursal Origen</NavLink></li>
+                    <li><NavLink to='/test'>Test</NavLink></li>
                 </ul>
             </div>
         </div>

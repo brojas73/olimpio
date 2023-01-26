@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useTareasExternas, useTareasExternasUpdate } from '../context/TareasExternasContext'
 import { STATUS_TAREA } from '../context/TareasExternasContext'
+import FechaRequerida from './FechaRequerida'
 
 const Alta = () => {
   const { sucursalActual } = useTareasExternas()
@@ -13,7 +14,9 @@ const Alta = () => {
   const [descripcion, setDescripcion] = useState('')
   const [tipoTrabajo, setTipoTrabajo] = useState('')
   const [sucursalDestino, setSucursalDestino] = useState('')
-  const [fechaRequerida, setFechaRequerida] = useState('')
+  const [fechaRequerida, setFechaRequerida] = useState(
+    new Date()
+  )
   const [tipoServicio, setTipoServicio] = useState('')
 
   function onSubmit(event) {
@@ -90,15 +93,8 @@ const Alta = () => {
                     }
                 </select>
             </div>
-            <div className='form__group'>
-                <label>Fecha Requerida por el Cliente</label>
-                <input required
-                    onChange={e => setFechaRequerida(e.target.value)}  
-                    value={fechaRequerida}
-                    type='text' 
-                    name='fecha_requerida' 
-                    placeholder='Captura la fecha requerida por el cliente...' 
-                />
+            <div>
+                <FechaRequerida />
             </div>
             <div className='form__group'>
                 <label>Tipo de Servicio</label>

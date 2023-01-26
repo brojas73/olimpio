@@ -102,7 +102,6 @@ export function TareasExternasProvider({children}) {
     }
 
     function getTipoServicio(id) {
-        console.log('getTipoServicio', id)
         const { nombre: tipoServicio } = tiposServicio.filter(tipoServicio => tipoServicio.id === id)[0]
         return tipoServicio
     }
