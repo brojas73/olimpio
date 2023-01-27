@@ -4,7 +4,7 @@ const Sucursales = ({onChange}) => {
   const { sucursales } = useTareasExternas()
   const { asignaSucursalActual } = useTareasExternasUpdate()
   return (
-    <div className="header__menu">
+    <div>
         Sucursal: 
         <select id='sucursal_actual' name='sucursal_actual' onChange={e => asignaSucursalActual(e.target.value)}>
             {

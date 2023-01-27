@@ -7,19 +7,23 @@ const RecolectadosParaAtenderse = () => {
 
   return (
     <main className='main-container'>
-        <div className='container layout__body tareas'>
+        <div className='layout__body tareas'>
             <h2>Recolectados para Atenderse</h2>
         </div>
-        <div className='container layout__body tareas'>
-            <table>
+        <div className='layout__body tareas'>
+          <table>
+            <thead>
               <tr>
                 <th>Ticket</th>
                 <th>Descripción</th>
                 <th>Tipo de Trabajo</th>
                 <th>Sucursal Destino</th>
                 <th>Tipo de Servicio</th>
+                <th>Fecha y Hora Rquerida</th>
                 <th></th>
-              </tr>              
+              </tr>
+            </thead>
+            <tbody>
               {
                   tareasExternas.filter(tareaExterna => tareaExterna.status === STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE &&
                                                         // eslint-disable-next-line eqeqeq
@@ -27,8 +31,9 @@ const RecolectadosParaAtenderse = () => {
                                 .map(tareaExterna => (
                     <TareaExterna tareaExterna={tareaExterna} tituloBoton="Recibir" accionBoton={recibeParaAtenderse} key={tareaExterna.id} />
                   ))
-                }       
-            </table>
+                }     
+              </tbody>  
+          </table>
         </div>
     </main>
   )
