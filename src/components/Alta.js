@@ -33,8 +33,6 @@ const Alta = () => {
         status: STATUS_TAREA.PENDIENTE_RECOLECCION
     }
 
-    console.log(nuevaTareaExterna)
-
     agregaTareaExterna(nuevaTareaExterna)
 
     setTicket('')
@@ -117,8 +115,7 @@ const Alta = () => {
                 >
                     <option key='0' value='0'>Selecciona la Sucursal Destino</option>
                     {
-                        // eslint-disable-next-line eqeqeq
-                        sucursales.filter(sucursal => sucursal.id != sucursalActual).map(sucursal => (
+                        sucursales.filter(sucursal => sucursal.id !== sucursalActual).map(sucursal => (
                             <option key={sucursal.id} value={sucursal.id}>{sucursal.nombre}</option>
                         ))
                     }
@@ -146,7 +143,11 @@ const Alta = () => {
             </div>
             <div className='form__group'>
                 <label>Tipo de Servicio</label>
-                <select required id='tipo_servicio' name='tipo_servicio' onChange={e => setTipoServicio(e.target.value)}>
+                <select required 
+                    id='tipo_servicio' 
+                    name='tipo_servicio' 
+                    onChange={e => setTipoServicio(e.target.value)}
+                >
                     <option key='0' value='0'>Selecciona el Tipo de Servicio</option>
                     {
                         tiposServicio.map(tipoServicio => (

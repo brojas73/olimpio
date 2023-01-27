@@ -42,7 +42,8 @@ export function useTareasExternasUpdate() {
 }
 
 export function TareasExternasProvider({children}) {
-    const [sucursalActual, setSucursalActual] = useState(1)
+    const [sucursalActual, setSucursalActual] = useState('1')
+    const [estadoActual, setEstadoActual] = useState(STATUS_TAREA.PENDIENTE_RECOLECCION)
     const [tareasExternas, setTareasExternas] = useState(tareasIniciales)
     const sucursales = [
         {id: '1', nombre: 'Balbuena'},
@@ -61,6 +62,15 @@ export function TareasExternasProvider({children}) {
     const tiposServicio = [
         { id: '1', nombre: 'Normal' },
         { id: '2', nombre: 'Exprés' },
+    ]
+
+    const estados = [
+        { id: STATUS_TAREA.PENDIENTE_RECOLECCION, nombre: 'Pendiente de Recolección', url: '/pendiente-recoleccion'},
+        { id: STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE, nombre: 'Recolectados por Atenderse', url: '/recolectados-para-atenderse'},
+        { id: STATUS_TAREA.RECIBIDO_PARA_ATENDERSE, nombre: 'Recibidos por Atenderse', url: '/recibidos-para-atenderse'},
+        { id: STATUS_TAREA.TERMINADO_PARA_RECOLECTAR, nombre: 'Terminados para Recolectar', url: '/terminados-para-recolectar'},
+        { id: STATUS_TAREA.RECOLECTADO_PARA_ENTREGA, nombre: 'Recolectados para Entrega', url: '/recolectados-para-entrega'},
+        { id: STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN, nombre: 'Entregados a Sucursal Origen', url: '/entregados-a-sucursal-origen'},
     ]
 
     function agregaTareaExterna(tareaExterna) {
@@ -91,6 +101,10 @@ export function TareasExternasProvider({children}) {
         setSucursalActual(id)
     }
 
+    function asignaEstadoActual(id) {
+        setEstadoActual(id)
+    }
+
     function getSucursal(id) {
         const { nombre: sucursal } = sucursales.filter(sucursal => sucursal.id === id)[0]
         return sucursal
@@ -106,14 +120,21 @@ export function TareasExternasProvider({children}) {
         return tipoServicio
     }
 
+    function getEstado(id) {
+        const { nombre: estado } = estados.filter(estado => estado.id === id)[0]
+        return estado
+    }
+
     return (
-        <TareasExternasContext.Provider value={{tareasExternas, sucursales, tiposTrabajo, tiposServicio, sucursalActual}}>
+        <TareasExternasContext.Provider value={{
+            tareasExternas, sucursales, tiposTrabajo, tiposServicio, estados, sucursalActual, estadoActual,
+            getSucursal, getTipoTrabajo, getTipoServicio, getEstado
+        }}>
             <TareasExternasUpdateContext.Provider value={{
                 agregaTareaExterna, recolectaParaAtenderse, 
                 recibeParaAtenderse, terminadoParaRecolectar, 
                 recolectaParaEntrega, entregaASucursalOrigen,
-                asignaSucursalActual, 
-                getSucursal, getTipoTrabajo, getTipoServicio
+                asignaSucursalActual, asignaEstadoActual
             }}>
                 {children}
             </TareasExternasUpdateContext.Provider>

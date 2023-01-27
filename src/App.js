@@ -9,6 +9,7 @@ import RecibidosParaAtenderse from './components/RecibidosParaAtenderse';
 import TerminadosParaRecolectar from './components/TerminadosParaRecolectar';
 import RecolectadosParaEntrega from './components/RecolectadosParaEntrega';
 import EntregadosASucursalOrigen from './components/EntregadosASucursalOrigen';
+import Test from "./components/Test";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
       <Router>
         <Header />
         <div className="home-container">
-          <Navbar /> 
+          {/* <Navbar />  */}
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/pendiente-recoleccion' element={<PendienteRecoleccion />} />
@@ -25,6 +26,7 @@ function App() {
             <Route path='/terminados-para-recolectar' element={<TerminadosParaRecolectar />} />
             <Route path='/recolectados-para-entrega' element={<RecolectadosParaEntrega />} />
             <Route path='/entregados-a-sucursal-origen' element={<EntregadosASucursalOrigen />} />
+            <Route path='/test' element={<Test />} />
           </Routes>
         </div>
       </Router>

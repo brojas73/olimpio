@@ -17,7 +17,7 @@ const RecolectadosParaAtenderse = () => {
                 <th>Ticket</th>
                 <th>Descripción</th>
                 <th>Tipo de Trabajo</th>
-                <th>Sucursal Destino</th>
+                <th>Sucursal Origen</th>
                 <th>Tipo de Servicio</th>
                 <th>Fecha y Hora Rquerida</th>
                 <th></th>

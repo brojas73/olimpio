@@ -1,7 +1,7 @@
-import { useTareasExternasUpdate } from "../context/TareasExternasContext"
+import { STATUS_TAREA, useTareasExternas } from "../context/TareasExternasContext"
 
 const TareaExterna = ({tareaExterna, tituloBoton, accionBoton}, key) => {
-    const { getSucursal, getTipoServicio, getTipoTrabajo } = useTareasExternasUpdate()
+    const { estadoActual, getSucursal, getTipoServicio, getTipoTrabajo } = useTareasExternas()
 
     function formateaFecha(fecha, hora) {
         const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
@@ -11,7 +11,7 @@ const TareaExterna = ({tareaExterna, tituloBoton, accionBoton}, key) => {
                fechaTmp.getDate() + ' ' + 
                meses[fechaTmp.getMonth()] + ' ' +
                fechaTmp.getFullYear() + ' @ ' +
-               hora
+               hora 
     }
 
     return (
@@ -19,7 +19,7 @@ const TareaExterna = ({tareaExterna, tituloBoton, accionBoton}, key) => {
             <td>{tareaExterna.ticket}</td>
             <td>{tareaExterna.descripcion}</td>
             <td>{getTipoTrabajo(tareaExterna.tipoTrabajo)}</td>
-            <td>{getSucursal(tareaExterna.sucursalDestino)}</td>
+            <td>{getSucursal(estadoActual === STATUS_TAREA.PENDIENTE_RECOLECCION ? tareaExterna.sucursalDestino : tareaExterna.sucursalOrigen)}</td>
             <td>{getTipoServicio(tareaExterna.tipoServicio)}</td> 
             <td>{formateaFecha(tareaExterna.fechaRequerida, tareaExterna.horaRequerida)}</td>
             <td>

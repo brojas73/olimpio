@@ -1,3 +1,4 @@
+import FiltroEstados from "./FiltroEstados"
 import Sucursales from "./Sucursales"
 
 const Header = () => {
@@ -9,6 +10,7 @@ const Header = () => {
                 <h1>Olimpio</h1>
             </a>
             <Sucursales />
+            <FiltroEstados />
             <nav className='header__menu'>
                 {/* <a href="/" className="dropdown-link"> */}
                 <a href="/">
