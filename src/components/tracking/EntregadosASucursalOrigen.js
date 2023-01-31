@@ -23,10 +23,10 @@ const EntregadosASucursalOrigen = () => {
             </thead>
             <tbody>
               {
-                tareasExternas.filter(tareaExterna => tareaExterna.status === STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN  &&
-                                                      tareaExterna.sucursalDestino === sucursalActual)
+                tareasExternas.filter(tareaExterna => tareaExterna.id_estado_tarea === STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN  &&
+                                                      tareaExterna.id_sucursal_destino === sucursalActual)
                               .map(tareaExterna => (
-                  <TareaExterna tareaExterna={tareaExterna} key={tareaExterna.id} />
+                  <TareaExterna tareaExterna={tareaExterna} key={tareaExterna.id_tarea_externa} />
                 ))
               }
             </tbody>

@@ -15,7 +15,7 @@ const Sucursales = ({onChange}) => {
         <div className="dropdown-content">
           {
             sucursales.map(sucursal => (
-              <p key={sucursal.id} onClick={e => onClick(sucursal.id)}>{sucursal.nombre}</p>
+              <p key={sucursal.id_sucursal} onClick={e => onClick(sucursal.id_sucursal)}>{sucursal.nombre}</p>
             ))
           }
         </div>

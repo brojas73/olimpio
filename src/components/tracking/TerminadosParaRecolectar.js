@@ -24,10 +24,10 @@ const TerminadosParaRecolectar = () => {
             </thead>
             <tbody>
               {
-                tareasExternas.filter(tareaExterna => tareaExterna.status === STATUS_TAREA.TERMINADO_PARA_RECOLECTAR &&
-                                                      tareaExterna.sucursalDestino === sucursalActual)
+                tareasExternas.filter(tareaExterna => tareaExterna.id_estado_tarea === STATUS_TAREA.TERMINADO_PARA_RECOLECTAR &&
+                                                      tareaExterna.id_sucursal_destino === sucursalActual)
                               .map(tareaExterna => (
-                  <TareaExterna tareaExterna={tareaExterna} tituloBoton="Recolectar" accionBoton={recolectaParaEntrega} key={tareaExterna.id} />
+                  <TareaExterna tareaExterna={tareaExterna} tituloBoton="Recolectar" accionBoton={recolectaParaEntrega} key={tareaExterna.id_tarea_externa} />
                 ))
               }       
             </tbody>

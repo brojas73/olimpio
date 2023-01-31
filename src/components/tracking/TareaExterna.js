@@ -13,7 +13,7 @@ const TareaExterna = ({tareaExterna, tituloBoton, accionBoton}, key) => {
 
             {
                 tituloBoton && (
-                    <button onClick={() => accionBoton(tareaExterna.id)} className="btn btn--main">
+                    <button onClick={() => accionBoton(tareaExterna.id_tarea_externa)} className="btn btn--main">
                         {tituloBoton}
                     </button>
                 )

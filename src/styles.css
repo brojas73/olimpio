@@ -81,6 +81,7 @@ a {
 .filtros-container {
   margin: 2rem 2rem;
   padding-bottom: 1rem;
+  padding-right: 2rem;
   display: flex;
   justify-content: space-between;
 }

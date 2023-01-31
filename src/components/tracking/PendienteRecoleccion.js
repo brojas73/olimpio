@@ -24,10 +24,10 @@ const PendienteRecoleccion = () => {
           </thead>
           <tbody>
             {
-              tareasExternas.filter(tareaExterna => tareaExterna.status === STATUS_TAREA.PENDIENTE_RECOLECCION &&
-                                                    tareaExterna.sucursalOrigen === sucursalActual)
+              tareasExternas.filter(tareaExterna => tareaExterna.id_estado_tarea === STATUS_TAREA.PENDIENTE_RECOLECCION &&
+                                                    tareaExterna.id_sucursal_origen === sucursalActual)
                             .map(tareaExterna => (
-                <TareaExterna tareaExterna={tareaExterna} tituloBoton="Recolectar" accionBoton={recolectaParaAtenderse} key={tareaExterna.id} />
+                <TareaExterna tareaExterna={tareaExterna} tituloBoton="Recolectar" accionBoton={recolectaParaAtenderse} key={tareaExterna.id_tarea_externa} />
               ))
             }
           </tbody>

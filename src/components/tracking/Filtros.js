@@ -1,4 +1,4 @@
-import Estados from "../comun/Estados"
+import EstadosTarea from "../comun/EstadosTarea"
 import Sucursales from "../comun/Sucursales"
 
 const Filtros = ({titulo}) => {
@@ -6,7 +6,7 @@ const Filtros = ({titulo}) => {
         <>
             <main className='filtros-container'>
                 <Sucursales />
-                <Estados />
+                <EstadosTarea />
             </main>
             <div className='layout__body'>
                 <h2>{titulo}</h2>
