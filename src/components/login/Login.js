@@ -1,18 +1,6 @@
 import { useState } from "react"
 import { useAuth } from "../../hooks/useAuth"
 
-/*
-async function login(credenciales) {
-    return fetch('http://localhost:8080/login', {
-        method: 'POST', 
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        bodh: JSON.stringify(credenciales)
-    }).then(data => data.json())
-}
-*/
-
 const Login = ({setToken}) => {
   const [usuario, setUsuario] = useState()
   const [contrasena, setContrasena] = useState()
@@ -24,8 +12,6 @@ const Login = ({setToken}) => {
         usuario,
         contrasena
     })
-
-    // setToken(token)
   }
 
   return (

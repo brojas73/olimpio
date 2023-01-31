@@ -8,34 +8,31 @@ const TerminadosParaRecolectar = () => {
 
   return (
     <main className='main-container'>
-        <Filtros />
-        <div className='layout__body'>
-            <h2>Terminados para Recolectar</h2>
-        </div>
-        <div className='layout__body tareas'>
-          <table>
-            <thead>
-                <tr>
-                  <th>Ticket</th>
-                  <th>Descripción</th>
-                  <th>Tipo de Trabajo</th>
-                  <th>Sucursal Origen</th>
-                  <th>Tipo de Servicio</th>
-                  <th>Fecha y Hora Rquerida</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  tareasExternas.filter(tareaExterna => tareaExterna.status === STATUS_TAREA.TERMINADO_PARA_RECOLECTAR &&
-                                                        tareaExterna.sucursalDestino === sucursalActual)
-                                .map(tareaExterna => (
-                    <TareaExterna tareaExterna={tareaExterna} tituloBoton="Recolectar" accionBoton={recolectaParaEntrega} key={tareaExterna.id} />
-                  ))
-                }       
-              </tbody>
-          </table>
-        </div>
+      <Filtros titulo='Terminados para Recolectar' />
+      <div className='layout__body tareas'>
+        <table>
+          <thead>
+              <tr>
+                <th>Ticket</th>
+                <th>Descripción</th>
+                <th>Tipo de Trabajo</th>
+                <th>Sucursal Origen</th>
+                <th>Tipo de Servicio</th>
+                <th>Fecha y Hora Rquerida</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                tareasExternas.filter(tareaExterna => tareaExterna.status === STATUS_TAREA.TERMINADO_PARA_RECOLECTAR &&
+                                                      tareaExterna.sucursalDestino === sucursalActual)
+                              .map(tareaExterna => (
+                  <TareaExterna tareaExterna={tareaExterna} tituloBoton="Recolectar" accionBoton={recolectaParaEntrega} key={tareaExterna.id} />
+                ))
+              }       
+            </tbody>
+        </table>
+      </div>
     </main>
   )
 }
