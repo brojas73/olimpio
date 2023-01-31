@@ -1,4 +1,4 @@
-import { STATUS_TAREA, useTareasExternas } from "../context/TareasExternasContext"
+import { STATUS_TAREA, useTareasExternas } from "../../context/TareasExternasContext"
 
 const TareaExterna = ({tareaExterna, tituloBoton, accionBoton}, key) => {
     const { estadoActual, getSucursal, getTipoServicio, getTipoTrabajo } = useTareasExternas()

@@ -1,4 +1,4 @@
-import { useTareasExternas, useTareasExternasUpdate } from "../context/TareasExternasContext"
+import { useTareasExternas, useTareasExternasUpdate } from "../../context/TareasExternasContext"
 
 const Sucursales = ({onChange}) => {
   const { sucursales, sucursalActual, getSucursal } = useTareasExternas()
@@ -15,7 +15,7 @@ const Sucursales = ({onChange}) => {
         <div className="dropdown-content">
           {
             sucursales.map(sucursal => (
-              <a href='#' key={sucursal.id} onClick={e => onClick(sucursal.id)}>{sucursal.nombre}</a>
+              <p key={sucursal.id} onClick={e => onClick(sucursal.id)}>{sucursal.nombre}</p>
             ))
           }
         </div>

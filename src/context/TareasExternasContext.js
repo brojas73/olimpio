@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 const TareasExternasContext = React.createContext()
 const TareasExternasUpdateContext = React.createContext()
@@ -12,27 +12,6 @@ export const STATUS_TAREA = {
     ENTREGADO_A_SUCURSAL_ORIGEN: '6'
 } 
 
-const tareasIniciales = [
-    {id: 1,  ticket: '11111', descripcion: 'descripcion 1', tipoTrabajo: '1', sucursalOrigen: '2', sucursalDestino: '1', fechaRequerida: '2023-01-25', horaRequerida: '20:00', tipoServicio: '1', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 2,  ticket: '22222', descripcion: 'descripcion 2', tipoTrabajo: '2', sucursalOrigen: '1', sucursalDestino: '2', fechaRequerida: '2023-01-26', horaRequerida: '08:00', tipoServicio: '1', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 3,  ticket: '33333', descripcion: 'descripcion 3', tipoTrabajo: '3', sucursalOrigen: '1', sucursalDestino: '3', fechaRequerida: '2023-01-27', horaRequerida: '09:00', tipoServicio: '1', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 4,  ticket: '44444', descripcion: 'descripcion 4', tipoTrabajo: '4', sucursalOrigen: '1', sucursalDestino: '4', fechaRequerida: '2023-01-28', horaRequerida: '10:00', tipoServicio: '1', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 5,  ticket: '55555', descripcion: 'descripcion 5', tipoTrabajo: '1', sucursalOrigen: '2', sucursalDestino: '1', fechaRequerida: '2023-01-29', horaRequerida: '11:30', tipoServicio: '1', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 6,  ticket: '66666', descripcion: 'descripcion 6', tipoTrabajo: '2', sucursalOrigen: '3', sucursalDestino: '2', fechaRequerida: '2023-01-30', horaRequerida: '12:00', tipoServicio: '1', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 7,  ticket: '77777', descripcion: 'descripcion 7', tipoTrabajo: '3', sucursalOrigen: '4', sucursalDestino: '3', fechaRequerida: '2023-01-31', horaRequerida: '13:00', tipoServicio: '1', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 8,  ticket: '88888', descripcion: 'descripcion 8', tipoTrabajo: '4', sucursalOrigen: '3', sucursalDestino: '4', fechaRequerida: '2023-02-01', horaRequerida: '14:00', tipoServicio: '1', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 9,  ticket: '99999', descripcion: 'descripcion 9', tipoTrabajo: '1', sucursalOrigen: '4', sucursalDestino: '1', fechaRequerida: '2023-02-02', horaRequerida: '15:00', tipoServicio: '1', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 11, ticket: 'AAAAA', descripcion: 'descripcion A', tipoTrabajo: '1', sucursalOrigen: '2', sucursalDestino: '1', fechaRequerida: '2023-02-03', horaRequerida: '16:00', tipoServicio: '2', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 12, ticket: 'BBBBB', descripcion: 'descripcion B', tipoTrabajo: '2', sucursalOrigen: '1', sucursalDestino: '2', fechaRequerida: '2023-02-04', horaRequerida: '17:00', tipoServicio: '2', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 13, ticket: 'CCCCC', descripcion: 'descripcion C', tipoTrabajo: '3', sucursalOrigen: '1', sucursalDestino: '3', fechaRequerida: '2023-02-05', horaRequerida: '18:00', tipoServicio: '2', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 14, ticket: 'DDDDD', descripcion: 'descripcion D', tipoTrabajo: '4', sucursalOrigen: '1', sucursalDestino: '4', fechaRequerida: '2023-02-06', horaRequerida: '19:00', tipoServicio: '2', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 15, ticket: 'EEEEE', descripcion: 'descripcion E', tipoTrabajo: '1', sucursalOrigen: '2', sucursalDestino: '1', fechaRequerida: '2023-02-07', horaRequerida: '20:00', tipoServicio: '2', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 16, ticket: 'FFFFF', descripcion: 'descripcion F', tipoTrabajo: '2', sucursalOrigen: '3', sucursalDestino: '2', fechaRequerida: '2023-02-08', horaRequerida: '19:00', tipoServicio: '2', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 17, ticket: 'GGGGG', descripcion: 'descripcion G', tipoTrabajo: '3', sucursalOrigen: '4', sucursalDestino: '3', fechaRequerida: '2023-02-09', horaRequerida: '18:00', tipoServicio: '2', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 18, ticket: 'HHHHH', descripcion: 'descripcion H', tipoTrabajo: '4', sucursalOrigen: '3', sucursalDestino: '4', fechaRequerida: '2023-02-10', horaRequerida: '17:00', tipoServicio: '2', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-    {id: 19, ticket: 'IIIII', descripcion: 'descripcion I', tipoTrabajo: '1', sucursalOrigen: '4', sucursalDestino: '1', fechaRequerida: '2023-02-11', horaRequerida: '16:00', tipoServicio: '2', status: STATUS_TAREA.PENDIENTE_RECOLECCION},
-]
-
 export function useTareasExternas() {
     return useContext(TareasExternasContext)
 }
@@ -44,34 +23,51 @@ export function useTareasExternasUpdate() {
 export function TareasExternasProvider({children}) {
     const [sucursalActual, setSucursalActual] = useState('1')
     const [estadoActual, setEstadoActual] = useState(STATUS_TAREA.PENDIENTE_RECOLECCION)
-    const [tareasExternas, setTareasExternas] = useState(tareasIniciales)
-    const sucursales = [
-        {id: '1', nombre: 'Balbuena'},
-        {id: '2', nombre: 'Eje 1 Norte'},
-        {id: '3', nombre: 'Moctezuma'},
-        {id: '4', nombre: 'Oceanía'}
-    ]
+    const [tareasExternas, setTareasExternas] = useState([])
+    const [sucursales, setSucursales] = useState([])
+    const [tiposServicio, setTiposServicio] = useState([])
+    const [tiposTrabajo, setTiposTrabajo] = useState([])
+    const [estados, setEstados] = useState([])
 
-    const tiposTrabajo = [
-        { id: '1', nombre: 'Lavandería'},
-        { id: '2', nombre: 'Tintorería'},
-        { id: '3', nombre: 'Planchado'},
-        { id: '4', nombre: 'Compostura'},
-    ]
+    useEffect(() => {
+        async function fetchSucursales() {
+            const { sucursales } = await fetchData('http://localhost:8080/sucursales')
+            setSucursales(sucursales)
+        }
 
-    const tiposServicio = [
-        { id: '1', nombre: 'Normal' },
-        { id: '2', nombre: 'Exprés' },
-    ]
+        async function fetchTiposTrabajo() {
+            const { tiposTrabajo } = await fetchData('http://localhost:8080/tipos-trabajo')
+            setTiposTrabajo(tiposTrabajo)
+        }
 
-    const estados = [
-        { id: STATUS_TAREA.PENDIENTE_RECOLECCION, nombre: 'Pendiente de Recolección', url: '/pendiente-recoleccion'},
-        { id: STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE, nombre: 'Recolectados por Atenderse', url: '/recolectados-para-atenderse'},
-        { id: STATUS_TAREA.RECIBIDO_PARA_ATENDERSE, nombre: 'Recibidos por Atenderse', url: '/recibidos-para-atenderse'},
-        { id: STATUS_TAREA.TERMINADO_PARA_RECOLECTAR, nombre: 'Terminados para Recolectar', url: '/terminados-para-recolectar'},
-        { id: STATUS_TAREA.RECOLECTADO_PARA_ENTREGA, nombre: 'Recolectados para Entrega', url: '/recolectados-para-entrega'},
-        { id: STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN, nombre: 'Entregados a Sucursal Origen', url: '/entregados-a-sucursal-origen'},
-    ]
+        async function fetchTiposServicio() {
+            const { tiposServicio } = await fetchData('http://localhost:8080/tipos-servicio')
+            setTiposServicio(tiposServicio)
+        }
+
+        async function fetchTareasExternas() {
+            const { tareasExternas } = await fetchData('http://localhost:8080/tareas-externas')
+            setTareasExternas(tareasExternas)
+        }
+
+        async function fetchEstados() {
+            const { estados } = await fetchData('http://localhost:8080/estados')
+            setEstados(estados)
+        }
+
+        fetchSucursales()
+        fetchTiposTrabajo()
+        fetchTiposServicio()
+        fetchTareasExternas()
+        fetchEstados()
+    },  [])
+
+    async function fetchData(url) {
+        return await fetch(url).then(data => data.json())
+        // const response = await fetch(url)
+        // const data = await response.json()
+        // return data
+    }    
 
     function agregaTareaExterna(tareaExterna) {
         setTareasExternas([...tareasExternas, tareaExterna])
@@ -106,23 +102,23 @@ export function TareasExternasProvider({children}) {
     }
 
     function getSucursal(id) {
-        const { nombre: sucursal } = sucursales.filter(sucursal => sucursal.id === id)[0]
-        return sucursal
+        const sucursal = sucursales.find(sucursal => sucursal.id === id)
+        return sucursal?.nombre
     }
 
     function getTipoTrabajo(id) {
-        const { nombre: tipoTrabajo } = tiposTrabajo.filter(tipoTrabajo => tipoTrabajo.id === id)[0]
-        return tipoTrabajo
+        const tipoTrabajo  = tiposTrabajo.find(tipoTrabajo => tipoTrabajo.id === id) 
+        return tipoTrabajo?.nombre
     }
 
     function getTipoServicio(id) {
-        const { nombre: tipoServicio } = tiposServicio.filter(tipoServicio => tipoServicio.id === id)[0]
-        return tipoServicio
+        const tipoServicio = tiposServicio.find(tipoServicio => tipoServicio.id === id)
+        return tipoServicio?.nombre
     }
 
     function getEstado(id) {
-        const { nombre: estado } = estados.filter(estado => estado.id === id)[0]
-        return estado
+        const estado = estados.find(estado => estado.id === id)
+        return estado?.nombre
     }
 
     return (

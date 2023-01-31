@@ -10,7 +10,8 @@ const Navbar = () => {
                 </div>
                 <div className='dropdown-menu'>
                     <ul>
-                        {/* <li><NavLink to='/'>Alta</NavLink></li> */}
+                        <li><NavLink to='/'>Pendiente de Recolección</NavLink></li>
+                        <li><NavLink to='/alta'>Alta</NavLink></li>
                         <li><NavLink to='/pendiente-recoleccion'>Pendiente de Recolección</NavLink></li>
                         <li><NavLink to='/recolectados-para-atenderse'>Recolectados para Atenderse</NavLink></li>
                         <li><NavLink to='/recibidos-para-atenderse'>Recibidos para Atenderse</NavLink></li>

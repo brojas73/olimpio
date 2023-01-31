@@ -1,4 +1,5 @@
-import { STATUS_TAREA, useTareasExternas, useTareasExternasUpdate } from "../context/TareasExternasContext"
+import { STATUS_TAREA, useTareasExternas, useTareasExternasUpdate } from "../../context/TareasExternasContext"
+import Filtros from "./Filtros"
 import TareaExterna from "./TareaExternaTable"
 
 const RecolectadosParaAtenderse = () => {
@@ -7,7 +8,8 @@ const RecolectadosParaAtenderse = () => {
 
   return (
     <main className='main-container'>
-        <div className='layout__body tareas'>
+      <Filtros />
+      <div className='layout__body tareas'>
             <h2>Recolectados para Atenderse</h2>
         </div>
         <div className='layout__body tareas'>
@@ -26,8 +28,7 @@ const RecolectadosParaAtenderse = () => {
             <tbody>
               {
                   tareasExternas.filter(tareaExterna => tareaExterna.status === STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE &&
-                                                        // eslint-disable-next-line eqeqeq
-                                                        tareaExterna.sucursalDestino == sucursalActual)
+                                                        tareaExterna.sucursalDestino === sucursalActual)
                                 .map(tareaExterna => (
                     <TareaExterna tareaExterna={tareaExterna} tituloBoton="Recibir" accionBoton={recibeParaAtenderse} key={tareaExterna.id} />
                   ))

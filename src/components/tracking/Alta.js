@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { useTareasExternas, useTareasExternasUpdate } from '../context/TareasExternasContext'
-import { STATUS_TAREA } from '../context/TareasExternasContext'
+import { useTareasExternas, useTareasExternasUpdate } from '../../context/TareasExternasContext'
+import { STATUS_TAREA } from '../../context/TareasExternasContext'
 
 const Alta = () => {
   const { sucursalActual } = useTareasExternas()

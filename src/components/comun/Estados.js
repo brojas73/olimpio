@@ -1,9 +1,9 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { useTareasExternas, useTareasExternasUpdate } from '../context/TareasExternasContext'
+import { useTareasExternas, useTareasExternasUpdate } from '../../context/TareasExternasContext'
 
 
-const FiltroEstados = () => {
+const Estados = () => {
   const { estadoActual, estados, getEstado } = useTareasExternas()
   const { asignaEstadoActual } = useTareasExternasUpdate()
 
@@ -25,4 +25,4 @@ const FiltroEstados = () => {
     </div>  )
 }
 
-export default FiltroEstados
+export default Estados

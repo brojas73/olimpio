@@ -1,19 +1,25 @@
-import FiltroEstados from "./FiltroEstados"
-import Sucursales from "./Sucursales"
+import { useEffect, useState } from 'react'
+import { Link } from "react-router-dom"
+import { useAuth } from "../../hooks/useAuth"
 
 const Header = () => {
+  const { credenciales } = useAuth()
+  const [pagina, setPagina] = useState('')
+  const [texto, setTexto] = useState('')
+
+  useEffect(() => {
+    setPagina(credenciales ? '/logout' : '/login')
+    setTexto(credenciales ? 'Logout' : 'Login')
+  }, [credenciales])
+
   return (
     <header className="header">
         <div className='container'>
-            {/* <a href='/' className='header__logo'> */}
-            <a href='/'>
+            <Link to='/'>
                 <h1>Olimpio</h1>
-            </a>
-            <Sucursales />
-            <FiltroEstados />
+            </Link>
             <nav className='header__menu'>
-                {/* <a href="/" className="dropdown-link"> */}
-                <a href="/">
+                <Link to={pagina}>
                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
                         <title>sign-out</title>
                         <path
@@ -23,8 +29,8 @@ const Header = () => {
                             d="M21.879 21.293l1.414 1.414 6.707-6.707-6.707-6.707-1.414 1.414 4.293 4.293h-14.172v2h14.172l-4.293 4.293z"
                         ></path>
                     </svg>
-                    Logout
-                </a>
+                    {texto}
+                </Link>
             </nav>
         </div>
     </header>

@@ -1,14 +1,16 @@
-import { STATUS_TAREA, useTareasExternas } from "../context/TareasExternasContext"
+import { STATUS_TAREA, useTareasExternas } from "../../context/TareasExternasContext"
+import Filtros from "./Filtros"
 import TareaExterna from "./TareaExternaTable"
 
 const EntregadosASucursalOrigen = () => {
-  const { tareasExternas } = useTareasExternas()
+  const { sucursalActual, tareasExternas } = useTareasExternas()
 
   return (
     <main className='main-container'>
+        <Filtros />
         <div className='layout__body'>
             <h2>Entregados a Sucursal Origen</h2>
-            </div>
+        </div>
         <div className='layout__body tareas'>
           <table>
             <thead>
@@ -24,7 +26,8 @@ const EntregadosASucursalOrigen = () => {
               </thead>
               <tbody>
                 {
-                  tareasExternas.filter(tareaExterna => tareaExterna.status === STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN)
+                  tareasExternas.filter(tareaExterna => tareaExterna.status === STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN  &&
+                                                        tareaExterna.sucursalDestino === sucursalActual)
                                 .map(tareaExterna => (
                     <TareaExterna tareaExterna={tareaExterna} key={tareaExterna.id} />
                   ))

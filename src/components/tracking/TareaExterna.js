@@ -7,9 +7,6 @@ const TareaExterna = ({tareaExterna, tituloBoton, accionBoton}, key) => {
             <p>Ticket: {tareaExterna.ticket}</p>
             <p>Descripción: {tareaExterna.descripcion}</p>
 
-            {/* <p>Tipo de Trabajo: {getTipoTrabajo(tareaExterna.tipoTrabajo)}</p>
-            <p>Sucursal Destino: {getSucursal(tareaExterna.sucursalDestino)}</p>
-            <p>Tipo de Servicio: {getTipoServicio(tareaExterna.tipoServicio)}</p> */}
             <p>Tipo de Trabajo: {tareaExterna.tipoTrabajo}</p>
             <p>Sucursal Destino: {tareaExterna.sucursalDestino}</p>
             <p>Tipo de Servicio: {tareaExterna.tipoServicio}</p>
