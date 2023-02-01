@@ -123,8 +123,12 @@ export function TareasExternasProvider({children}) {
     }
 
     async function recolectaParaAtenderse(id_tarea_externa) {
-        await actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE)
-        setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE} : tareaExterna))
+        try {
+            await actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE)
+            setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE} : tareaExterna))
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     async function recibeParaAtenderse(id_tarea_externa) {

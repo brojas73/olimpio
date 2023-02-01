@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Link } from "react-router-dom"
-import { useAuth } from "../../hooks/useAuth"
 
-const Header = () => {
-  const { credenciales } = useAuth()
+const Header = (isLogout) => {
   const [pagina, setPagina] = useState('')
   const [texto, setTexto] = useState('')
 
   useEffect(() => {
-    setPagina(credenciales ? '/logout' : '/login')
-    setTexto(credenciales ? 'Logout' : 'Login')
-  }, [credenciales])
+    setPagina(isLogout ? '/logout' : '/login')
+    setTexto(isLogout ? 'Salir' : 'Entrar')
+  }, [isLogout])
 
   return (
     <header className="header">

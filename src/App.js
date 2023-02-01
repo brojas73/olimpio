@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Header from "./components/comun/Header";
 import Alta from "./components/tracking/Alta";
@@ -11,12 +12,23 @@ import Login from "./components/login/Login";
 import ProtectedLayout from "./components/comun/ProtectedLayout";
 import Home from "./components/comun/Home";
 import Logout from "./components/login/Logout";
+import IdleTimeoutHandler from "./components/comun/IdleTimeoutHandler";
+
 
 function App() {
+  const [isActive, setIsActive] = useState(true)
+  const [isLogout, setIsLogout] = useState(false)
+
   return (
     <>
-      <Header />
+      <IdleTimeoutHandler 
+          onActive={() => setIsActive(true)} 
+          onIdle={() => setIsActive(false)} 
+          onLogout={() => setIsLogout(true)}
+          onLogoutURL="/login"
+      />
       <div className="home-container">
+        <Header isLogout={isLogout} />
         <Routes>
           <Route path='/logout' element={<Logout />} />
           <Route path='/login' element={<Login />} />
