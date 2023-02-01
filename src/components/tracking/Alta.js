@@ -1,47 +1,47 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useTareasExternas, useTareasExternasUpdate } from '../../context/TareasExternasContext'
 import { STATUS_TAREA } from '../../context/TareasExternasContext'
+import Sucursales from '../comun/Sucursales'
 
-const Alta = () => {
+const Alta = () => {  
   const { sucursalActual } = useTareasExternas()
   const { agregaTareaExterna } = useTareasExternasUpdate()
   const { sucursales } = useTareasExternas()
   const { tiposTrabajo } = useTareasExternas()
   const { tiposServicio } = useTareasExternas()
 
-  const [ticket, setTicket] = useState('')
-  const [descripcion, setDescripcion] = useState('')
-  const [tipoTrabajo, setTipoTrabajo] = useState(0)
-  const [sucursalDestino, setSucursalDestino] = useState(0)
-  const [fechaRequerida, setFechaRequerida] = useState(new Date())
-  const [horaRequerida, setHoraRequerida] = useState('00:00')
-  const [tipoServicio, setTipoServicio] = useState(0)
+  const [tareaExterna, setTareaExterna] = useState({
+    ticket: '',
+    descripcion: '',
+    id_tipo_trabajo: 0,
+    id_sucursal_destino: 0,
+    fecha_requerida: formateaFecha(new Date()),
+    hora_requerida: formateaHora(new Date()),
+    id_tipo_servicio: 0
+  })
+
+  function handleChange(e) {
+    setTareaExterna(prevValue => ({...prevValue, [e.target.name]: e.target.value}))
+  }
   
   function onSubmit(event) {
     event.preventDefault()
 
     const nuevaTareaExterna = {
-        id: Math.floor(Math.random() * 100000000),
-        ticket: ticket,
-        descripcion: descripcion,
-        tipoTrabajo: tipoTrabajo,
-        sucursalOrigen: sucursalActual,
-        sucursalDestino: sucursalDestino,
-        fechaRequerida: fechaRequerida,
-        horaRequerida: horaRequerida,
-        tipoServicio: tipoServicio,
-        status: STATUS_TAREA.PENDIENTE_RECOLECCION
+        id_tarea_externa: Math.floor(Math.random() * 100000000),
+        ticket: tareaExterna.ticket,
+        descripcion: tareaExterna.descripcion,
+        id_tipo_trabajo: tareaExterna.id_tipo_trabajo,
+        id_sucursal_origen: sucursalActual,
+        id_sucursal_destino: tareaExterna.id_sucursal_destino,
+        fecha_requerida: tareaExterna.fecha_requerida,
+        hora_requerida: tareaExterna.hora_requerida,
+        id_tipo_servicio: tareaExterna.id_tipo_servicio,
+        id_estado_tarea: STATUS_TAREA.PENDIENTE_RECOLECCION,
+        estado: 1
     }
 
     agregaTareaExterna(nuevaTareaExterna)
-
-    setTicket('')
-    setDescripcion('')
-    setTipoTrabajo('')
-    setSucursalDestino('')
-    setFechaRequerida(formateaFecha(new Date()))
-    setHoraRequerida(formateaHora(new Date()))
-    setTipoServicio('')
   }
 
   function formateaFecha(fecha) {
@@ -59,14 +59,12 @@ const Alta = () => {
     return horaFormateada
   }
 
-  useEffect(() => {
-    const fechaActual = new Date()
-    setFechaRequerida(formateaFecha(fechaActual))
-    setHoraRequerida(formateaHora(fechaActual))
-  }, [ticket])
-
   return (
+
     <main className='main-container'>
+        <div className='filtros-container'>
+            <Sucursales />
+        </div>
         <div className='layout__body'>
             <h2>Alta de Trabajo Externo</h2>
         </div>
@@ -74,8 +72,8 @@ const Alta = () => {
             <div className='form__group'>
                 <label># de Ticket</label>
                 <input required
-                    onChange={e => setTicket(e.target.value)} 
-                    value={ticket}
+                    onChange={handleChange}
+                    value={tareaExterna.ticket}
                     type='text' 
                     name='ticket' 
                     placeholder='Escribe el número de ticket...' 
@@ -84,8 +82,8 @@ const Alta = () => {
             <div className='form__group'>
                 <label>Descripción</label>
                 <input required 
-                    onChange={e => setDescripcion(e.target.value)} 
-                    value={descripcion}
+                    onChange={handleChange}
+                    value={tareaExterna.descripcion}
                     type='text' 
                     name='descripcion' 
                     placeholder='Escribe la descripción de la marcancía...' 
@@ -94,14 +92,15 @@ const Alta = () => {
             <div className='form__group'>
                 <label>Tipo de Trabajo</label>
                 <select required 
-                    id='tipo_trabajo' 
-                    name='tipo_trabajo' 
-                    onChange={e => setTipoTrabajo(e.target.value)}
+                    id='id_tipo_trabajo' 
+                    name='id_tipo_trabajo' 
+                    onChange={handleChange}
+                    value={tareaExterna.id_tipo_trabajo}
                 >
                     <option key='0' value='0'>Selecciona el Tipo de Trabajo</option>
                     {
                         tiposTrabajo.map(tipoTrabajo => (
-                            <option key={tipoTrabajo.id} value={tipoTrabajo.id}>{tipoTrabajo.nombre}</option>
+                            <option key={tipoTrabajo.id_tipo_trabajo} value={tipoTrabajo.id_tipo_trabajo}>{tipoTrabajo.nombre}</option>
                         ))
                     }
                 </select>
@@ -109,14 +108,15 @@ const Alta = () => {
             <div className='form__group'>
                 <label>Sucursal Destino</label>
                 <select required 
-                    id='sucursal_destino' 
-                    name='sucursal_destino' 
-                    onChange={(e => setSucursalDestino(e.target.value))}
+                    id='id_sucursal_destino' 
+                    name='id_sucursal_destino' 
+                    onChange={handleChange}
+                    value={tareaExterna.id_sucursal_destino}
                 >
                     <option key='0' value='0'>Selecciona la Sucursal Destino</option>
                     {
-                        sucursales.filter(sucursal => sucursal.id !== sucursalActual).map(sucursal => (
-                            <option key={sucursal.id} value={sucursal.id}>{sucursal.nombre}</option>
+                        sucursales.filter(sucursal => sucursal.id_sucursal !== sucursalActual).map(sucursal => (
+                            <option key={sucursal.id_sucursal} value={sucursal.id_sucursal}>{sucursal.nombre}</option>
                         ))
                     }
                 </select>
@@ -127,31 +127,33 @@ const Alta = () => {
                     type="date" 
                     name='fecha_requerida' 
                     id='fecha_requerida' 
-                    value={fechaRequerida}
+                    value={tareaExterna.fecha_requerida}
                     min={formateaFecha(Date())}
-                    onChange={e => setFechaRequerida(e.target.value)}
+                    onChange={handleChange}
                 /> 
                 <span> </span>
                 <input required
                     type="time"
+                    name='hora_requerida'
+                    id='hora_requerida'
                     min='08:00'
                     max='20:00'
                     pattern='[0-9]{2}:[0-9]{2}'
-                    value={horaRequerida}
-                    onChange={e => setHoraRequerida(e.target.value)}
+                    value={tareaExterna.hora_requerida}
+                    onChange={handleChange}
                 />
             </div>
             <div className='form__group'>
                 <label>Tipo de Servicio</label>
                 <select required 
-                    id='tipo_servicio' 
-                    name='tipo_servicio' 
-                    onChange={e => setTipoServicio(e.target.value)}
+                    id='id_tipo_servicio' 
+                    name='id_tipo_servicio' 
+                    onChange={handleChange}
                 >
                     <option key='0' value='0'>Selecciona el Tipo de Servicio</option>
                     {
                         tiposServicio.map(tipoServicio => (
-                            <option key={tipoServicio.id} value={tipoServicio.id}>{tipoServicio.nombre}</option>        
+                            <option key={tipoServicio.id_tipo_servicio} value={tipoServicio.id_tipo_servicio}>{tipoServicio.nombre}</option>        
                         ))
                     }
                 </select>

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const URL_APIS='http://localhost:8080'
 const TareasExternasContext = React.createContext()
@@ -13,8 +14,6 @@ export const STATUS_TAREA = {
     ENTREGADO_A_SUCURSAL_ORIGEN: 6
 } 
 
-
-
 export function useTareasExternas() {
     return useContext(TareasExternasContext)
 }
@@ -24,6 +23,8 @@ export function useTareasExternasUpdate() {
 }
 
 export function TareasExternasProvider({children}) {
+    const navigate = useNavigate()
+
     const [sucursalActual, setSucursalActual] = useState(1)
     const [estadoActual, setEstadoActual] = useState(STATUS_TAREA.PENDIENTE_RECOLECCION)
     const [tareasExternas, setTareasExternas] = useState([])
@@ -35,36 +36,36 @@ export function TareasExternasProvider({children}) {
     useEffect(() => {
         async function fetchSucursales() {
             const sucursales = await fetchData(`${URL_APIS}/sucursales`)
-            setSucursales(sucursales)
+            setSucursales([...sucursales])
         }
 
         async function fetchTiposTrabajo() {
             const tiposTrabajo  = await fetchData(`${URL_APIS}/tipos-trabajo`)
-            setTiposTrabajo(tiposTrabajo)
+            setTiposTrabajo([...tiposTrabajo])
         }
 
         async function fetchTiposServicio() {
             const tiposServicio = await fetchData(`${URL_APIS}/tipos-servicio`)
-            setTiposServicio(tiposServicio)
-        }
-
-        async function fetchTareasExternas() {
-            const tareasExternas = await fetchData(`${URL_APIS}/tareas-externas`)
-            setTareasExternas(tareasExternas)
+            setTiposServicio([...tiposServicio])
         }
 
         async function fetchEstadosTarea() {
             const estadosTarea = await fetchData(`${URL_APIS}/estado-tarea`)
-            setEstadosTarea(estadosTarea)
+            setEstadosTarea([...estadosTarea])
         }
 
         fetchSucursales()
         fetchTiposTrabajo()
         fetchTiposServicio()
-        fetchTareasExternas()
         fetchEstadosTarea()
+        fetchTareasExternas()
     },  [])
 
+    async function fetchTareasExternas() {
+        const tareasExternas = await fetchData(`${URL_APIS}/tareas-externas-activas`)
+        setTareasExternas([...tareasExternas])
+    }
+    
     async function fetchData(url) {
         return await fetch(url).then(data => data.json())
         // const response = await fetch(url)
@@ -72,28 +73,57 @@ export function TareasExternasProvider({children}) {
         // return data
     }    
 
-    function agregaTareaExterna(tareaExterna) {
+    async function agregaTareaExterna(tareaExterna) {
+        try {
+            await fetch(`${URL_APIS}/tareas-externas`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(tareaExterna)
+            })
+        } catch (err) {
+            console.log(err)
+        }
+
         setTareasExternas([...tareasExternas, tareaExterna])
+        navigate('/tracking/pendiente-recoleccion')
     }
 
-    function recolectaParaAtenderse(id_tarea_externa) {
-       setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE} : tareaExterna))
+    async function actualizaTareaExterna(id_tarea_externa, id_estado_tarea) {
+        try {
+            await fetch(`${URL_APIS}/tareas-externas/${id_tarea_externa}/${id_estado_tarea}`, {
+                method: 'PUT',
+                header: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_tarea_externa, id_estado_tarea })
+            })
+
+        } catch (err) {
+            console.log(err)
+        }
     }
 
-    function recibeParaAtenderse(id_tarea_externa) {
+    async function recolectaParaAtenderse(id_tarea_externa) {
+        await actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE)
+        setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE} : tareaExterna))
+    }
+
+    async function recibeParaAtenderse(id_tarea_externa) {
+        await actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.RECIBIDO_PARA_ATENDERSE)
         setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: STATUS_TAREA.RECIBIDO_PARA_ATENDERSE} : tareaExterna))
     }
 
-    function terminadoParaRecolectar(id_tarea_externa) {
+    async function terminadoParaRecolectar(id_tarea_externa) {
+        await actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.TERMINADO_PARA_RECOLECTAR)
         setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: STATUS_TAREA.TERMINADO_PARA_RECOLECTAR} : tareaExterna))
     }
 
-    function recolectaParaEntrega(id_tarea_externa) {
+    async function recolectaParaEntrega(id_tarea_externa) {
+        await actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.RECOLECTADO_PARA_ENTREGA)
         setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: STATUS_TAREA.RECOLECTADO_PARA_ENTREGA} : tareaExterna))
     }
 
-    function entregaASucursalOrigen(id) {
-        setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id ? {...tareaExterna, id_estado_tarea: STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN} : tareaExterna))
+    async function entregaASucursalOrigen(id_tarea_externa) {
+        await actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN)
+        setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN} : tareaExterna))
     }
 
     function asignaSucursalActual(id_sucursal) {
@@ -120,7 +150,7 @@ export function TareasExternasProvider({children}) {
     }
 
     function getEstadoTarea(id_estado_tarea) {
-        const estado_tarea = estadosTarea.find(estado_tarea => estado_tarea.id_estado_tarea === id_estado_tarea)
+        const estado_tarea = estadosTarea.find(estado_tarea => estado_tarea.id_estado_tarea == id_estado_tarea)
         return estado_tarea?.nombre
     }
 

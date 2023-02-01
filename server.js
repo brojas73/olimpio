@@ -1,9 +1,20 @@
-const express = require('express');
-const db = require('./db')
-const cors = require('cors');
+import express from "express"
+import mysql from "mysql"
+
+// const express = require('express');
+// const db = require('../db')
+// const cors = require('cors');
+
 const app = express();
+const db = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "olimpio"  
+})
+
 const PORT = 8080
-app.use(cors());
+// app.use(cors());
 app.use(express.json())
 
 app.use('/login', (req, res) => {
@@ -13,7 +24,8 @@ app.use('/login', (req, res) => {
 })
 
 app.use('/sucursales', (req, res) => {
-    db.query('select * from sucursal', (err, result) => {
+    const q = 'select * from sucursal'
+    db.query(q, (err, result) => {
         if (err) {
             console.log(err)
         }
@@ -23,7 +35,8 @@ app.use('/sucursales', (req, res) => {
 })
 
 app.use('/tipos-trabajo', (req, res) => {
-    db.query('select * from tipo_trabajo', (err, result) => {
+    const q = 'select * from tipo_trabajo'
+    db.query(q, (err, result) => {
         if (err) {
             console.log(err)
         }
@@ -33,7 +46,8 @@ app.use('/tipos-trabajo', (req, res) => {
 })
 
 app.use('/tipos-servicio', (req, res) => {
-    db.query('select * from tipo_servicio', (err, result) => {
+    const q = 'select * from tipo_servicio'
+    db.query(q, (err, result) => {
         if (err) {
             console.log(err)
         }
@@ -42,17 +56,20 @@ app.use('/tipos-servicio', (req, res) => {
     })
 })
 
-app.use('/tareas-externas', (req, res) => {
-    db.query('select * from tarea_externa', (err, result) => {
+app.use('/estado-tarea', (req, res) => {
+    const q = 'select * form estado_tarea'
+    db.query(q, (err, result) => {
         if (err) {
             console.log(err)
         }
 
         res.send(result)
+    })
 })
 
-app.use('/estado-tarea', (req, res) => {
-    db.query('select * from estado_tarea', (err, result) => {
+app.use('/tareas-externas-activas', (req, res) => {
+    const q = 'select * from tarea_externa'
+    db.query(q, (err, result) => {
         if (err) {
             console.log(err)
         }
