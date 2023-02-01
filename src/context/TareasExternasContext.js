@@ -1,6 +1,5 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const URL_APIS='http://localhost:8080'
 const TareasExternasContext = React.createContext()
@@ -25,8 +24,6 @@ export function useTareasExternasUpdate() {
 }
 
 export function TareasExternasProvider({children}) {
-    const navigate = useNavigate()
-
     const [sucursalActual, setSucursalActual] = useState(1)
     const [estadoActual, setEstadoActual] = useState(STATUS_TAREA.PENDIENTE_RECOLECCION)
     const [tareasExternas, setTareasExternas] = useState([])
@@ -93,7 +90,6 @@ export function TareasExternasProvider({children}) {
         }
 
         setTareasExternas([...tareasExternas, tareaExterna])
-        navigate('/tracking/pendiente-recoleccion')
     }
 
     async function actualizaTareaExterna(id_tarea_externa, id_estado_tarea) {

@@ -1,15 +1,15 @@
 import { Modal, Button } from 'react-bootstrap'
 import React from 'react'
 
-const IdleTimeoutModal = ({showModal, handleContinue, handleLogout, remainingTime}) => {
+const IdleTimeoutModal = ({showModal, handleContinue, handleLogout}) => {
     return (
         <Modal show={showModal} onHide={handleContinue}>
             <Modal.Header closeButton>
-                <Modal.Title>Sin Actividad</Modal.Title>
+                <Modal.Title>Tu Sesión Expiró</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Tu sesión expiró. ¿Quieres continuar con la sesión?</Modal.Body>
+            <Modal.Body>¿Quieres continuar con la sesión?</Modal.Body>
             <Modal.Footer>
-                <Button variant='danger' onClick={handleLogout}>Salir</Button>
+                <Button variant='secondary' onClick={handleLogout}>Salir</Button>
                 <Button variant='primary' onClick={handleContinue}>Continuar Sesión</Button>
             </Modal.Footer>
         </Modal>

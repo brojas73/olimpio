@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Header from "./components/comun/Header";
 import Alta from "./components/tracking/Alta";
 import PendienteRecoleccion from './components/tracking/PendienteRecoleccion';
@@ -16,22 +16,39 @@ import IdleTimeoutHandler from "./components/comun/IdleTimeoutHandler";
 
 
 function App() {
-  const [isActive, setIsActive] = useState(true)
-  const [isLogout, setIsLogout] = useState(false)
+  const navigate = useNavigate()
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  function handleLogout() {
+    setIsLoggedIn(false)
+    navigate('/login')
+  }
+
+  function handleLogin() {
+    setIsLoggedIn(true)
+    navigate('/tracking/pendiente-recoleccion')
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <>
+        <Header isLoggedIn={isLoggedIn} />
+        <Routes>
+          <Route path='/login' element={<Login onLogin={() => handleLogin()} />} />
+          <Route path='/' element={<Home />} />
+        </Routes>
+      </>
+    )
+  } 
 
   return (
     <>
-      <IdleTimeoutHandler 
-          onActive={() => setIsActive(true)} 
-          onIdle={() => setIsActive(false)} 
-          onLogout={() => setIsLogout(true)}
-          onLogoutURL="/login"
-      />
+      <IdleTimeoutHandler onLogout={() => handleLogout()} />
       <div className="home-container">
-        <Header isLogout={isLogout} />
+        <Header isLoggedIn={isLoggedIn} onLogout={() => handleLogout()} />
         <Routes>
-          <Route path='/logout' element={<Logout />} />
-          <Route path='/login' element={<Login />} />
+          <Route path='/logout' element={<Logout onLogout={() => handleLogout() } />} />
+          <Route path='/login' element={<Login onLogin={() => handleLogin()} />} />
           <Route path='/' element={<Home />} />
 
           <Route path='/tracking' element={<ProtectedLayout />} >

@@ -9,6 +9,8 @@ const Sucursales = ({onChange}) => {
     asignaSucursalActual(sucursal)
   }
 
+  console.log('Sucursales.sucursales', sucursales)
+
   return (
     <div className="dropdown">
         <span>Sucursal: </span>

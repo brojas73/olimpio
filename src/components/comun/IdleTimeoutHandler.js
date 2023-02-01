@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import moment from 'moment'
 import IdleTimeoutModal from "./IdleTimeoutModal"
-import { Navigate, useNavigate } from "react-router-dom"
 
-const IdleTimeoutHandler = (props) => {
+const DEFAULT_TIMEOUT = 15 * 60 * 1000
+
+const IdleTimeoutHandler = ({onActive, onIdle, onLogout, timeOutInterval}) => {
     let timer = undefined
-    const navigate = useNavigate()
     const [isLogout, setIsLogout] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const events = ['click', 'scroll', 'load', 'keydown']
@@ -13,7 +13,7 @@ const IdleTimeoutHandler = (props) => {
     function eventHandler(eventType) {
         localStorage.setItem('lastInteractionTime', moment())
         if (timer) {
-            props.onActive()
+            // onActive()
             startTimer()
         }
     }
@@ -33,23 +33,23 @@ const IdleTimeoutHandler = (props) => {
             clearTimeout(timer)
         }
 
+        const interval = (timeOutInterval ? timeOutInterval : DEFAULT_TIMEOUT)
         timer = setTimeout(() => {
             const lastInteractionTime = localStorage.getItem('lastInteractionTime')
             const diff = moment.duration(moment().diff(moment(lastInteractionTime)))
-            const timeOutInterval = (props.timeOutInterval ? props.timeOutInterval : 60000)
 
             if (isLogout) {
                 clearTimeout(timer)
             } else {
-                if (diff.milliseconds < timeOutInterval) {
+                if (diff.milliseconds < interval) {
                     startTimer()
-                    props.onActive()
+                    // onActive()
                 } else {
-                    props.onIdle()
+                    // onIdle()
                     setShowModal(true)
                 }
             }
-        }, props.timeOutInterval ? props.timeOutInterval : 60000)
+        }, interval)
     }
 
     function addEvents() {
@@ -72,19 +72,17 @@ const IdleTimeoutHandler = (props) => {
     }
 
     function handleLogout() {
-        console.log('IdleTimeoutHandler.handleLogout()')
+        setShowModal(false)
         removeEvents()
         clearTimeout(timer)
         setIsLogout(true)
-        props.onLogout()
-        setShowModal(false)
-        navigate(props.onLogoutURL)
+        onLogout()
     }
 
     return (
-        <div>
-            <IdleTimeoutModal showModal={showModal} handleContinue={handleContinueSession} handleLogout={handleLogout}/>
-        </div>
+        <>
+            <IdleTimeoutModal showModal={showModal} handleContinue={handleContinueSession} handleLogout={handleLogout} />
+        </>
     )
 }
 
