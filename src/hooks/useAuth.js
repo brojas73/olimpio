@@ -14,11 +14,21 @@ export const AuthProvider = ({children}) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            bodh: JSON.stringify(credenciales)
-        }).then(data => data.json())
-
-        setCredenciales(credenciales)
-        navigate('/tracking/pendiente-recoleccion', { replace: true})
+            body: JSON.stringify(credenciales)
+        })
+        .then(data => data.json())
+        .then(data => {
+            // Si hay una combinación usuario/password
+            if (data.length > 0) {
+                const {
+                    usuario,
+                    nombre,
+                    email
+                } = data[0]
+                setCredenciales({ usuario: usuario, nombre: nombre, email: email})
+                navigate('/tracking/pendiente-recoleccion', { replace: true })
+            }
+        })
     }
 
     function logout() {
@@ -30,6 +40,7 @@ export const AuthProvider = ({children}) => {
         credenciales,
         login,
         logout
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }), [credenciales])
 
     return (

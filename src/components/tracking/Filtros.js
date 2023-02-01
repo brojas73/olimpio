@@ -1,3 +1,5 @@
+import { faPlus } from "@fortawesome/fontawesome-free-solid"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useNavigate } from "react-router-dom"
 import EstadosTarea from "../comun/EstadosTarea"
 import Sucursales from "../comun/Sucursales"
@@ -17,7 +19,10 @@ const Filtros = ({titulo}) => {
             </main>
             <div className='filtros-container'>
                 <h2>{titulo}</h2>
-                <button onClick={onClick} className="btn btn--main">Agregar Tarea</button>
+                <button onClick={onClick} className="btn btn--add">
+                    Agregar Tarea
+                    <FontAwesomeIcon icon={faPlus} />
+                </button>
             </div>
         </>
     )

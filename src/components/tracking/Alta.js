@@ -1,9 +1,12 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTareasExternas, useTareasExternasUpdate } from '../../context/TareasExternasContext'
 import { STATUS_TAREA } from '../../context/TareasExternasContext'
 import Sucursales from '../comun/Sucursales'
 
-const Alta = () => {  
+const Alta = () => {    
+  const navigate = useNavigate()
+
   const { sucursalActual } = useTareasExternas()
   const { agregaTareaExterna } = useTareasExternasUpdate()
   const { sucursales } = useTareasExternas()
@@ -22,6 +25,10 @@ const Alta = () => {
 
   function handleChange(e) {
     setTareaExterna(prevValue => ({...prevValue, [e.target.name]: e.target.value}))
+  }
+
+  function handleCancelar() {
+    navigate(-1)
   }
   
   function onSubmit(event) {
@@ -60,7 +67,6 @@ const Alta = () => {
   }
 
   return (
-
     <main className='main-container'>
         <div className='filtros-container'>
             <Sucursales />
@@ -159,7 +165,8 @@ const Alta = () => {
                 </select>
             </div>
             <div className='form__action'>
-                <button className='btn btn--main' type='submit'>Crear Trabajo Externo</button>
+                <button className='btn btn--delete' onClick={handleCancelar}>Cancelar</button>
+                <button className='btn btn--add' type='submit'>Crear Trabajo Externo</button>
             </div>
         </form>
     </main>

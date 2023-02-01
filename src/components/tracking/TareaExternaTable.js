@@ -1,6 +1,8 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCheck, faMinus  } from "@fortawesome/fontawesome-free-solid"
 import { STATUS_TAREA, useTareasExternas } from "../../context/TareasExternasContext"
 
-const TareaExterna = ({tareaExterna, tituloBoton, accionBoton}, key) => {
+const TareaExterna = ({tareaExterna, tituloContinuar, tituloBorrar, accionContinuar, accionBorrar}, key) => {
     const { estadoActual, getSucursal, getTipoServicio, getTipoTrabajo } = useTareasExternas()
 
     function formateaFecha(fecha, hora) {
@@ -24,10 +26,22 @@ const TareaExterna = ({tareaExterna, tituloBoton, accionBoton}, key) => {
             <td>{formateaFecha(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}</td>
             <td>
             {
-                tituloBoton && (
-                    <button onClick={() => accionBoton(tareaExterna.id_tarea_externa)} className="btn btn--main">
-                        {tituloBoton}
-                    </button>
+                accionBorrar && (
+                    <>
+                        <button onClick={() => accionBorrar(tareaExterna.id_tarea_externa)} className="btn btn--delete">
+                            <FontAwesomeIcon icon={faMinus} />
+                        </button>
+                        <span> </span>
+                    </>
+                )
+            }
+            {
+                accionContinuar && (
+                    <>
+                        <button onClick={() => accionContinuar(tareaExterna.id_tarea_externa)} className="btn btn--add">
+                            <FontAwesomeIcon icon={faCheck} />
+                        </button>
+                    </>
                 )
             }
             </td>

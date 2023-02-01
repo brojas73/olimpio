@@ -17,7 +17,7 @@ const Login = ({setToken}) => {
   return (
     <main className='main-container'>
         <div className='layout__body'>
-            <h1>POR FAVOR PON TU INFORMACION DE INGRESO AL SISTEMA</h1>
+            <h1>INGRESO AL SISTEMA</h1>
             <form onSubmit={handleSubmit}>
                 <div className='form__group'>
                     <label>

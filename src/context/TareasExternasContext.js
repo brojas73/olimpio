@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -11,7 +12,8 @@ export const STATUS_TAREA = {
     RECIBIDO_PARA_ATENDERSE: 3,
     TERMINADO_PARA_RECOLECTAR: 4,
     RECOLECTADO_PARA_ENTREGA: 5,
-    ENTREGADO_A_SUCURSAL_ORIGEN: 6
+    ENTREGADO_A_SUCURSAL_ORIGEN: 6,
+    ENTREGADO_A_CLIENTE: 7
 } 
 
 export function useTareasExternas() {
@@ -59,7 +61,13 @@ export function TareasExternasProvider({children}) {
         fetchTiposServicio()
         fetchEstadosTarea()
         fetchTareasExternas()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },  [])
+
+    useEffect(() => {
+        fetchTareasExternas()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sucursalActual, estadoActual])
 
     async function fetchTareasExternas() {
         const tareasExternas = await fetchData(`${URL_APIS}/tareas-externas-activas`)
@@ -101,6 +109,19 @@ export function TareasExternasProvider({children}) {
         }
     }
 
+    async function borraTareaExterna(id_tarea_externa) {
+        try {
+            await fetch(`${URL_APIS}/tareas-externas/${id_tarea_externa}`, {
+                method: 'DELETE',
+                header: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_tarea_externa })
+            })
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     async function recolectaParaAtenderse(id_tarea_externa) {
         await actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE)
         setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE} : tareaExterna))
@@ -126,6 +147,11 @@ export function TareasExternasProvider({children}) {
         setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN} : tareaExterna))
     }
 
+    async function entregaACliente(id_tarea_externa) {
+        await actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.ENTREGADO_A_CLIENTE)
+        setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: STATUS_TAREA.ENTREGADO_A_CLIENTE} : tareaExterna))
+    }
+
     function asignaSucursalActual(id_sucursal) {
         setSucursalActual(id_sucursal)
     }
@@ -135,17 +161,17 @@ export function TareasExternasProvider({children}) {
     }
 
     function getSucursal(id_sucursal) {
-        const sucursal = sucursales.find(sucursal => sucursal.id_sucursal === id_sucursal)
+        const sucursal = sucursales.find(sucursal => sucursal.id_sucursal == id_sucursal)
         return sucursal?.nombre
     }
 
     function getTipoTrabajo(id_tipo_trabajo) {
-        const tipoTrabajo  = tiposTrabajo.find(tipoTrabajo => tipoTrabajo.id_tipo_trabajo === id_tipo_trabajo) 
+        const tipoTrabajo  = tiposTrabajo.find(tipoTrabajo => tipoTrabajo.id_tipo_trabajo == id_tipo_trabajo) 
         return tipoTrabajo?.nombre
     }
 
     function getTipoServicio(id_tipo_servicio) {
-        const tipoServicio = tiposServicio.find(tipoServicio => tipoServicio.id_tipo_servicio === id_tipo_servicio)
+        const tipoServicio = tiposServicio.find(tipoServicio => tipoServicio.id_tipo_servicio == id_tipo_servicio)
         return tipoServicio?.nombre
     }
 
@@ -160,9 +186,9 @@ export function TareasExternasProvider({children}) {
             getSucursal, getTipoTrabajo, getTipoServicio, getEstadoTarea
         }}>
             <TareasExternasUpdateContext.Provider value={{
-                agregaTareaExterna, recolectaParaAtenderse, 
+                agregaTareaExterna, borraTareaExterna, recolectaParaAtenderse, 
                 recibeParaAtenderse, terminadoParaRecolectar, 
-                recolectaParaEntrega, entregaASucursalOrigen,
+                recolectaParaEntrega, entregaASucursalOrigen, entregaACliente,
                 asignaSucursalActual, asignaEstadoActual
             }}>
                 {children}

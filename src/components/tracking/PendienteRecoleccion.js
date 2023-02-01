@@ -4,7 +4,7 @@ import TareaExterna from "./TareaExternaTable"
 
 const PendienteRecoleccion = () => {
   const { tareasExternas, sucursalActual  } = useTareasExternas()
-  const { recolectaParaAtenderse } = useTareasExternasUpdate()
+  const { recolectaParaAtenderse, borraTareaExterna } = useTareasExternasUpdate()
 
   return (
     <main className='main-container'>
@@ -27,7 +27,7 @@ const PendienteRecoleccion = () => {
               tareasExternas.filter(tareaExterna => tareaExterna.id_estado_tarea === STATUS_TAREA.PENDIENTE_RECOLECCION &&
                                                     tareaExterna.id_sucursal_origen === sucursalActual)
                             .map(tareaExterna => (
-                <TareaExterna tareaExterna={tareaExterna} tituloBoton="Recolectar" accionBoton={recolectaParaAtenderse} key={tareaExterna.id_tarea_externa} />
+                <TareaExterna tareaExterna={tareaExterna} tituloContinuar="Recolectar" tituloBorrar="Borrar" accionBorrar={borraTareaExterna} accionContinuar={recolectaParaAtenderse} key={tareaExterna.id_tarea_externa} />
               ))
             }
           </tbody>

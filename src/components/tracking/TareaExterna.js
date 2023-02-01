@@ -1,6 +1,6 @@
 import { useTareasExternasUpdate } from "../context/TareasExternasContext"
 
-const TareaExterna = ({tareaExterna, tituloBoton, accionBoton}, key) => {
+const TareaExterna = ({tareaExterna, tituloBoton, accionContinuar}, key) => {
     const { getSucursal, getTipoServicio, getTipoTrabajo } = useTareasExternasUpdate()
     return (
         <div>
@@ -13,7 +13,7 @@ const TareaExterna = ({tareaExterna, tituloBoton, accionBoton}, key) => {
 
             {
                 tituloBoton && (
-                    <button onClick={() => accionBoton(tareaExterna.id_tarea_externa)} className="btn btn--main">
+                    <button onClick={() => accionContinuar(tareaExterna.id_tarea_externa)} className="btn btn--main">
                         {tituloBoton}
                     </button>
                 )

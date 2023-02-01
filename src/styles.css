@@ -11,7 +11,7 @@
   --color-light-gray: #b2bdbd;
   --color-bg: #2d2d39;
   --color-success: #5dd693;
-  --color-error: #fc4b0b;
+  --color-error: #cc6039;
   --box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
@@ -200,73 +200,6 @@ a {
   display: block;
 }
 
-/*==============================
-=>  Navbar
-================================*/
-
-.dropdown-menu {
-  z-index: 1;
-  position: absolute;
-  top: 5rem;
-  right: 0.5rem;
-  background: var(--color-dark-light);
-  border-radius: 5px;
-  box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-  display: none;
-}
-
-.dropdown-menu.show {
-  display: block;
-}
-
-.dropdown-menu a {
-  padding: 1.2rem 4rem;
-  display: block;
-  color: var(--color-light) !important;
-  font-weight: 500;
-  font-size: 1.4rem;
-}
-
-.dropdown-menu a:hover {
-  background-color: var(--color-dark-medium);
-}
-
-.dropdown-menu > a:not(:last-child) {
-  border-bottom: 1px solid var(--color-dark-medium);
-}
-
-.dropdown-menu a svg {
-  fill: var(--color-light);
-}
-
-.navbar__header {
-  margin-bottom: 2rem;
-}
-
-.navbar__header h2 {
-  text-transform: uppercase;
-  font-weight: 500;
-  /* color: var(--color-dark-light); */
-}
-
-.navbar__list {
-  list-style: none;
-}
-
-.navbar__list li a {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 3rem;
-  font-weight: 500;
-  /* color: var(--color-light-gray); */
-  transition: all 0.3s ease-in-out;
-}
-
-.navbar__list li a.active,
-.navbar__list li a:hover {
-  color: var(--color-main);
-}
 
 /*==============================
 =>  Forms
@@ -339,8 +272,8 @@ a {
 .form__action {
   display: flex;
   justify-content: flex-end;
-  margin-right: 5rem;
-  gap: 3rem;
+  margin-right: 8rem;
+  gap: 1rem;
 }
 
 /*==============================
@@ -365,6 +298,16 @@ a {
   color: var(--color-dark);
 }
 
+.btn--delete {
+  background-color: var(--color-error);
+  color: var(--color-dark);
+}
+
+.btn--add {
+  background-color: var(--color-success);
+  color: var(--color-dark);
+}
+
 .btn:hover {
   opacity: 0.9;
 }
@@ -385,6 +328,7 @@ a {
   border-top-left-radius: 10px;
 }
 
+/* .tareas table th:not(:last-child) { */
 .tareas table th:not(:last-child) {
   background-color: var(--color-main);
   text-align: left;
