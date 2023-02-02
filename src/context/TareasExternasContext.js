@@ -15,6 +15,11 @@ export const STATUS_TAREA = {
     ENTREGADO_A_CLIENTE: 7
 } 
 
+export const TIPOS_SERVICIO = {
+    NORMAL: 1,
+    EXPRESS: 2
+}
+
 export function useTareasExternas() {
     return useContext(TareasExternasContext)
 }
@@ -116,6 +121,8 @@ export function TareasExternasProvider({children}) {
         } catch (err) {
             console.log(err)
         }
+
+        setTareasExternas(tareasExternas.filter(tareaExterna => tareaExterna.id_tarea_externa !== id_tarea_externa))
     }
 
     async function recolectaParaAtenderse(id_tarea_externa) {

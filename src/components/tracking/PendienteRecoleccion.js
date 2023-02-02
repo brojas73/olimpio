@@ -2,7 +2,7 @@ import { Row } from "react-bootstrap"
 import { STATUS_TAREA, useTareasExternas, useTareasExternasUpdate } from "../../context/TareasExternasContext"
 import Filtros from "./Filtros"
 import TareaExterna from "./TareaExternaCard"
-import TituloTabla from "./TituloTabla"
+import TituloTareas from "./TituloTareas"
 
 const PendienteRecoleccion = () => {
   const { tareasExternas, sucursalActual  } = useTareasExternas()
@@ -11,7 +11,7 @@ const PendienteRecoleccion = () => {
   return (
     <>
       <Filtros />
-      <TituloTabla titulo='Pendiente de Recolección' />
+      <TituloTareas titulo='Pendiente de Recolección' />
       <Row xs={1} md={2} className="g-1">
       {
         tareasExternas.filter(tareaExterna => tareaExterna.id_estado_tarea === STATUS_TAREA.PENDIENTE_RECOLECCION &&

@@ -49,6 +49,7 @@ const Alta = () => {
     }
 
     agregaTareaExterna(nuevaTareaExterna)
+    navigate('/tracking/pendiente-recoleccion')
   }
 
   function formateaFecha(fecha) {
@@ -101,7 +102,7 @@ const Alta = () => {
                 <Form.Label>Descripción</Form.Label>
                 <Form.Control 
                     onChange={handleChange}
-                    value={tareaExterna.ticket}
+                    value={tareaExterna.descripcion}
                     type='text'
                     placeholder="Escribe la descripción de la mercancía..." 
                     name='descripcion' 

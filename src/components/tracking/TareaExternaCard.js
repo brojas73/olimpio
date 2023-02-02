@@ -1,6 +1,6 @@
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 // import { faCheck, faMinus  } from "@fortawesome/fontawesome-free-solid"
-import { STATUS_TAREA, useTareasExternas } from "../../context/TareasExternasContext"
+import { STATUS_TAREA, TIPOS_SERVICIO, useTareasExternas } from "../../context/TareasExternasContext"
 import { Button, Card, CloseButton, Col } from "react-bootstrap"
 
 const TareaExterna = ({tareaExterna, accionContinuar, accionBorrar, tituloBorrar, tituloContinuar}, key) => {
@@ -18,7 +18,7 @@ const TareaExterna = ({tareaExterna, accionContinuar, accionBorrar, tituloBorrar
     }
     return (
         <Col>
-            <Card border={tareaExterna.id_tipo_servicio === 2 ? 'danger' : ''} >
+            <Card border={tareaExterna.id_tipo_servicio === TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
                 <Card.Header>
                     {
                         estadoActual === STATUS_TAREA.PENDIENTE_RECOLECCION ? (
@@ -56,7 +56,12 @@ const TareaExterna = ({tareaExterna, accionContinuar, accionBorrar, tituloBorrar
                     }
                     {
                         tituloContinuar && (
-                            <Button onClick={() => accionContinuar(tareaExterna.id_tarea_externa)}>{tituloContinuar}</Button>
+                            <Button 
+                                onClick={() => accionContinuar(tareaExterna.id_tarea_externa)}
+                                variant={tareaExterna.id_tipo_servicio === TIPOS_SERVICIO.EXPRESS ? 'danger' : 'primary'}
+                            >
+                                {tituloContinuar}
+                            </Button>
                         )
                     }
                 </Card.Body>

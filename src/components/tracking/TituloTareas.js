@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { Navbar, Container, Button } from 'react-bootstrap'
 
-const TituloTabla = ({titulo}) => {
+const TituloTareas = ({titulo}) => {
     const navigate = useNavigate()
 
     function onClick() {
@@ -22,4 +22,4 @@ const TituloTabla = ({titulo}) => {
     )
 }
 
-export default TituloTabla
+export default TituloTareas

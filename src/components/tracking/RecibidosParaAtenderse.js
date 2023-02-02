@@ -2,7 +2,7 @@ import { Row } from "react-bootstrap"
 import { STATUS_TAREA, useTareasExternas, useTareasExternasUpdate } from "../../context/TareasExternasContext"
 import Filtros from "./Filtros"
 import TareaExterna from "./TareaExternaCard"
-import TituloTabla from "./TituloTabla"
+import TituloTareas from "./TituloTareas"
 
 const RecibidosParaAtenderse = () => {
   const { tareasExternas, sucursalActual } = useTareasExternas()
@@ -11,7 +11,7 @@ const RecibidosParaAtenderse = () => {
   return (
     <>
       <Filtros />
-      <TituloTabla titulo='Recibidos para Atenderse' />
+      <TituloTareas titulo='Recibidos para Atenderse' />
       <Row xs={1} md={2} className="g-1">
         {
           tareasExternas.filter(tareaExterna => tareaExterna.id_estado_tarea === STATUS_TAREA.RECIBIDO_PARA_ATENDERSE  &&

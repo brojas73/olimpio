@@ -131,23 +131,31 @@ app.post("/tareas-externas", (req, res) => {
 })
 
 app.delete('/tareas-externas/:id_tarea_externa', (req, res) => {
-    const idTareaExterna = req.params.id_tarea_externa
-    const q = 'delete tarea_externa where id_tarea_externa = ?'
-    db.query(q, [idTareaExterna], (err, data) => {
-        if (err) res.send(err)
-        res.send("La tarea externa se borró con éxito")
-    })
+    try {
+        const idTareaExterna = req.params.id_tarea_externa
+        const q = 'delete from tarea_externa where id_tarea_externa = ?'
+        db.query(q, [idTareaExterna], (err, data) => {
+            if (err) res.send(err)
+            res.send("La tarea externa se borró con éxito")
+        })
+    } catch (err) {
+        console.log('delete', err)
+    }
 })
 
 
 app.put('/tareas-externas/:id_tarea_externa/:id_estado_tarea', (req, res) => {
-    const idTareaExterna = req.params.id_tarea_externa
-    const idEstadoTarea = req.params.id_estado_tarea
-    const q = 'update tarea_externa set id_estado_tarea = ? where id_tarea_externa = ?'
-    db.query(q, [idEstadoTarea, idTareaExterna], (err, data) => {
-        if (err) res.send(err)
-        res.send("El estado se cambió con éxito")
-    })
+    try {
+        const idTareaExterna = req.params.id_tarea_externa
+        const idEstadoTarea = req.params.id_estado_tarea
+        const q = 'update tarea_externa set id_estado_tarea = ? where id_tarea_externa = ?'
+        db.query(q, [idEstadoTarea, idTareaExterna], (err, data) => {
+            if (err) res.send(err)
+            res.send("El estado se cambió con éxito")
+        })
+    } catch (err) {
+        console.log('update', err)
+    }
 })
 
 app.listen(PORT, () => console.log(`API is running on http://localhost:${PORT}`));
