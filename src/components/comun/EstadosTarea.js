@@ -9,7 +9,7 @@ const EstadosTarea = () => {
   const { asignaEstadoActual } = useTareasExternasUpdate()
 
   return (
-    <DropdownButton title={getEstadoTarea(estadoActual)}>
+    <DropdownButton title={getEstadoTarea(estadoActual)} variant='light'>
     {
       estadosTarea.map(estadoTarea => (
           <Dropdown.Item 

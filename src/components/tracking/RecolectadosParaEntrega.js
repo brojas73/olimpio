@@ -2,6 +2,7 @@ import { Table } from "react-bootstrap"
 import { STATUS_TAREA, useTareasExternas, useTareasExternasUpdate } from "../../context/TareasExternasContext"
 import Filtros from "./Filtros"
 import TareaExterna from "./TareaExternaTable"
+import TituloTabla from "./TituloTabla"
 
 const RecolectadosParaEntrega = () => {
   const { sucursalActual, tareasExternas } = useTareasExternas()
@@ -9,8 +10,10 @@ const RecolectadosParaEntrega = () => {
 
   return (
     <>
-      <Filtros titulo='Recolectados para Entrega' />
-      <Table striped bordered hover size='sm'>
+      <Filtros />
+      <TituloTabla titulo='Recolectados para Entrega' />
+      {/* <Table striped bordered hover size='sm'> */}
+      <Table>
         <thead>
             <tr>
               <th>Ticket</th>

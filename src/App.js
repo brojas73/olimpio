@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { Container } from 'react-bootstrap'
-import Header from "./components/comun/Header";
+import GlobalNavbar from "./components/comun/GlobalNavbar";
 import Alta from "./components/tracking/Alta";
 import PendienteRecoleccion from './components/tracking/PendienteRecoleccion';
 import RecolectadosParaAtenderse from './components/tracking/RecolectadosParaAtenderse';
@@ -12,7 +12,6 @@ import EntregadosASucursalOrigen from './components/tracking/EntregadosASucursal
 import Login from "./components/login/Login";
 import ProtectedLayout from "./components/comun/ProtectedLayout";
 import Home from "./components/comun/Home";
-import Logout from "./components/login/Logout";
 import IdleTimeoutHandler from "./components/comun/IdleTimeoutHandler";
 
 
@@ -30,29 +29,20 @@ function App() {
     navigate('/tracking/pendiente-recoleccion')
   }
 
-  if (!isLoggedIn) {
-    return (
-      <>
-        <Header isLoggedIn={isLoggedIn} />
-        <Routes>
-          <Route path='/login' element={<Login onLogin={() => handleLogin()} />} />
-          <Route path='/' element={<Home />} />
-        </Routes>
-      </>
-    )
-  } 
-
   return (
     <>
-      <IdleTimeoutHandler onLogout={() => handleLogout()} />
+      {
+        isLoggedIn && (
+          <IdleTimeoutHandler onLogout={() => handleLogout()} />
+        )
+      }
       <Container>
-        <Header isLoggedIn={isLoggedIn} onLogout={() => handleLogout()} />
+        <GlobalNavbar isLoggedIn={isLoggedIn} onLogout={() => handleLogout()} />
         <Routes>
-          <Route path='/logout' element={<Logout onLogout={() => handleLogout() } />} />
           <Route path='/login' element={<Login onLogin={() => handleLogin()} />} />
           <Route path='/' element={<Home />} />
 
-          <Route path='/tracking' element={<ProtectedLayout />} >
+          <Route path='/tracking' element={<ProtectedLayout isLoggedIn={isLoggedIn} />} >
             <Route path='alta' element={<Alta />} />
             <Route path='pendiente-recoleccion' element={<PendienteRecoleccion />} />
             <Route path='recolectados-para-atenderse' element={<RecolectadosParaAtenderse />} />

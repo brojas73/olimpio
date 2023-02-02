@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 
-const Navbar = () => {
+const NavbarOld = () => {
   return (
     <main className='layout'>
         <div className='container'>
@@ -26,4 +26,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default NavbarOld

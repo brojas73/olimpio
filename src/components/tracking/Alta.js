@@ -68,7 +68,7 @@ const Alta = () => {
 
   return (
     <Container>
-        <h2>Alta de Trabajo Externo</h2>
+        <h2>Alta de Tarea Externa</h2>
         <Form onSubmit={onSubmit}>
             <Row>
                 <Form.Group as={Col} className="mb-3">
@@ -88,7 +88,7 @@ const Alta = () => {
                         value={tareaExterna.id_sucursal_destino}
                         name='id_sucursal_destino' 
                     >
-                        <option key={0} value={0}>Selecciona la Sucursal Destino</option>
+                        <option key={0} value={0}>Selecciona una...</option>
                         {
                             sucursales.filter(sucursal => sucursal.id_sucursal !== sucursalActual).map(sucursal => (
                                 <option key={sucursal.id_sucursal} value={sucursal.id_sucursal}>{sucursal.nombre}</option>
@@ -115,7 +115,7 @@ const Alta = () => {
                         value={tareaExterna.id_tipo_trabajo}
                         name='id_tipo_trabajo' 
                     >
-                     <option key={0} value={0}>Selecciona el Tipo de Trabajo</option>
+                     <option key={0} value={0}>Selecciona uno...</option>
                      {
                          tiposTrabajo.map(tipoTrabajo => (
                              <option key={tipoTrabajo.id_tipo_trabajo} value={tipoTrabajo.id_tipo_trabajo}>{tipoTrabajo.nombre}</option>
@@ -130,7 +130,7 @@ const Alta = () => {
                         value={tareaExterna.id_tipo_servicio}
                         name='id_tipo_servicio' 
                     >
-                     <option key={0} value={0}>Selecciona el Tipo de Servicio</option>
+                     <option key={0} value={0}>Selecciona uno...</option>
                      {
                          tiposServicio.map(tipoServicio => (
                              <option key={tipoServicio.id_tipo_servicio} value={tipoServicio.id_tipo_servicio}>{tipoServicio.nombre}</option>
@@ -160,7 +160,7 @@ const Alta = () => {
                     />
                 </Form.Group>
             </Row>
-            <Button variant='primary' type='submit' onClick={handleCancelar}>
+            <Button variant='primary' onClick={handleCancelar}>
                 Cancelar
             </Button>
             {" "}

@@ -1,11 +1,9 @@
 import { Navigate, useOutlet } from "react-router-dom"
-import { useAuth } from "../../hooks/useAuth"
 
-const ProtectedLayout = () => {
-    const { credenciales } = useAuth()
+const ProtectedLayout = ({isLoggedIn}) => {
     const outlet = useOutlet()
 
-    if (!credenciales) {
+    if (!isLoggedIn) {
         return <Navigate to='/login' />
     }
 

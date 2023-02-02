@@ -29,7 +29,6 @@ export const AuthProvider = ({children}) => {
     }
 
     function logout() {
-        console.log('AuthProvider.logout()')
         setCredenciales(null)
     }
 

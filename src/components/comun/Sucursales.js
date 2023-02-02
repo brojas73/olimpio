@@ -1,4 +1,4 @@
-import { DropdownButton, Dropdown } from "react-bootstrap"
+import { NavDropdown  } from "react-bootstrap"
 import { useTareasExternas, useTareasExternasUpdate } from "../../context/TareasExternasContext"
 
 const Sucursales = ({onChange}) => {
@@ -6,18 +6,18 @@ const Sucursales = ({onChange}) => {
   const { asignaSucursalActual } = useTareasExternasUpdate()
 
   return (
-    <DropdownButton title={getSucursal(sucursalActual)} className="justify-content-start">
+    <NavDropdown title={getSucursal(sucursalActual)}>
     {
-      sucursales.map(sucursal => (
-        <Dropdown.Item 
-            key={sucursal.id_sucursal}
-            onClick={e => asignaSucursalActual(sucursal.id_sucursal)}
-        >
-            {sucursal.nombre}
-        </Dropdown.Item>
-      ))
+        sucursales.map(sucursal => (
+            <NavDropdown.Item 
+                key={sucursal.id_sucursal}
+                onClick={e => asignaSucursalActual(sucursal.id_sucursal)}
+            >
+              {sucursal.nombre}
+            </NavDropdown.Item>
+        ))
     }
-    </DropdownButton>
+    </NavDropdown>
   )
 }
 

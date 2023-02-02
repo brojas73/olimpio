@@ -11,7 +11,6 @@ const Login = ({onLogin}) => {
 
   async function handleSubmit(event) {
     event.preventDefault()
-    console.log('Login.handleSubmit()')
     const data = await login({
         usuario,
         contrasena

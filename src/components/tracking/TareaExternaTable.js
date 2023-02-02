@@ -29,7 +29,7 @@ const TareaExterna = ({tareaExterna, tituloContinuar, tituloBorrar, accionContin
             {
                 accionBorrar && (
                     <>
-                        <Button onClick={() => accionBorrar(tareaExterna.id_tarea_externa)}>
+                        <Button onClick={() => accionBorrar(tareaExterna.id_tarea_externa)} variant='danger'>
                             <FontAwesomeIcon icon={faMinus} />
                         </Button>
                         <span> </span>
