@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCheck, faMinus  } from "@fortawesome/fontawesome-free-solid"
 import { STATUS_TAREA, useTareasExternas } from "../../context/TareasExternasContext"
+import { Button } from "react-bootstrap"
 
 const TareaExterna = ({tareaExterna, tituloContinuar, tituloBorrar, accionContinuar, accionBorrar}, key) => {
     const { estadoActual, getSucursal, getTipoServicio, getTipoTrabajo } = useTareasExternas()
@@ -24,13 +25,13 @@ const TareaExterna = ({tareaExterna, tituloContinuar, tituloBorrar, accionContin
             <td>{getSucursal(estadoActual === STATUS_TAREA.PENDIENTE_RECOLECCION ? tareaExterna.id_sucursal_destino : tareaExterna.id_sucursal_origen)}</td>
             <td>{getTipoServicio(tareaExterna.id_tipo_servicio)}</td> 
             <td>{formateaFecha(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}</td>
-            <td>
+            <td align="center">
             {
                 accionBorrar && (
                     <>
-                        <button onClick={() => accionBorrar(tareaExterna.id_tarea_externa)} className="btn btn--delete">
+                        <Button onClick={() => accionBorrar(tareaExterna.id_tarea_externa)}>
                             <FontAwesomeIcon icon={faMinus} />
-                        </button>
+                        </Button>
                         <span> </span>
                     </>
                 )
@@ -38,9 +39,9 @@ const TareaExterna = ({tareaExterna, tituloContinuar, tituloBorrar, accionContin
             {
                 accionContinuar && (
                     <>
-                        <button onClick={() => accionContinuar(tareaExterna.id_tarea_externa)} className="btn btn--add">
+                        <Button onClick={() => accionContinuar(tareaExterna.id_tarea_externa)}>
                             <FontAwesomeIcon icon={faCheck} />
-                        </button>
+                        </Button>
                     </>
                 )
             }

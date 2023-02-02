@@ -1,8 +1,8 @@
 import { useState } from 'react'
+import { Button, Container, Form, Row, Col } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { useTareasExternas, useTareasExternasUpdate } from '../../context/TareasExternasContext'
 import { STATUS_TAREA } from '../../context/TareasExternasContext'
-import Sucursales from '../comun/Sucursales'
 
 const Alta = () => {    
   const navigate = useNavigate()
@@ -67,109 +67,108 @@ const Alta = () => {
   }
 
   return (
-    <main className='main-container'>
-        <div className='filtros-container'>
-            <Sucursales />
-        </div>
-        <div className='layout__body'>
-            <h2>Alta de Trabajo Externo</h2>
-        </div>
-        <form onSubmit={onSubmit}>
-            <div className='form__group'>
-                <label># de Ticket</label>
-                <input required
+    <Container>
+        <h2>Alta de Trabajo Externo</h2>
+        <Form onSubmit={onSubmit}>
+            <Row>
+                <Form.Group as={Col} className="mb-3">
+                    <Form.Label># de Ticket</Form.Label>
+                    <Form.Control
+                        onChange={handleChange}
+                        value={tareaExterna.ticket}
+                        type='text'
+                        placeholder="Escribe el número de ticket..." 
+                        name='ticket' 
+                    />
+                </Form.Group>
+                <Form.Group as={Col} className="mb-3">
+                    <Form.Label>Sucursal Destino</Form.Label>
+                    <Form.Select defaultValue={0}
+                        onChange={handleChange}
+                        value={tareaExterna.id_sucursal_destino}
+                        name='id_sucursal_destino' 
+                    >
+                        <option key={0} value={0}>Selecciona la Sucursal Destino</option>
+                        {
+                            sucursales.filter(sucursal => sucursal.id_sucursal !== sucursalActual).map(sucursal => (
+                                <option key={sucursal.id_sucursal} value={sucursal.id_sucursal}>{sucursal.nombre}</option>
+                            ))
+                        }
+                    </Form.Select>
+                </Form.Group>
+            </Row>
+            <Form.Group className="mb-3">
+                <Form.Label>Descripción</Form.Label>
+                <Form.Control 
                     onChange={handleChange}
                     value={tareaExterna.ticket}
-                    type='text' 
-                    name='ticket' 
-                    placeholder='Escribe el número de ticket...' 
-                />
-            </div>
-            <div className='form__group'>
-                <label>Descripción</label>
-                <input required 
-                    onChange={handleChange}
-                    value={tareaExterna.descripcion}
-                    type='text' 
+                    type='text'
+                    placeholder="Escribe la descripción de la mercancía..." 
                     name='descripcion' 
-                    placeholder='Escribe la descripción de la marcancía...' 
                 />
-            </div>
-            <div className='form__group'>
-                <label>Tipo de Trabajo</label>
-                <select required 
-                    id='id_tipo_trabajo' 
-                    name='id_tipo_trabajo' 
-                    onChange={handleChange}
-                    value={tareaExterna.id_tipo_trabajo}
-                >
-                    <option key='0' value='0'>Selecciona el Tipo de Trabajo</option>
-                    {
-                        tiposTrabajo.map(tipoTrabajo => (
-                            <option key={tipoTrabajo.id_tipo_trabajo} value={tipoTrabajo.id_tipo_trabajo}>{tipoTrabajo.nombre}</option>
-                        ))
-                    }
-                </select>
-            </div>
-            <div className='form__group'>
-                <label>Sucursal Destino</label>
-                <select required 
-                    id='id_sucursal_destino' 
-                    name='id_sucursal_destino' 
-                    onChange={handleChange}
-                    value={tareaExterna.id_sucursal_destino}
-                >
-                    <option key='0' value='0'>Selecciona la Sucursal Destino</option>
-                    {
-                        sucursales.filter(sucursal => sucursal.id_sucursal !== sucursalActual).map(sucursal => (
-                            <option key={sucursal.id_sucursal} value={sucursal.id_sucursal}>{sucursal.nombre}</option>
-                        ))
-                    }
-                </select>
-            </div>
-            <div className='form__date'>
-                <label>Fecha Requerida por el Cliente</label>
-                <input required
-                    type="date" 
-                    name='fecha_requerida' 
-                    id='fecha_requerida' 
-                    value={tareaExterna.fecha_requerida}
-                    min={formateaFecha(Date())}
-                    onChange={handleChange}
-                /> 
-                <span> </span>
-                <input required
-                    type="time"
-                    name='hora_requerida'
-                    id='hora_requerida'
-                    min='08:00'
-                    max='20:00'
-                    pattern='[0-9]{2}:[0-9]{2}'
-                    value={tareaExterna.hora_requerida}
-                    onChange={handleChange}
-                />
-            </div>
-            <div className='form__group'>
-                <label>Tipo de Servicio</label>
-                <select required 
-                    id='id_tipo_servicio' 
-                    name='id_tipo_servicio' 
-                    onChange={handleChange}
-                >
-                    <option key='0' value='0'>Selecciona el Tipo de Servicio</option>
-                    {
-                        tiposServicio.map(tipoServicio => (
-                            <option key={tipoServicio.id_tipo_servicio} value={tipoServicio.id_tipo_servicio}>{tipoServicio.nombre}</option>        
-                        ))
-                    }
-                </select>
-            </div>
-            <div className='form__action'>
-                <button className='btn btn--delete' onClick={handleCancelar}>Cancelar</button>
-                <button className='btn btn--add' type='submit'>Crear Trabajo Externo</button>
-            </div>
-        </form>
-    </main>
+            </Form.Group>
+            <Row>
+                <Form.Group as={Col} className="mb-3">
+                    <Form.Label>Tipo de Trabajo</Form.Label>
+                    <Form.Select defaultValue={0}
+                        onChange={handleChange}
+                        value={tareaExterna.id_tipo_trabajo}
+                        name='id_tipo_trabajo' 
+                    >
+                     <option key={0} value={0}>Selecciona el Tipo de Trabajo</option>
+                     {
+                         tiposTrabajo.map(tipoTrabajo => (
+                             <option key={tipoTrabajo.id_tipo_trabajo} value={tipoTrabajo.id_tipo_trabajo}>{tipoTrabajo.nombre}</option>
+                         ))
+                     }
+                    </Form.Select>
+                </Form.Group>
+                <Form.Group as={Col} className="mb-3">
+                    <Form.Label>Tipo de Servicio</Form.Label>
+                    <Form.Select defaultValue={0}
+                        onChange={handleChange}
+                        value={tareaExterna.id_tipo_servicio}
+                        name='id_tipo_servicio' 
+                    >
+                     <option key={0} value={0}>Selecciona el Tipo de Servicio</option>
+                     {
+                         tiposServicio.map(tipoServicio => (
+                             <option key={tipoServicio.id_tipo_servicio} value={tipoServicio.id_tipo_servicio}>{tipoServicio.nombre}</option>
+                         ))
+                     }
+                    </Form.Select>
+                </Form.Group>
+            </Row>
+            <Row>
+                <Form.Group as={Col} className="mb-3">
+                    <Form.Label>Fecha Requerida</Form.Label>
+                    <Form.Control
+                        type='date'
+                        onChange={handleChange}
+                        value={tareaExterna.fecha_requerida}
+                        name='fecha_requerida' 
+                        min={formateaFecha(Date())}
+                    />                    
+                </Form.Group>
+                <Form.Group as={Col} className="mb-3">
+                    <Form.Label>Hora Requerida</Form.Label>
+                    <Form.Control
+                        type='time'
+                        onChange={handleChange}
+                        value={tareaExterna.hora_requerida}
+                        name='hora_requerida' 
+                    />
+                </Form.Group>
+            </Row>
+            <Button variant='primary' type='submit' onClick={handleCancelar}>
+                Cancelar
+            </Button>
+            {" "}
+            <Button variant='primary' type='submit'>
+                Crear Tarea Externa
+            </Button>
+        </Form>
+    </Container>
   )
 }
 

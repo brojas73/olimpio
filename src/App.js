@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
+import { Container } from 'react-bootstrap'
 import Header from "./components/comun/Header";
 import Alta from "./components/tracking/Alta";
 import PendienteRecoleccion from './components/tracking/PendienteRecoleccion';
@@ -44,7 +45,7 @@ function App() {
   return (
     <>
       <IdleTimeoutHandler onLogout={() => handleLogout()} />
-      <div className="home-container">
+      <Container>
         <Header isLoggedIn={isLoggedIn} onLogout={() => handleLogout()} />
         <Routes>
           <Route path='/logout' element={<Logout onLogout={() => handleLogout() } />} />
@@ -61,7 +62,7 @@ function App() {
             <Route path='entregados-a-sucursal-origen' element={<EntregadosASucursalOrigen />} />
           </Route>
         </Routes>
-      </div>
+      </Container>
     </>
   );
 }

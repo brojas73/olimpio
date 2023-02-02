@@ -1,5 +1,8 @@
 import { useState } from "react"
 import { useAuth } from "../../hooks/useAuth"
+import Container from 'react-bootstrap/Container'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 const Login = ({onLogin}) => {
   const [usuario, setUsuario] = useState()
@@ -8,6 +11,7 @@ const Login = ({onLogin}) => {
 
   async function handleSubmit(event) {
     event.preventDefault()
+    console.log('Login.handleSubmit()')
     const data = await login({
         usuario,
         contrasena
@@ -20,36 +24,32 @@ const Login = ({onLogin}) => {
   }
 
   return (
-    <main className='main-container'>
-        <div className='layout__body'>
-            <h1>INGRESO AL SISTEMA</h1>
-            <form onSubmit={handleSubmit}>
-                <div className='form__group'>
-                    <label>
-                        <p>Usuario</p>
-                        <input 
-                            type='text' 
-                            placeholder="Escribe tu usuario..."
-                            onChange={e => setUsuario(e.target.value)}
-                        />
-                    </label>
-                </div>
-                <div className='form__group'>
-                    <label>
-                        <p>Contraseña</p>
-                        <input 
-                            type='password' 
-                            placeholder="Escribe tu usuario..."
-                            onChange={e => setContrasena(e.target.value)} 
-                        />
-                    </label>
-                </div>
-                <div className='form__action'>
-                    <button className='btn btn--main' type='submit'>Ingresar</button>
-                </div>
-            </form>
-        </div>
-    </main>
+    <Container>
+        <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3">
+                <Form.Label>Usuario</Form.Label>
+                <Form.Control 
+                    type='text'
+                    placeholder="Escribe tu usuario..." 
+                    onChange={e => setUsuario(e.target.value)}
+                />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>Contraseña</Form.Label>
+                <Form.Control 
+                    type='password'
+                    placeholder="Escribe tu contraseña..." 
+                    onChange={e => setContrasena(e.target.value)}
+                />
+            </Form.Group>
+            <Button 
+                variant='primary' 
+                type='submit'
+            >
+                Ingresar
+            </Button>
+        </Form>
+    </Container>
   )
 }
 

@@ -1,3 +1,4 @@
+import { Table } from "react-bootstrap"
 import { STATUS_TAREA, useTareasExternas, useTareasExternasUpdate } from "../../context/TareasExternasContext"
 import Filtros from "./Filtros"
 import TareaExterna from "./TareaExternaTable"
@@ -7,11 +8,10 @@ const RecolectadosParaAtenderse = () => {
   const { recibeParaAtenderse } = useTareasExternasUpdate()
 
   return (
-    <main className='main-container'>
-      <Filtros titulo='Recolectados para Atenderse' />
-      <div className='layout__body tareas'>
-        <table>
-          <thead>
+    <>
+      <Filtros titulo='Recolectados para Atenderse'/>
+      <Table striped bordered hover size='sm'>
+          <thead> 
             <tr>
               <th>Ticket</th>
               <th>Descripción</th>
@@ -31,9 +31,8 @@ const RecolectadosParaAtenderse = () => {
                 ))
               }     
             </tbody>  
-        </table>
-      </div>
-    </main>
+      </Table>
+    </>
   )
 }
 

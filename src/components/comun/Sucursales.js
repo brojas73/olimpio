@@ -1,29 +1,23 @@
-import { NavLink } from "react-router-dom"
+import { DropdownButton, Dropdown } from "react-bootstrap"
 import { useTareasExternas, useTareasExternasUpdate } from "../../context/TareasExternasContext"
 
 const Sucursales = ({onChange}) => {
   const { sucursales, sucursalActual, getSucursal } = useTareasExternas()
   const { asignaSucursalActual } = useTareasExternasUpdate()
 
-  function onClick(sucursal) {
-    asignaSucursalActual(sucursal)
-  }
-
-  console.log('Sucursales.sucursales', sucursales)
-
   return (
-    <div className="dropdown">
-        <span>Sucursal: </span>
-        <button className="dropbtn">{getSucursal(sucursalActual)}</button>
-        <div className="dropdown-content">
-          {
-            sucursales.map(sucursal => (
-              // <p key={sucursal.id_sucursal} onClick={e => onClick(sucursal.id_sucursal)}>{sucursal.nombre}</p>
-              <NavLink key={sucursal.id_sucursal} onClick={e => onClick(sucursal.id_sucursal)}>{sucursal.nombre}</NavLink>
-            ))
-          }
-        </div>
-    </div>
+    <DropdownButton title={getSucursal(sucursalActual)} className="justify-content-start">
+    {
+      sucursales.map(sucursal => (
+        <Dropdown.Item 
+            key={sucursal.id_sucursal}
+            onClick={e => asignaSucursalActual(sucursal.id_sucursal)}
+        >
+            {sucursal.nombre}
+        </Dropdown.Item>
+      ))
+    }
+    </DropdownButton>
   )
 }
 
