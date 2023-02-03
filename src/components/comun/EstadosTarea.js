@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { DropdownButton, Dropdown } from 'react-bootstrap'
-import { useTareasExternas, useTareasExternasUpdate } from '../../context/TareasExternasContext'
+import { STATUS_TAREA, useTareasExternas, useTareasExternasUpdate } from '../../context/TareasExternasContext'
 
 
 const EstadosTarea = () => {
@@ -9,7 +9,7 @@ const EstadosTarea = () => {
   const { asignaEstadoActual } = useTareasExternasUpdate()
 
   return (
-    <DropdownButton title={getEstadoTarea(estadoActual)} variant='light'>
+    <DropdownButton title={getEstadoTarea(estadoActual ? estadoActual : STATUS_TAREA.PENDIENTE_RECOLECCION)} variant='light'>
     {
       estadosTarea.map(estadoTarea => (
           <Dropdown.Item 

@@ -3,15 +3,14 @@ import { Button, Container, Form, Row, Col } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { useTareasExternas, useTareasExternasUpdate } from '../../context/TareasExternasContext'
 import { STATUS_TAREA } from '../../context/TareasExternasContext'
+import { useAuth } from '../../hooks/useAuth'
 
-const Alta = () => {    
+const Alta = ({onExito}) => {    
   const navigate = useNavigate()
 
-  const { sucursalActual } = useTareasExternas()
+  const { sucursales, sucursalActual, tiposTrabajo, tiposServicio } = useTareasExternas()
   const { agregaTareaExterna } = useTareasExternasUpdate()
-  const { sucursales } = useTareasExternas()
-  const { tiposTrabajo } = useTareasExternas()
-  const { tiposServicio } = useTareasExternas()
+  const { credenciales } = useAuth()
 
   const [tareaExterna, setTareaExterna] = useState({
     ticket: '',
@@ -45,10 +44,15 @@ const Alta = () => {
         hora_requerida: tareaExterna.hora_requerida,
         id_tipo_servicio: tareaExterna.id_tipo_servicio,
         id_estado_tarea: STATUS_TAREA.PENDIENTE_RECOLECCION,
+        usuario: credenciales.usuario,
         estado: 1
     }
 
-    agregaTareaExterna(nuevaTareaExterna)
+    agregaTareaExterna(nuevaTareaExterna).then(data => {
+        if (data.status === 200) {
+            onExito(data.mensaje)
+        }
+    })
     navigate('/tracking/pendiente-recoleccion')
   }
 
@@ -84,7 +88,7 @@ const Alta = () => {
                 </Form.Group>
                 <Form.Group as={Col} className="mb-3">
                     <Form.Label>Sucursal Destino</Form.Label>
-                    <Form.Select defaultValue={0}
+                    <Form.Select
                         onChange={handleChange}
                         value={tareaExterna.id_sucursal_destino}
                         name='id_sucursal_destino' 
@@ -111,7 +115,7 @@ const Alta = () => {
             <Row>
                 <Form.Group as={Col} className="mb-3">
                     <Form.Label>Tipo de Trabajo</Form.Label>
-                    <Form.Select defaultValue={0}
+                    <Form.Select
                         onChange={handleChange}
                         value={tareaExterna.id_tipo_trabajo}
                         name='id_tipo_trabajo' 
@@ -126,7 +130,7 @@ const Alta = () => {
                 </Form.Group>
                 <Form.Group as={Col} className="mb-3">
                     <Form.Label>Tipo de Servicio</Form.Label>
-                    <Form.Select defaultValue={0}
+                    <Form.Select
                         onChange={handleChange}
                         value={tareaExterna.id_tipo_servicio}
                         name='id_tipo_servicio' 

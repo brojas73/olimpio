@@ -1,6 +1,12 @@
 import { createContext, useContext, useMemo } from "react"
 import { useLocalStorage } from './useLocalStorage'
 
+export const ROLES = {
+    ADMIN: 1,
+    ENCARGADO: 2,
+    CHOFER: 3
+}
+
 const AuthContext = createContext()
 
 export const AuthProvider = ({children}) => {
@@ -18,8 +24,8 @@ export const AuthProvider = ({children}) => {
             const data = await response.json()
 
             if (data.length > 0) {
-                const { usuario, nombre, email } = data[0]
-                const userInfo = { usuario: usuario, nombre: nombre, email: email} 
+                const { id_usuario, usuario, nombre, email, id_rol } = data[0]
+                const userInfo = { id_usuario: id_usuario, usuario: usuario, nombre: nombre, email: email, id_rol: id_rol} 
                 setCredenciales(userInfo)
                 return userInfo
             }
@@ -32,15 +38,22 @@ export const AuthProvider = ({children}) => {
         setCredenciales(null)
     }
 
-    const value = useMemo(() => ({
-        credenciales,
-        login,
-        logout
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }), [credenciales])
+    function esEncargado() {
+        return (esAdmin() || credenciales.id_rol === ROLES.ENCARGADO)
+    }
+
+    function esChofer() {
+        return (esAdmin() || credenciales.id_rol === ROLES.CHOFER)
+    }
+
+    function esAdmin() {
+        return credenciales.id_rol === ROLES.ADMIN
+    }
 
     return (
-        <AuthContext.Provider value={value}>
+        <AuthContext.Provider value={{
+            credenciales, login, logout, esEncargado, esChofer, esAdmin
+        }}>
             {children}
         </AuthContext.Provider>
     )

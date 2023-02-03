@@ -4,9 +4,25 @@ import Filtros from "./Filtros"
 import TareaExterna from "./TareaExternaCard"
 import TituloTareas from "./TituloTareas"
 
-const PendienteRecoleccion = () => {
+const PendienteRecoleccion = ({onContinuar, onBorraTarea}) => {
   const { tareasExternas, sucursalActual  } = useTareasExternas()
-  const { recolectaParaAtenderse, borraTareaExterna } = useTareasExternasUpdate()
+  const { actualizaTareaExterna, borraTareaExterna } = useTareasExternasUpdate()
+
+  function onAccionBorrar(id_tarea_externa) {
+    borraTareaExterna(id_tarea_externa).then(data => {
+      if (data.status === 200) {
+        onBorraTarea(data.mensaje)
+      }
+    })
+  }
+
+  function onAccionContinuar(id_tarea_externa) {
+    actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE).then(data => {
+      if (data.status === 200) {
+        onContinuar(data.mensaje)
+      }
+    })
+  }
 
   return (
     <>
@@ -17,7 +33,14 @@ const PendienteRecoleccion = () => {
         tareasExternas.filter(tareaExterna => tareaExterna.id_estado_tarea === STATUS_TAREA.PENDIENTE_RECOLECCION &&
                                               tareaExterna.id_sucursal_origen === sucursalActual)
                       .map(tareaExterna => (
-          <TareaExterna tareaExterna={tareaExterna} tituloBorrar="Borrar" accionBorrar={borraTareaExterna} tituloContinuar="Recolectar" accionContinuar={recolectaParaAtenderse} key={tareaExterna.id_tarea_externa} />
+          <TareaExterna 
+              tareaExterna={tareaExterna} 
+              tituloBorrar="Borrar" 
+              accionBorrar={() => onAccionBorrar(tareaExterna.id_tarea_externa)} 
+              tituloContinuar="Recolectar" 
+              accionContinuar={() => onAccionContinuar(tareaExterna.id_tarea_externa)} 
+              key={tareaExterna.id_tarea_externa} 
+          />
         ))
       }
       </Row>

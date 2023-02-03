@@ -4,7 +4,7 @@ import Sucursales from "./Sucursales"
 import { useAuth } from '../../hooks/useAuth'
 
 const GlobalNavbar = ({isLoggedIn, onLogout}) => {
-    const { logout } = useAuth()
+    const { logout, credenciales } = useAuth()
 
     function handleLogout() {
         logout()
@@ -23,7 +23,7 @@ const GlobalNavbar = ({isLoggedIn, onLogout}) => {
                             <Offcanvas.Body>
                                 <Nav className="justify-content-end flex-grow-1 pe-3">
                                     <Sucursales />
-                                    <NavDropdown title='Braulio Rojas'>
+                                    <NavDropdown title={credenciales.nombre}>
                                         <NavDropdown.Item tag={Link} to='/login' onClick={handleLogout}>Salir</NavDropdown.Item>
                                     </NavDropdown>
                                 </Nav>

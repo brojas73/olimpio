@@ -33,7 +33,7 @@ app.post('/login', (req, res) => {
 })
 
 app.use('/sucursales', (req, res) => {
-    const q = 'select * from sucursal'
+    const q = 'select * from sucursal where estado = 1'
     db.query(q, (err, data) => {
         if (err) {
             res.send(err)
@@ -43,8 +43,20 @@ app.use('/sucursales', (req, res) => {
     })
 })
 
+app.use('/roles', (req, res) => {
+    const q = 'select * from rol where estado = 1'
+    db.query(q, (err, data) => {
+        if (err) {
+            res.send(err)
+        }
+
+        res.send(data)
+    })
+})
+
+
 app.use('/tipos-trabajo', (req, res) => {
-    const q = 'select * from tipo_trabajo'
+    const q = 'select * from tipo_trabajo where estado = 1'
     db.query(q, (err, data) => {
         if (err) {
             res.send(err)
@@ -55,7 +67,7 @@ app.use('/tipos-trabajo', (req, res) => {
 })
 
 app.use('/tipos-servicio', (req, res) => {
-    const q = 'select * from tipo_servicio'
+    const q = 'select * from tipo_servicio where estado = 1'
     db.query(q, (err, data) => {
         if (err) {
             res.send(err)
@@ -65,8 +77,8 @@ app.use('/tipos-servicio', (req, res) => {
     })
 })
 
-app.use('/estado-tarea', (req, res) => {
-    const q = 'select * from estado_tarea'
+app.use('/estados-tarea', (req, res) => {
+    const q = 'select * from estado_tarea where estado = 1'
     db.query(q, (err, data) => {
         if (err) {
             res.send(err)
@@ -77,7 +89,7 @@ app.use('/estado-tarea', (req, res) => {
 })
 
 app.use('/tareas-externas-activas', (req, res) => {
-    const q = 'select * from tarea_externa where id_estado_tarea < 7'
+    const q = 'select * from tarea_externa where id_estado_tarea < 7 and estado = 1'
     db.query(q, (err, data) => {
         if (err) {
             res.send(err)
@@ -88,7 +100,7 @@ app.use('/tareas-externas-activas', (req, res) => {
 })
 
 app.get('/tareas-externas', (req, res) => {
-    const q = 'select * from tarea_externa'
+    const q = 'select * from tarea_externa where estado = 1'
     db.query(q, (err, data) => {
         if (err) {
             res.send(err)
@@ -109,6 +121,8 @@ app.post("/tareas-externas", (req, res) => {
               ' hora_requerida, ' +
               ' id_tipo_servicio, ' + 
               ' id_estado_tarea, ' +
+              ' creado_por,' +
+              ' modificado_por,' +
               ' estado' +
               ') values (?)' 
     const values = [
@@ -121,22 +135,24 @@ app.post("/tareas-externas", (req, res) => {
         req.body.hora_requerida,
         req.body.id_tipo_servicio,
         req.body.id_estado_tarea,
+        req.body.usuario,
+        req.body.usuario,
         req.body.estado
     ]
 
     db.query(q, [values], (err, data) => {
         if (err) res.send(err)
-        res.send("La tarea externa se creó exitosamente")
+        res.send({"status": 200, "mensaje": "La tarea se creó exitosamente"})
     })
 })
 
-app.delete('/tareas-externas/:id_tarea_externa', (req, res) => {
+app.delete('/tareas-externas/:id_tarea_externa/:usuario', (req, res) => {
     try {
         const idTareaExterna = req.params.id_tarea_externa
         const q = 'delete from tarea_externa where id_tarea_externa = ?'
         db.query(q, [idTareaExterna], (err, data) => {
             if (err) res.send(err)
-            res.send("La tarea externa se borró con éxito")
+            res.send({"status": 200, "mensaje": "La tarea se borró exitosamente"})
         })
     } catch (err) {
         console.log('delete', err)
@@ -144,14 +160,19 @@ app.delete('/tareas-externas/:id_tarea_externa', (req, res) => {
 })
 
 
-app.put('/tareas-externas/:id_tarea_externa/:id_estado_tarea', (req, res) => {
+app.put('/tareas-externas/:id_tarea_externa/:id_estado_tarea/:usuario', (req, res) => {
     try {
+        const usuario = req.params.usuario
         const idTareaExterna = req.params.id_tarea_externa
         const idEstadoTarea = req.params.id_estado_tarea
-        const q = 'update tarea_externa set id_estado_tarea = ? where id_tarea_externa = ?'
-        db.query(q, [idEstadoTarea, idTareaExterna], (err, data) => {
+        const q = 'update   tarea_externa ' +
+                  '     set fecha_modificacion = CURRENT_TIMESTAMP,' +
+                  '         modificado_por = ?, ' +
+                  '         id_estado_tarea = ? ' +
+                  ' where   id_tarea_externa = ?'
+        db.query(q, [usuario, idEstadoTarea, idTareaExterna], (err, data) => {
             if (err) res.send(err)
-            res.send("El estado se cambió con éxito")
+            res.send({"status": 200, "mensaje": "El estado se cambió con éxito"})
         })
     } catch (err) {
         console.log('update', err)

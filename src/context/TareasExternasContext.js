@@ -1,5 +1,6 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 
 const URL_APIS='http://localhost:8080'
 const TareasExternasContext = React.createContext()
@@ -12,13 +13,15 @@ export const STATUS_TAREA = {
     TERMINADO_PARA_RECOLECTAR: 4,
     RECOLECTADO_PARA_ENTREGA: 5,
     ENTREGADO_A_SUCURSAL_ORIGEN: 6,
-    ENTREGADO_A_CLIENTE: 7
+    RECIBIDO_EN_SUCURSAL_ORIGEN: 7
 } 
 
 export const TIPOS_SERVICIO = {
     NORMAL: 1,
     EXPRESS: 2
 }
+
+export const SUCURSAL_DEFAULT = 1
 
 export function useTareasExternas() {
     return useContext(TareasExternasContext)
@@ -29,13 +32,16 @@ export function useTareasExternasUpdate() {
 }
 
 export function TareasExternasProvider({children}) {
-    const [sucursalActual, setSucursalActual] = useState(1)
+    const [sucursalActual, setSucursalActual] = useState(0)
     const [estadoActual, setEstadoActual] = useState(STATUS_TAREA.PENDIENTE_RECOLECCION)
     const [tareasExternas, setTareasExternas] = useState([])
+    const [roles, setRoles] = useState([])
     const [sucursales, setSucursales] = useState([])
     const [tiposServicio, setTiposServicio] = useState([])
     const [tiposTrabajo, setTiposTrabajo] = useState([])
     const [estadosTarea, setEstadosTarea] = useState([])
+    const [conectado, setConectado] = useState(false)
+    const { credenciales } = useAuth()
 
     useEffect(() => {
         async function fetchSucursales() {
@@ -54,57 +60,65 @@ export function TareasExternasProvider({children}) {
         }
 
         async function fetchEstadosTarea() {
-            const estadosTarea = await fetchData(`${URL_APIS}/estado-tarea`)
+            const estadosTarea = await fetchData(`${URL_APIS}/estados-tarea`)
             setEstadosTarea([...estadosTarea])
         }
 
-        fetchSucursales()
-        fetchTiposTrabajo()
-        fetchTiposServicio()
-        fetchEstadosTarea()
-        fetchTareasExternas()
+        async function fetchRoles() {
+            const roles = await fetchData(`${URL_APIS}/roles`)
+            setRoles([...roles])
+        }
+
+
+        if (conectado) {
+            fetchSucursales()
+            fetchTiposTrabajo()
+            fetchTiposServicio()
+            fetchEstadosTarea()
+            fetchRoles()
+        }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },  [])
+    },  [conectado])
 
     useEffect(() => {
-        fetchTareasExternas()
+        if (conectado) {
+            fetchTareasExternas()
+        }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sucursalActual, estadoActual])
+    }, [conectado, sucursalActual, estadoActual])
 
-    async function fetchTareasExternas() {
-        const tareasExternas = await fetchData(`${URL_APIS}/tareas-externas-activas`)
-        setTareasExternas([...tareasExternas])
-    }
-    
     async function fetchData(url) {
-        return await fetch(url).then(data => data.json())
-        // const response = await fetch(url)
-        // const data = await response.json()
-        // return data
+        return await fetch(url).then(response => response.json())
     }    
 
+    function fetchTareasExternas() {
+        try {
+            fetchData(`${URL_APIS}/tareas-externas-activas`)
+                .then(tareasExternas => {
+                    setTareasExternas([...tareasExternas])
+                })
+        } catch (err) {
+            console.log('TareasExternasContext.fetchTareasExternas()', err)
+        }
+    }
+    
     async function agregaTareaExterna(tareaExterna) {
         try {
-            await fetch(`${URL_APIS}/tareas-externas`, {
+            const response = await fetch(`${URL_APIS}/tareas-externas`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(tareaExterna)
             })
-        } catch (err) {
-            console.log(err)
-        }
 
-        setTareasExternas([...tareasExternas, tareaExterna])
-    }
+            if (!response.ok) {
+                const mensaje = `Ocurrió un error: ${response.status}`
+                throw new Error(mensaje)
+            }
 
-    async function actualizaTareaExterna(id_tarea_externa, id_estado_tarea) {
-        try {
-            await fetch(`${URL_APIS}/tareas-externas/${id_tarea_externa}/${id_estado_tarea}`, {
-                method: 'PUT',
-                header: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id_tarea_externa, id_estado_tarea })
-            })
-
+            const data = await response.json()
+            setTareasExternas([...tareasExternas, tareaExterna])
+            return data
         } catch (err) {
             console.log(err)
         }
@@ -112,51 +126,69 @@ export function TareasExternasProvider({children}) {
 
     async function borraTareaExterna(id_tarea_externa) {
         try {
-            await fetch(`${URL_APIS}/tareas-externas/${id_tarea_externa}`, {
+            const response = await fetch(`${URL_APIS}/tareas-externas/${id_tarea_externa}/${credenciales.usuario}`, {
                 method: 'DELETE',
                 header: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id_tarea_externa })
+                body: JSON.stringify({ id_tarea_externa, usuario: credenciales.usuario })
             })
 
+            if (!response.ok) {
+                const mensaje = `Ocurrió un error: ${response.status}`
+                throw new Error(mensaje)
+            }
+ 
+            const data = await response.json()
+            setTareasExternas(tareasExternas.filter(tareaExterna => tareaExterna.id_tarea_externa !== id_tarea_externa))
+            return data
         } catch (err) {
             console.log(err)
         }
-
-        setTareasExternas(tareasExternas.filter(tareaExterna => tareaExterna.id_tarea_externa !== id_tarea_externa))
     }
 
-    async function recolectaParaAtenderse(id_tarea_externa) {
+    async function actualizaTareaExterna(id_tarea_externa, id_estado_tarea) {
         try {
-            await actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE)
-            setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE} : tareaExterna))
+            const response = await fetch(`${URL_APIS}/tareas-externas/${id_tarea_externa}/${id_estado_tarea}/${credenciales.usuario}`, {
+                method: 'PUT',
+                header: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_tarea_externa, id_estado_tarea, usuario: credenciales.usuario })
+            })
+
+            if (!response.ok) {
+                const mensaje = `Ocurrió un error: ${response.status}`
+                throw new Error(mensaje)
+            }
+
+            const data = await response.json()
+            let mensaje = ''
+            switch (id_estado_tarea) {
+                case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE:
+                    mensaje = 'Tarea recolectada para atenderse con éxito'
+                    break
+                case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE:
+                    mensaje = 'Tarea recibida con éxito'
+                    break
+                case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR:
+                    mensaje = 'Tarea terminada con éxito'
+                    break
+                case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
+                    mensaje = 'Tarea recolectada para entrega con éxito'
+                    break
+                case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN:
+                    mensaje = 'Tarea entregada en sucursal origen con éxito'
+                    break
+                case STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN:
+                    mensaje = 'Tarea recibida en sucursal origen con éxito'
+                    break
+                default:
+                    mensaje = 'Tarea actualizada con éxito'
+                    break
+            }
+            data.mensaje = mensaje
+            setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: id_estado_tarea} : tareaExterna))
+            return data
         } catch (err) {
             console.log(err)
         }
-    }
-
-    async function recibeParaAtenderse(id_tarea_externa) {
-        await actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.RECIBIDO_PARA_ATENDERSE)
-        setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: STATUS_TAREA.RECIBIDO_PARA_ATENDERSE} : tareaExterna))
-    }
-
-    async function terminadoParaRecolectar(id_tarea_externa) {
-        await actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.TERMINADO_PARA_RECOLECTAR)
-        setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: STATUS_TAREA.TERMINADO_PARA_RECOLECTAR} : tareaExterna))
-    }
-
-    async function recolectaParaEntrega(id_tarea_externa) {
-        await actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.RECOLECTADO_PARA_ENTREGA)
-        setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: STATUS_TAREA.RECOLECTADO_PARA_ENTREGA} : tareaExterna))
-    }
-
-    async function entregaASucursalOrigen(id_tarea_externa) {
-        await actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN)
-        setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN} : tareaExterna))
-    }
-
-    async function entregaACliente(id_tarea_externa) {
-        await actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.ENTREGADO_A_CLIENTE)
-        setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: STATUS_TAREA.ENTREGADO_A_CLIENTE} : tareaExterna))
     }
 
     function asignaSucursalActual(id_sucursal) {
@@ -165,6 +197,10 @@ export function TareasExternasProvider({children}) {
 
     function asignaEstadoActual(id_estado_tarea) {
         setEstadoActual(id_estado_tarea)
+    }
+
+    function asignaConectado(conectado) {
+        setConectado(conectado)
     }
 
     function getSucursal(id_sucursal) {
@@ -189,14 +225,12 @@ export function TareasExternasProvider({children}) {
 
     return (
         <TareasExternasContext.Provider value={{
-            tareasExternas, sucursales, tiposTrabajo, tiposServicio, estadosTarea, sucursalActual, estadoActual,
+            tareasExternas, sucursales, tiposTrabajo, tiposServicio, estadosTarea, roles, sucursalActual, estadoActual, conectado,
             getSucursal, getTipoTrabajo, getTipoServicio, getEstadoTarea
         }}>
             <TareasExternasUpdateContext.Provider value={{
-                agregaTareaExterna, borraTareaExterna, recolectaParaAtenderse, 
-                recibeParaAtenderse, terminadoParaRecolectar, 
-                recolectaParaEntrega, entregaASucursalOrigen, entregaACliente,
-                asignaSucursalActual, asignaEstadoActual
+                agregaTareaExterna, borraTareaExterna, actualizaTareaExterna,
+                asignaSucursalActual, asignaEstadoActual, asignaConectado
             }}>
                 {children}
             </TareasExternasUpdateContext.Provider>

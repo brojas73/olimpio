@@ -9,17 +9,14 @@ const Login = ({onLogin}) => {
   const [contrasena, setContrasena] = useState()
   const { login } = useAuth()
 
-  async function handleSubmit(event) {
+  function handleSubmit(event) {
     event.preventDefault()
-    const data = await login({
+    login({
         usuario,
         contrasena
+    }).then(data => {
+        onLogin(data)
     })
-
-    // If we could connect
-    if (data) {
-        onLogin()
-    }
   }
 
   return (

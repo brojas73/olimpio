@@ -4,9 +4,17 @@ import Filtros from "./Filtros"
 import TareaExterna from "./TareaExternaCard"
 import TituloTareas from "./TituloTareas"
 
-const RecolectadosParaEntrega = () => {
+const RecolectadosParaEntrega = ({onContinuar}) => {
   const { sucursalActual, tareasExternas } = useTareasExternas()
-  const { entregaASucursalOrigen } = useTareasExternasUpdate()
+  const { actualizaTareaExterna } = useTareasExternasUpdate()
+
+  function onAccionContinuar(id_tarea_externa) {
+    actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN).then(data => {
+      if (data.status === 200) {
+        onContinuar(data.mensaje)
+      }
+    })
+  }
 
   return (
     <>
@@ -17,7 +25,12 @@ const RecolectadosParaEntrega = () => {
         tareasExternas.filter(tareaExterna => tareaExterna.id_estado_tarea === STATUS_TAREA.RECOLECTADO_PARA_ENTREGA  &&
                                               tareaExterna.id_sucursal_destino === sucursalActual)
                       .map(tareaExterna => (
-          <TareaExterna tareaExterna={tareaExterna} tituloContinuar="Entregar" accionContinuar={entregaASucursalOrigen} key={tareaExterna.id_tarea_externa} />
+          <TareaExterna 
+              tareaExterna={tareaExterna} 
+              tituloContinuar="Entregar" 
+              accionContinuar={() => onAccionContinuar(tareaExterna.id_tarea_externa)} 
+              key={tareaExterna.id_tarea_externa} 
+          />
         ))
       }
       </Row>       

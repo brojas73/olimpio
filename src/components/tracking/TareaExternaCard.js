@@ -1,10 +1,10 @@
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-// import { faCheck, faMinus  } from "@fortawesome/fontawesome-free-solid"
 import { STATUS_TAREA, TIPOS_SERVICIO, useTareasExternas } from "../../context/TareasExternasContext"
 import { Button, Card, CloseButton, Col } from "react-bootstrap"
+import { useAuth } from "../../hooks/useAuth"
 
 const TareaExterna = ({tareaExterna, accionContinuar, accionBorrar, tituloBorrar, tituloContinuar}, key) => {
     const { estadoActual, getSucursal, getTipoServicio, getTipoTrabajo } = useTareasExternas()
+    const { esEncargado } = useAuth()
 
     function formateaFecha(fecha, hora) {
         const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
@@ -20,22 +20,23 @@ const TareaExterna = ({tareaExterna, accionContinuar, accionBorrar, tituloBorrar
         <Col>
             <Card border={tareaExterna.id_tipo_servicio === TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
                 <Card.Header>
-                    {
-                        estadoActual === STATUS_TAREA.PENDIENTE_RECOLECCION ? (
-                            <>
-                                <Card.Title>
-                                    {
-                                        tituloBorrar && (
-                                            <CloseButton onClick={() => accionBorrar(tareaExterna.id_tarea_externa)}/> 
-                                        )
-                                    }
-                                    Destino: {getSucursal(tareaExterna.id_sucursal_destino)}
-                                </Card.Title>
-                            </>
-                        ) : (
-                            <Card.Title>Origen: {getSucursal(tareaExterna.id_sucursal_origen)}</Card.Title>
-                        )
-                    }
+                {
+                    (estadoActual === STATUS_TAREA.PENDIENTE_RECOLECCION ||
+                     estadoActual === STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN) ? (
+                        <>
+                            <Card.Title>
+                                {
+                                    tituloBorrar && esEncargado() && (
+                                        <CloseButton onClick={() => accionBorrar(tareaExterna.id_tarea_externa)}/> 
+                                    )
+                                }
+                                Destino: {getSucursal(tareaExterna.id_sucursal_destino)}
+                            </Card.Title>
+                        </>
+                    ) : (
+                        <Card.Title>Origen: {getSucursal(tareaExterna.id_sucursal_origen)}</Card.Title>
+                    )
+                }
                 </Card.Header>
                 <Card.Body>
                     <Card.Title>Ticket: {tareaExterna.ticket}</Card.Title>
@@ -46,14 +47,6 @@ const TareaExterna = ({tareaExterna, accionContinuar, accionBorrar, tituloBorrar
                     <Card.Text>
                         {tareaExterna.descripcion}
                     </Card.Text>
-                    {
-                        // tituloBorrar && (
-                        //     <>
-                        //         <Button  variant='danger'>{tituloBorrar}</Button>
-                        //         <span> </span>
-                        //     </>
-                        // )
-                    }
                     {
                         tituloContinuar && (
                             <Button 
