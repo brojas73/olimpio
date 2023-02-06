@@ -3,7 +3,7 @@ import React from 'react'
 
 const IdleTimeoutModal = ({showModal, handleContinue, handleLogout}) => {
     return (
-        <Modal show={showModal} onHide={handleContinue}>
+        <Modal show={showModal} onHide={handleContinue} backdrop='static'>
             <Modal.Header closeButton>
                 <Modal.Title>Tu Sesión Expiró</Modal.Title>
             </Modal.Header>
