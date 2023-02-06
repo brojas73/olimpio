@@ -2,9 +2,12 @@ import { Link } from "react-router-dom"
 import { Navbar, Container, Offcanvas, Nav, NavDropdown } from "react-bootstrap"
 import Sucursales from "./Sucursales"
 import { useAuth } from '../../hooks/useAuth'
+import { useTareasExternas } from "../../context/TareasExternasContext"
 
-const GlobalNavbar = ({isLoggedIn, onLogout}) => {
-    const { logout, credenciales } = useAuth()
+// const GlobalNavbar = ({isLoggedIn, onLogout}) => {
+const GlobalNavbar = ({onLogout}) => {
+        const { logout, credenciales } = useAuth()
+    const { conectado } = useTareasExternas()
 
     function handleLogout() {
         logout()
@@ -19,8 +22,9 @@ const GlobalNavbar = ({isLoggedIn, onLogout}) => {
                 <Navbar.Offcanvas aria-labelledby="offcanvasNavbarLabel-expand-sm">
                     <Offcanvas.Header closeButton>Olimpio</Offcanvas.Header>
                     {
-                        isLoggedIn && (
-                            <Offcanvas.Body>
+                        // isLoggedIn && (
+                        conectado && (
+                                <Offcanvas.Body>
                                 <Nav className="justify-content-end flex-grow-1 pe-3">
                                     <Sucursales />
                                     <NavDropdown title={credenciales.nombre}>

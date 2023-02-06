@@ -1,5 +1,5 @@
 import { STATUS_TAREA, TIPOS_SERVICIO, useTareasExternas } from "../../context/TareasExternasContext"
-import { Button, Card, CloseButton, Col } from "react-bootstrap"
+import { Button, Container, Card, Col } from "react-bootstrap"
 import { useAuth } from "../../hooks/useAuth"
 
 const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBorrar }, key) => {
@@ -14,7 +14,19 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
                fechaTmp.getDate() + ' ' + 
                meses[fechaTmp.getMonth()] + ' ' +
                fechaTmp.getFullYear() + ' @ ' +
-               hora.substring(0, 5)
+               hora.substring(0, 5) + ' hr'
+    }
+
+    function formateaFecha2(fecha) {
+        const fechaTmp = new Date(fecha)
+        const year = fechaTmp.getFullYear()
+        const month = String(fechaTmp.getMonth()).padStart(2, '0')
+        const date = String(fechaTmp.getDate()).padStart(2, '0')
+        const hours = String(fechaTmp.getHours()).padStart(2, '0')
+        const minutes = String(fechaTmp.getMinutes()).padStart(2, '0')
+        const fechaStr = `${year}-${month}-${date}`
+        const hora = `${hours}:${minutes}`
+        return formateaFecha(fechaStr, hora)
     }
 
     function mostrarBotonAccionContinuar() {
@@ -33,42 +45,55 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
         }
     }
 
+    function mostrarBotonAcccionBorrar() {
+        if (!accionBorrar)
+            return false
+
+        return (estadoActual === STATUS_TAREA.PENDIENTE_RECOLECCION && esEncargado())
+    }
+
     return (
         <Col>
             <Card border={tareaExterna.id_tipo_servicio === TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
                 <Card.Header>
-                {
-                    (estadoActual === STATUS_TAREA.PENDIENTE_RECOLECCION ||
-                     estadoActual === STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN) ? (
-                        <>
-                            <Card.Title>Ticket: {tareaExterna.ticket}</Card.Title>
-                            <Card.Subtitle>
-                                {
-                                    accionBorrar && esEncargado() && (
-                                        <CloseButton onClick={() => accionBorrar(tareaExterna.id_tarea_externa)}/> 
-                                    )
-                                }
-                                Destino: {getSucursal(tareaExterna.id_sucursal_destino)}
-                            </Card.Subtitle>
-                        </>
-                    ) : (
-                        <>
-                            <Card.Title>Ticket: {tareaExterna.ticket}</Card.Title>
-                            <Card.Subtitle>Origen: {getSucursal(tareaExterna.id_sucursal_origen)}</Card.Subtitle>
-                        </>
-                    )
-                }
+                    <Container className="d-flex justify-content-between align-items-center">
+                        <Card.Title>Ticket: {tareaExterna.ticket}</Card.Title>
+                        {
+                            (estadoActual === STATUS_TAREA.PENDIENTE_RECOLECCION ||
+                            estadoActual === STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN) ? (
+                                <Card.Subtitle>
+                                    Destino: {getSucursal(tareaExterna.id_sucursal_destino)}
+                                </Card.Subtitle>
+                            ) : (
+                                <Card.Subtitle>
+                                    Origen: {getSucursal(tareaExterna.id_sucursal_origen)}
+                                </Card.Subtitle>
+                            )
+                        }
+                    </Container>
+                    <Container className="d-flex justify-content-between align-items-center">
+                        <small>{formateaFecha2(tareaExterna.fecha_creacion)}</small>
+                    </Container>
                 </Card.Header>
                 <Card.Body>
                     <Card.Subtitle>
-                        {getTipoTrabajo(tareaExterna.id_tipo_trabajo)} { " - " }
+                        {getTipoTrabajo(tareaExterna.id_tipo_trabajo)} { " - "}
                         {getTipoServicio(tareaExterna.id_tipo_servicio)}
                     </Card.Subtitle>
                     <Card.Text>
                         {tareaExterna.descripcion}
                     </Card.Text>
                     {
+                        mostrarBotonAcccionBorrar() && (
+                            <>
+                                <Button onClick={() => accionBorrar(tareaExterna.id_tarea_externa)} variant='danger'>Borrar</Button>
+                                <span> </span>
+                            </>
+                        )
+                    }
+                    {
                         mostrarBotonAccionContinuar() && (
+
                             <Button 
                                 onClick={() => accionContinuar(tareaExterna.id_tarea_externa)}
                                 variant={tareaExterna.id_tipo_servicio === TIPOS_SERVICIO.EXPRESS ? 'danger' : 'primary'}
@@ -79,8 +104,6 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
                     }
                 </Card.Body>
                 <Card.Footer>
-                    <small>Creado: {tareaExterna.fecha_creacion}</small>
-                    <br/>
                     <small>Entregar: {formateaFecha(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}</small>
                 </Card.Footer>
             </Card>

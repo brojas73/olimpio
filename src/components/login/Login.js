@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
-const Login = ({onLogin}) => {
+const Login = ({onLoginOk, onLoginFail}) => {
   const [usuario, setUsuario] = useState()
   const [contrasena, setContrasena] = useState()
   const { login } = useAuth()
@@ -15,7 +15,11 @@ const Login = ({onLogin}) => {
         usuario,
         contrasena
     }).then(data => {
-        onLogin(data)
+        if (data) {
+            onLoginOk(data)
+        } else {
+            onLoginFail('La combinación usuario/contraseña es inválida')
+        }
     })
   }
 

@@ -13,57 +13,64 @@ import Login from "./components/login/Login";
 import ProtectedLayout from "./components/comun/ProtectedLayout";
 import Home from "./components/comun/Home";
 import IdleTimeoutHandler from "./components/comun/IdleTimeoutHandler";
-import { SUCURSAL_DEFAULT, useTareasExternasUpdate } from "./context/TareasExternasContext";
+import { SUCURSAL_DEFAULT, useTareasExternas, useTareasExternasUpdate } from "./context/TareasExternasContext";
 
 
 function App() {
   const navigate = useNavigate()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [showAlert, setShowAlert] = useState(false)
+  const [muestraAlerta, setMuestraAlerta] = useState(false)
   const [mensajeAlerta, setMensajeAlerta] = useState('')
+  const [tipoAlerta, setTipoAlerta] = useState('success')
   const { asignaConectado, asignaSucursalActual } = useTareasExternasUpdate()
+  const { conectado } = useTareasExternas()
 
   function handleLogout() {
     asignaConectado(false)
-    setIsLoggedIn(false)
     navigate('/login')
   }
 
-  function handleLogin({usuario, nombre}) {
+  function handleLoginOk({usuario, nombre}) {
     asignaConectado(true)
     asignaSucursalActual(SUCURSAL_DEFAULT)
-    setIsLoggedIn(true)
     navigate('/tracking/pendiente-recoleccion')
   }
 
-  function muestraAlerta(mensaje) {
+  function handleLoginFail(mensaje) {
+    despliegaAlerta(mensaje, 'danger')
+  }
+
+  function despliegaAlerta(mensaje, tipoAlerta='success') {
     setMensajeAlerta(mensaje)
-    setShowAlert(true)
+    setTipoAlerta(tipoAlerta)
+    setMuestraAlerta(true)
+    window.setTimeout(() => {
+      setMuestraAlerta(false)
+    }, 4000)
   }
 
   return (
     <>
       {
-        isLoggedIn && (
+        conectado && (
           <IdleTimeoutHandler onLogout={() => handleLogout()} />
         )
       }
       <Container>
-        <GlobalNavbar isLoggedIn={isLoggedIn} onLogout={() => handleLogout()} />
-        <Alert show={showAlert} variant='success' onClose={() => setShowAlert(false)} dismissible>{mensajeAlerta}</Alert>
+        <GlobalNavbar onLogout={() => handleLogout()} />
+        <Alert show={muestraAlerta} variant={tipoAlerta} onClose={() => setMuestraAlerta(false)} dismissible>{mensajeAlerta}</Alert>
         
         <Routes>
-          <Route path='/login' element={<Login onLogin={handleLogin} />} />
+          <Route path='/login' element={<Login onLoginOk={handleLoginOk} onLoginFail={handleLoginFail}/>} />
           <Route path='/' element={<Home />} />
 
-          <Route path='/tracking' element={<ProtectedLayout isLoggedIn={isLoggedIn} />} >
-            <Route path='alta' element={<Alta onExito={muestraAlerta} />} />
-            <Route path='pendiente-recoleccion' element={<PendienteRecoleccion onContinuar={muestraAlerta} onBorraTarea={muestraAlerta}/>} />
-            <Route path='recolectados-para-atenderse' element={<RecolectadosParaAtenderse onContinuar={muestraAlerta} />} />
-            <Route path='recibidos-para-atenderse' element={<RecibidosParaAtenderse onContinuar={muestraAlerta} />} />
-            <Route path='terminados-para-recolectar' element={<TerminadosParaRecolectar onContinuar={muestraAlerta} />} />
-            <Route path='recolectados-para-entrega' element={<RecolectadosParaEntrega onContinuar={muestraAlerta} />} />
-            <Route path='entregados-a-sucursal-origen' element={<EntregadosASucursalOrigen onContinuar={muestraAlerta} />} />
+          <Route path='/tracking' element={<ProtectedLayout />} >
+            <Route path='alta' element={<Alta onExito={despliegaAlerta} />} />
+            <Route path='pendiente-recoleccion' element={<PendienteRecoleccion onContinuar={despliegaAlerta} onBorraTarea={despliegaAlerta}/>} />
+            <Route path='recolectados-para-atenderse' element={<RecolectadosParaAtenderse onContinuar={despliegaAlerta} />} />
+            <Route path='recibidos-para-atenderse' element={<RecibidosParaAtenderse onContinuar={despliegaAlerta} />} />
+            <Route path='terminados-para-recolectar' element={<TerminadosParaRecolectar onContinuar={despliegaAlerta} />} />
+            <Route path='recolectados-para-entrega' element={<RecolectadosParaEntrega onContinuar={despliegaAlerta} />} />
+            <Route path='entregados-a-sucursal-origen' element={<EntregadosASucursalOrigen onContinuar={despliegaAlerta} />} />
           </Route>
         </Routes>
       </Container>

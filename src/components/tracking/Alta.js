@@ -35,15 +35,16 @@ const Alta = ({onExito}) => {
 
     const nuevaTareaExterna = {
         id_tarea_externa: Math.floor(Math.random() * 100000000),
+        id_sucursal_origen: sucursalActual,
         ticket: tareaExterna.ticket,
         descripcion: tareaExterna.descripcion,
         id_tipo_trabajo: tareaExterna.id_tipo_trabajo,
-        id_sucursal_origen: sucursalActual,
         id_sucursal_destino: tareaExterna.id_sucursal_destino,
         fecha_requerida: tareaExterna.fecha_requerida,
         hora_requerida: tareaExterna.hora_requerida,
         id_tipo_servicio: tareaExterna.id_tipo_servicio,
         id_estado_tarea: STATUS_TAREA.PENDIENTE_RECOLECCION,
+        fecha_creacion: new Date(),
         usuario: credenciales.usuario,
         estado: 1
     }
@@ -78,10 +79,10 @@ const Alta = ({onExito}) => {
             <Row>
                 <Form.Group as={Col} className="mb-3">
                     <Form.Label># de Ticket</Form.Label>
-                    <Form.Control
+                    <Form.Control required
                         onChange={handleChange}
                         value={tareaExterna.ticket}
-                        type='text'
+                        type='number'
                         placeholder="Escribe el número de ticket..." 
                         name='ticket' 
                     />
@@ -104,7 +105,7 @@ const Alta = ({onExito}) => {
             </Row>
             <Form.Group className="mb-3">
                 <Form.Label>Descripción</Form.Label>
-                <Form.Control 
+                <Form.Control required
                     onChange={handleChange}
                     value={tareaExterna.descripcion}
                     type='text'
@@ -147,7 +148,7 @@ const Alta = ({onExito}) => {
             <Row>
                 <Form.Group as={Col} className="mb-3">
                     <Form.Label>Fecha Requerida</Form.Label>
-                    <Form.Control
+                    <Form.Control required
                         type='date'
                         onChange={handleChange}
                         value={tareaExterna.fecha_requerida}
@@ -157,7 +158,7 @@ const Alta = ({onExito}) => {
                 </Form.Group>
                 <Form.Group as={Col} className="mb-3">
                     <Form.Label>Hora Requerida</Form.Label>
-                    <Form.Control
+                    <Form.Control required
                         type='time'
                         onChange={handleChange}
                         value={tareaExterna.hora_requerida}

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
-import moment from 'moment'
+import dayjs from "dayjs"
 import IdleTimeoutModal from "./IdleTimeoutModal"
 
-const DEFAULT_TIMEOUT = 15 * 60 * 1000
+const SECONDS = 1000
+const MINUTES = 60 * SECONDS
+const DEFAULT_TIMEOUT = 15 * MINUTES
 
 const IdleTimeoutHandler = ({onActive, onIdle, onLogout, timeOutInterval}) => {
     let timer = undefined
@@ -11,7 +13,8 @@ const IdleTimeoutHandler = ({onActive, onIdle, onLogout, timeOutInterval}) => {
     const events = ['click', 'scroll', 'load', 'keydown']
     
     function eventHandler(eventType) {
-        localStorage.setItem('lastInteractionTime', moment())
+        // localStorage.setItem('lastInteractionTime', moment())
+        localStorage.setItem('lastInteractionTime', dayjs())
         if (timer) {
             // onActive()
             startTimer()
@@ -36,7 +39,8 @@ const IdleTimeoutHandler = ({onActive, onIdle, onLogout, timeOutInterval}) => {
         const interval = (timeOutInterval ? timeOutInterval : DEFAULT_TIMEOUT)
         timer = setTimeout(() => {
             const lastInteractionTime = localStorage.getItem('lastInteractionTime')
-            const diff = moment.duration(moment().diff(moment(lastInteractionTime)))
+            const diff = dayjs().diff(dayjs(lastInteractionTime))
+            // const diff = moment.duration(dayjs().diff(moment(lastInteractionTime)))
 
             if (isLogout) {
                 clearTimeout(timer)

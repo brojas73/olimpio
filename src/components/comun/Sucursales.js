@@ -11,7 +11,7 @@ const Sucursales = ({onChange}) => {
         sucursales.map(sucursal => (
             <NavDropdown.Item 
                 key={sucursal.id_sucursal}
-                onClick={e => asignaSucursalActual(sucursal.id_sucursal)}
+                onClick={() => asignaSucursalActual(sucursal.id_sucursal)}
             >
               {sucursal.nombre}
             </NavDropdown.Item>
