@@ -21,6 +21,12 @@ export const TIPOS_SERVICIO = {
     EXPRESS: 2
 }
 
+export const TIPO_ACCION = {
+    INSERT: 1,
+    DELETE: 2,
+    UPDATE: 3
+}
+
 export const SUCURSAL_DEFAULT = 1
 
 export function useTareasExternas() {
@@ -36,6 +42,7 @@ export function TareasExternasProvider({children}) {
     const [estadoActual, setEstadoActual] = useState(STATUS_TAREA.PENDIENTE_RECOLECCION)
     const [tareasExternas, setTareasExternas] = useState([])
     const [roles, setRoles] = useState([])
+    const [usuarios, setUsuarios] = useState([])
     const [sucursales, setSucursales] = useState([])
     const [tiposServicio, setTiposServicio] = useState([])
     const [tiposTrabajo, setTiposTrabajo] = useState([])
@@ -69,13 +76,22 @@ export function TareasExternasProvider({children}) {
             setRoles([...roles])
         }
 
+        async function fetchUsuarios() {
+            const usuarios = await fetchData(`${URL_APIS}/usuarios`)
+            setUsuarios([...usuarios])
+        }
 
-        if (conectado) {
-            fetchSucursales()
-            fetchTiposTrabajo()
-            fetchTiposServicio()
-            fetchEstadosTarea()
-            fetchRoles()
+        try {
+            if (conectado) {
+                fetchSucursales()
+                fetchTiposTrabajo()
+                fetchTiposServicio()
+                fetchEstadosTarea()
+                fetchRoles()
+                fetchUsuarios()
+            }
+        } catch (err) {
+            console.log(err)
         }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -223,10 +239,15 @@ export function TareasExternasProvider({children}) {
         return estado_tarea?.nombre
     }
 
+    function getUsuario(usuario_) {
+        const miUsuario = usuarios.find(u => u.usuario === usuario_)
+        return miUsuario?.nombre
+    }
+
     return (
         <TareasExternasContext.Provider value={{
             tareasExternas, sucursales, tiposTrabajo, tiposServicio, estadosTarea, roles, sucursalActual, estadoActual, conectado,
-            getSucursal, getTipoTrabajo, getTipoServicio, getEstadoTarea
+            getSucursal, getTipoTrabajo, getTipoServicio, getEstadoTarea, getUsuario
         }}>
             <TareasExternasUpdateContext.Provider value={{
                 agregaTareaExterna, borraTareaExterna, actualizaTareaExterna,

@@ -45,36 +45,34 @@ function App() {
     setMuestraAlerta(true)
     window.setTimeout(() => {
       setMuestraAlerta(false)
-    }, 4000)
+    }, 3000)
   }
 
   return (
-    <>
+    <Container>
       {
         conectado && (
           <IdleTimeoutHandler onLogout={() => handleLogout()} />
         )
       }
-      <Container>
-        <GlobalNavbar onLogout={() => handleLogout()} />
-        <Alert show={muestraAlerta} variant={tipoAlerta} onClose={() => setMuestraAlerta(false)} dismissible>{mensajeAlerta}</Alert>
-        
-        <Routes>
-          <Route path='/login' element={<Login onLoginOk={handleLoginOk} onLoginFail={handleLoginFail}/>} />
-          <Route path='/' element={<Home />} />
+      <GlobalNavbar onLogout={() => handleLogout()} />
+      <Alert show={muestraAlerta} variant={tipoAlerta} onClose={() => setMuestraAlerta(false)} dismissible>{mensajeAlerta}</Alert>
+      
+      <Routes>
+        <Route path='/login' element={<Login onLoginOk={handleLoginOk} onLoginFail={handleLoginFail}/>} />
+        <Route path='/' element={<Home />} />
 
-          <Route path='/tracking' element={<ProtectedLayout />} >
-            <Route path='alta' element={<Alta onExito={despliegaAlerta} />} />
-            <Route path='pendiente-recoleccion' element={<PendienteRecoleccion onContinuar={despliegaAlerta} onBorraTarea={despliegaAlerta}/>} />
-            <Route path='recolectados-para-atenderse' element={<RecolectadosParaAtenderse onContinuar={despliegaAlerta} />} />
-            <Route path='recibidos-para-atenderse' element={<RecibidosParaAtenderse onContinuar={despliegaAlerta} />} />
-            <Route path='terminados-para-recolectar' element={<TerminadosParaRecolectar onContinuar={despliegaAlerta} />} />
-            <Route path='recolectados-para-entrega' element={<RecolectadosParaEntrega onContinuar={despliegaAlerta} />} />
-            <Route path='entregados-a-sucursal-origen' element={<EntregadosASucursalOrigen onContinuar={despliegaAlerta} />} />
-          </Route>
-        </Routes>
-      </Container>
-    </>
+        <Route path='/tracking' element={<ProtectedLayout />} >
+          <Route path='alta' element={<Alta onExito={despliegaAlerta} />} />
+          <Route path='pendiente-recoleccion' element={<PendienteRecoleccion onContinuar={despliegaAlerta} onBorraTarea={despliegaAlerta}/>} />
+          <Route path='recolectados-para-atenderse' element={<RecolectadosParaAtenderse onContinuar={despliegaAlerta} />} />
+          <Route path='recibidos-para-atenderse' element={<RecibidosParaAtenderse onContinuar={despliegaAlerta} />} />
+          <Route path='terminados-para-recolectar' element={<TerminadosParaRecolectar onContinuar={despliegaAlerta} />} />
+          <Route path='recolectados-para-entrega' element={<RecolectadosParaEntrega onContinuar={despliegaAlerta} />} />
+          <Route path='entregados-a-sucursal-origen' element={<EntregadosASucursalOrigen onContinuar={despliegaAlerta} />} />
+        </Route>
+      </Routes>
+    </Container>
   );
 }
 

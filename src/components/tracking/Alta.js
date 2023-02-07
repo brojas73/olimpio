@@ -45,7 +45,7 @@ const Alta = ({onExito}) => {
         id_tipo_servicio: tareaExterna.id_tipo_servicio,
         id_estado_tarea: STATUS_TAREA.PENDIENTE_RECOLECCION,
         fecha_creacion: new Date(),
-        usuario: credenciales.usuario,
+        creado_por: credenciales.usuario,
         estado: 1
     }
 

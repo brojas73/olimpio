@@ -54,6 +54,16 @@ app.use('/roles', (req, res) => {
     })
 })
 
+app.use('/usuarios', (req, res) => {
+    const q = 'select * from usuario where estado = 1'
+    db.query(q, (err, data) => {
+        if (err) {
+            res.send(err)
+        }
+
+        res.send(data)
+    })
+})
 
 app.use('/tipos-trabajo', (req, res) => {
     const q = 'select * from tipo_trabajo where estado = 1'
@@ -135,8 +145,8 @@ app.post("/tareas-externas", (req, res) => {
         req.body.hora_requerida,
         req.body.id_tipo_servicio,
         req.body.id_estado_tarea,
-        req.body.usuario,
-        req.body.usuario,
+        req.body.creado_por,
+        req.body.creado_por,
         req.body.estado
     ]
 
