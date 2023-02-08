@@ -131,8 +131,8 @@ app.post("/tareas-externas", (req, res) => {
               ' hora_requerida, ' +
               ' id_tipo_servicio, ' + 
               ' id_estado_tarea, ' +
-              ' creado_por,' +
-              ' modificado_por,' +
+              ' id_creado_por,' +
+              ' id_modificado_por,' +
               ' estado' +
               ') values (?)' 
     const values = [
@@ -145,8 +145,8 @@ app.post("/tareas-externas", (req, res) => {
         req.body.hora_requerida,
         req.body.id_tipo_servicio,
         req.body.id_estado_tarea,
-        req.body.creado_por,
-        req.body.creado_por,
+        req.body.id_creado_por,
+        req.body.id_creado_por,
         req.body.estado
     ]
 
@@ -156,7 +156,7 @@ app.post("/tareas-externas", (req, res) => {
     })
 })
 
-app.delete('/tareas-externas/:id_tarea_externa/:usuario', (req, res) => {
+app.delete('/tareas-externas/:id_tarea_externa', (req, res) => {
     try {
         const idTareaExterna = req.params.id_tarea_externa
         const q = 'delete from tarea_externa where id_tarea_externa = ?'
@@ -170,17 +170,17 @@ app.delete('/tareas-externas/:id_tarea_externa/:usuario', (req, res) => {
 })
 
 
-app.put('/tareas-externas/:id_tarea_externa/:id_estado_tarea/:usuario', (req, res) => {
+app.put('/tareas-externas/:id_tarea_externa/:id_estado_tarea/:id_usuario', (req, res) => {
     try {
-        const usuario = req.params.usuario
+        const idUsuario = req.params.id_usuario
         const idTareaExterna = req.params.id_tarea_externa
         const idEstadoTarea = req.params.id_estado_tarea
         const q = 'update   tarea_externa ' +
                   '     set fecha_modificacion = CURRENT_TIMESTAMP,' +
-                  '         modificado_por = ?, ' +
+                  '         id_modificado_por = ?, ' +
                   '         id_estado_tarea = ? ' +
                   ' where   id_tarea_externa = ?'
-        db.query(q, [usuario, idEstadoTarea, idTareaExterna], (err, data) => {
+        db.query(q, [idUsuario, idEstadoTarea, idTareaExterna], (err, data) => {
             if (err) res.send(err)
             res.send({"status": 200, "mensaje": "El estado se cambió con éxito"})
         })

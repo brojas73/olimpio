@@ -10,7 +10,7 @@ const TituloTareas = ({titulo}) => {
     const { esEncargado } = useAuth()
 
     function onClick() {
-        navigate('/tracking/alta')
+        navigate('/tracking/nueva-tarea')
     }
 
     return (
@@ -21,7 +21,7 @@ const TituloTareas = ({titulo}) => {
             {
                 (esEncargado() && estadoActual === STATUS_TAREA.PENDIENTE_RECOLECCION) && (
                     <Container className="justify-content-end">
-                        <Button onClick={onClick} variant='dark'>
+                        <Button onClick={onClick} variant='dark' size="sm">
                             Nueva Tarea Externa
                         </Button>
                     </Container>

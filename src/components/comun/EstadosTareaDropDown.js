@@ -1,10 +1,8 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { DropdownButton, Dropdown } from 'react-bootstrap'
+import { Nav, NavDropdown } from 'react-bootstrap'
 import { useTareasExternas, useTareasExternasUpdate } from '../../context/TareasExternasContext'
 
 
-const EstadosTarea = () => {
+const EstadosTareaDropDown = () => {
   const { estadoActual, estadosTarea, getEstadoTarea } = useTareasExternas()
   const { asignaEstadoActual } = useTareasExternasUpdate()
 
@@ -14,21 +12,21 @@ const EstadosTarea = () => {
     return
 
   return (
-    <DropdownButton title={getEstadoTarea(estadoActual)} variant='light'>
-    {
-      estadosTarea.map(estadoTarea => (
-          <Dropdown.Item 
-              as={Link}
-              to={estadoTarea.url}
+    <Nav className="justify-content-end flex-grow-1 pe-3">
+      <NavDropdown title={getEstadoTarea(estadoActual)}>
+      {
+        estadosTarea.map(estadoTarea => (
+          <NavDropdown.Item 
               key={estadoTarea.id_estado_tarea}
               onClick={() => asignaEstadoActual(estadoTarea.id_estado_tarea)}
           >
-              {estadoTarea.nombre}
-          </Dropdown.Item>
-      ))
-    }
-    </DropdownButton>
+            {estadoTarea.nombre}
+          </NavDropdown.Item>
+        ))
+      }
+      </NavDropdown>
+    </Nav>
   )
 }
 
-export default EstadosTarea
+export default EstadosTareaDropDown

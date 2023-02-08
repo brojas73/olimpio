@@ -38,6 +38,7 @@ export function useTareasExternasUpdate() {
 }
 
 export function TareasExternasProvider({children}) {
+    const [sucursalFiltro, setSucursalFiltro] = useState(0)
     const [sucursalActual, setSucursalActual] = useState(0)
     const [estadoActual, setEstadoActual] = useState(STATUS_TAREA.PENDIENTE_RECOLECCION)
     const [tareasExternas, setTareasExternas] = useState([])
@@ -145,7 +146,7 @@ export function TareasExternasProvider({children}) {
             const response = await fetch(`${URL_APIS}/tareas-externas/${id_tarea_externa}/${credenciales.usuario}`, {
                 method: 'DELETE',
                 header: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id_tarea_externa, usuario: credenciales.usuario })
+                body: JSON.stringify({ id_tarea_externa })
             })
 
             if (!response.ok) {
@@ -163,10 +164,10 @@ export function TareasExternasProvider({children}) {
 
     async function actualizaTareaExterna(id_tarea_externa, id_estado_tarea) {
         try {
-            const response = await fetch(`${URL_APIS}/tareas-externas/${id_tarea_externa}/${id_estado_tarea}/${credenciales.usuario}`, {
+            const response = await fetch(`${URL_APIS}/tareas-externas/${id_tarea_externa}/${id_estado_tarea}/${credenciales.id_usuario}`, {
                 method: 'PUT',
                 header: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id_tarea_externa, id_estado_tarea, usuario: credenciales.usuario })
+                body: JSON.stringify({ id_tarea_externa, id_estado_tarea, id_usuario: credenciales.id_usuario })
             })
 
             if (!response.ok) {
@@ -221,7 +222,7 @@ export function TareasExternasProvider({children}) {
 
     function getSucursal(id_sucursal) {
         const sucursal = sucursales.find(sucursal => sucursal.id_sucursal == id_sucursal)
-        return sucursal?.nombre
+        return sucursal?.nombre 
     }
 
     function getTipoTrabajo(id_tipo_trabajo) {
@@ -239,15 +240,15 @@ export function TareasExternasProvider({children}) {
         return estado_tarea?.nombre
     }
 
-    function getUsuario(usuario_) {
-        const miUsuario = usuarios.find(u => u.usuario === usuario_)
-        return miUsuario?.nombre
+    function getUsuario(id_usuario) {
+        const usuario = usuarios.find(usuario => usuario.id_usuario === id_usuario)
+        return usuario?.nombre
     }
 
     return (
         <TareasExternasContext.Provider value={{
-            tareasExternas, sucursales, tiposTrabajo, tiposServicio, estadosTarea, roles, sucursalActual, estadoActual, conectado,
-            getSucursal, getTipoTrabajo, getTipoServicio, getEstadoTarea, getUsuario
+            tareasExternas, sucursales, tiposTrabajo, tiposServicio, estadosTarea, roles, sucursalFiltro, sucursalActual, estadoActual, conectado,
+            getSucursal, getTipoTrabajo, getTipoServicio, getEstadoTarea, getUsuario, setSucursalFiltro
         }}>
             <TareasExternasUpdateContext.Provider value={{
                 agregaTareaExterna, borraTareaExterna, actualizaTareaExterna,

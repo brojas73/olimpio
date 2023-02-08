@@ -4,11 +4,14 @@ import { useNavigate } from 'react-router-dom'
 import { useTareasExternas, useTareasExternasUpdate } from '../../context/TareasExternasContext'
 import { STATUS_TAREA } from '../../context/TareasExternasContext'
 import { useAuth } from '../../hooks/useAuth'
+import SucursalSelect from '../comun/SucursalSelect'
+import TipoServicioSelect from '../comun/TipoServicioSelect'
+import TipoTrabajolSelect from '../comun/TipoTrabajoSelect'
 
-const Alta = ({onExito}) => {    
+const NuevaTareaForm = ({onExito}) => {    
   const navigate = useNavigate()
 
-  const { sucursales, sucursalActual, tiposTrabajo, tiposServicio } = useTareasExternas()
+  const { sucursalActual } = useTareasExternas()
   const { agregaTareaExterna } = useTareasExternasUpdate()
   const { credenciales } = useAuth()
 
@@ -34,7 +37,7 @@ const Alta = ({onExito}) => {
     event.preventDefault()
 
     const nuevaTareaExterna = {
-        id_tarea_externa: Math.floor(Math.random() * 100000000),
+        // id_tarea_externa: Math.floor(Math.random() * 100000000),
         id_sucursal_origen: sucursalActual,
         ticket: tareaExterna.ticket,
         descripcion: tareaExterna.descripcion,
@@ -45,7 +48,7 @@ const Alta = ({onExito}) => {
         id_tipo_servicio: tareaExterna.id_tipo_servicio,
         id_estado_tarea: STATUS_TAREA.PENDIENTE_RECOLECCION,
         fecha_creacion: new Date(),
-        creado_por: credenciales.usuario,
+        id_creado_por: credenciales.id_usuario,
         estado: 1
     }
 
@@ -74,7 +77,7 @@ const Alta = ({onExito}) => {
 
   return (
     <Container>
-        <h2>Alta de Tarea Externa</h2>
+        <h2>Nueva Tarea Externa</h2>
         <Form onSubmit={onSubmit}>
             <Row>
                 <Form.Group as={Col} className="mb-3">
@@ -88,19 +91,13 @@ const Alta = ({onExito}) => {
                     />
                 </Form.Group>
                 <Form.Group as={Col} className="mb-3">
-                    <Form.Label>Sucursal Destino</Form.Label>
-                    <Form.Select
-                        onChange={handleChange}
+                    <SucursalSelect 
+                        label='Sucursal Destino'
+                        onChange={handleChange} 
                         value={tareaExterna.id_sucursal_destino}
                         name='id_sucursal_destino' 
-                    >
-                        <option key={0} value={0}>Selecciona una...</option>
-                        {
-                            sucursales.filter(sucursal => sucursal.id_sucursal !== sucursalActual).map(sucursal => (
-                                <option key={sucursal.id_sucursal} value={sucursal.id_sucursal}>{sucursal.nombre}</option>
-                            ))
-                        }
-                    </Form.Select>
+                        filtraSucursalActual={true}
+                    />
                 </Form.Group>
             </Row>
             <Form.Group className="mb-3">
@@ -115,34 +112,20 @@ const Alta = ({onExito}) => {
             </Form.Group>
             <Row>
                 <Form.Group as={Col} className="mb-3">
-                    <Form.Label>Tipo de Trabajo</Form.Label>
-                    <Form.Select
+                    <TipoTrabajolSelect 
+                        label="Tipo de Trabajo"
                         onChange={handleChange}
                         value={tareaExterna.id_tipo_trabajo}
                         name='id_tipo_trabajo' 
-                    >
-                     <option key={0} value={0}>Selecciona uno...</option>
-                     {
-                         tiposTrabajo.map(tipoTrabajo => (
-                             <option key={tipoTrabajo.id_tipo_trabajo} value={tipoTrabajo.id_tipo_trabajo}>{tipoTrabajo.nombre}</option>
-                         ))
-                     }
-                    </Form.Select>
+                    />
                 </Form.Group>
                 <Form.Group as={Col} className="mb-3">
-                    <Form.Label>Tipo de Servicio</Form.Label>
-                    <Form.Select
+                    <TipoServicioSelect 
+                        label='Tipo de Servicio'
                         onChange={handleChange}
                         value={tareaExterna.id_tipo_servicio}
                         name='id_tipo_servicio' 
-                    >
-                     <option key={0} value={0}>Selecciona uno...</option>
-                     {
-                         tiposServicio.map(tipoServicio => (
-                             <option key={tipoServicio.id_tipo_servicio} value={tipoServicio.id_tipo_servicio}>{tipoServicio.nombre}</option>
-                         ))
-                     }
-                    </Form.Select>
+                    />
                 </Form.Group>
             </Row>
             <Row>
@@ -178,4 +161,4 @@ const Alta = ({onExito}) => {
   )
 }
 
-export default Alta
+export default NuevaTareaForm

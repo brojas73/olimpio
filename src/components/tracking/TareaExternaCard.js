@@ -1,5 +1,6 @@
+/* eslint-disable eqeqeq */
 import { STATUS_TAREA, TIPOS_SERVICIO, useTareasExternas } from "../../context/TareasExternasContext"
-import { Button, Container, Card, Col } from "react-bootstrap"
+import { Button, Card, Col } from "react-bootstrap"
 import { useAuth } from "../../hooks/useAuth"
 
 const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBorrar }, key) => {
@@ -51,15 +52,15 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
 
         // return (estadoActual === STATUS_TAREA.PENDIENTE_RECOLECCION && esEncargado())
         return (estadoActual === STATUS_TAREA.PENDIENTE_RECOLECCION && 
-                tareaExterna.creado_por === credenciales.usuario &&
+                tareaExterna.id_creado_por === credenciales.id_usuario &&
                 esEncargado())
     }
 
     return (
         <Col>
-            <Card border={tareaExterna.id_tipo_servicio === TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
+            <Card border={tareaExterna.id_tipo_servicio == TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
                 <Card.Header>
-                    <Container className="d-flex justify-content-between align-items-center">
+                    <div className="d-flex justify-content-between align-items-center">
                         <Card.Title>Ticket: {tareaExterna.ticket}</Card.Title>
                         <Card.Subtitle>
                         {
@@ -71,12 +72,11 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
                             )
                         }
                         </Card.Subtitle>
-                    </Container>
-                    <Container className="d-flex justify-content-between align-items-center">
-                        {/* <small>Creado el {formateaFecha2(tareaExterna.fecha_creacion)} por {getUsuario(tareaExterna.creado_por)}</small> */}
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center">
                         <small>{formateaFecha2(tareaExterna.fecha_creacion)}</small>
-                        <small>{getUsuario(tareaExterna.creado_por)}</small>
-                    </Container>
+                        <small>{getUsuario(tareaExterna.id_creado_por)}</small>
+                    </div>
                 </Card.Header>
                 <Card.Body>
                     <Card.Subtitle>
@@ -91,17 +91,20 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
                     <small>Entregar: {formateaFecha(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}</small>
                     {
                         mostrarBotonAcccionBorrar() && (
-                            <>
-                                <Button onClick={() => accionBorrar(tareaExterna.id_tarea_externa)} variant='danger'>Borrar</Button>
-                            </>
+                            <Button 
+                                size="sm" 
+                                onClick={() => accionBorrar(tareaExterna.id_tarea_externa)} 
+                                variant='danger'>
+                                Borrar
+                            </Button>
                         )
                     }
                     {
                         mostrarBotonAccionContinuar() && (
-
                             <Button 
+                                size="sm"
                                 onClick={() => accionContinuar(tareaExterna.id_tarea_externa)}
-                                variant={tareaExterna.id_tipo_servicio === TIPOS_SERVICIO.EXPRESS ? 'danger' : 'primary'}
+                                variant={tareaExterna.id_tipo_servicio == TIPOS_SERVICIO.EXPRESS ? 'danger' : 'primary'}
                             >
                                 {tituloContinuar}
                             </Button>
