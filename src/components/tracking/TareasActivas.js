@@ -4,7 +4,7 @@ import Filtros from "./Filtros"
 import TareaExterna from "./TareaExternaCard"
 import TituloTareas from "./TituloTareas"
 
-const EntregadosASucursalOrigen = ({onContinuar}) => {
+const TareasActivas = ({onContinuar}) => {
   const { 
     sucursalActual, 
     tareasExternas, 
@@ -23,20 +23,18 @@ const EntregadosASucursalOrigen = ({onContinuar}) => {
     })
   }
 
-
   return (
     <>
       <Filtros />
-      <TituloTareas titulo='Entregados a Sucursal Origen'/>
+      <TituloTareas titulo='Tareas Activas'/>
       <Row xs={1} md={2} className="g-1">
       {
         tareasExternas.filter(tareaExterna => 
-                                tareaExterna.id_estado_tarea === STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN  &&
-                                tareaExterna.id_sucursal_origen === sucursalActual &&
-                                (ticketFiltro.length === 0 || (ticketFiltro.length > 0 && tareaExterna.ticket.startsWith(ticketFiltro))) &&
-                                (sucursalFiltro === 0 || (sucursalFiltro !== 0 && (tareaExterna.id_sucursal_origen === sucursalFiltro || tareaExterna.id_sucursal_destino === sucursalFiltro))) &&
-                                (tipoTrabajoFiltro === 0 || (tipoTrabajoFiltro !== 0 && tareaExterna.id_tipo_trabajo === tipoTrabajoFiltro)) &&
-                                (tipoServicioFiltro === 0 || (tipoServicioFiltro !== 0 && tareaExterna.id_tipo_servicio === tipoServicioFiltro))  
+                                    tareaExterna.id_sucursal_origen === sucursalActual &&
+                                    (ticketFiltro.length === 0 || (ticketFiltro.length > 0 && tareaExterna.ticket.startsWith(ticketFiltro))) &&
+                                    (sucursalFiltro === 0 || (sucursalFiltro !== 0 && (tareaExterna.id_sucursal_origen === sucursalFiltro || tareaExterna.id_sucursal_destino === sucursalFiltro))) &&
+                                    (tipoTrabajoFiltro === 0 || (tipoTrabajoFiltro !== 0 && tareaExterna.id_tipo_trabajo === tipoTrabajoFiltro)) &&
+                                    (tipoServicioFiltro === 0 || (tipoServicioFiltro !== 0 && tareaExterna.id_tipo_servicio === tipoServicioFiltro))
                              )
                       .map(tareaExterna => (
           <TareaExterna 
@@ -52,4 +50,4 @@ const EntregadosASucursalOrigen = ({onContinuar}) => {
   )
 }
 
-export default EntregadosASucursalOrigen
+export default TareasActivas

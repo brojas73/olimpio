@@ -7,6 +7,7 @@ const TareasExternasContext = React.createContext()
 const TareasExternasUpdateContext = React.createContext()
 
 export const STATUS_TAREA = {
+    TAREAS_ACTIVAS: 0,
     PENDIENTE_RECOLECCION: 1,
     RECOLECTADO_PARA_ATENDERSE: 2,
     RECIBIDO_PARA_ATENDERSE: 3,

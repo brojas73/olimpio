@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { Alert, Container } from 'react-bootstrap'
 import GlobalNavbar from "./components/comun/GlobalNavbar";
+import TareasActivas from "./components/tracking/TareasActivas";
 import NuevaTareaForm from "./components/tracking/NuevaTareaForm";
 import PendienteRecoleccion from './components/tracking/PendienteRecoleccion';
 import RecolectadosParaAtenderse from './components/tracking/RecolectadosParaAtenderse';
@@ -63,6 +64,7 @@ function App() {
         <Route path='/' element={<Home />} />
 
         <Route path='/tracking' element={<ProtectedLayout />} >
+          <Route path='tareas-activas' element={<TareasActivas  />} />
           <Route path='nueva-tarea' element={<NuevaTareaForm onExito={despliegaAlerta} />} />
           <Route path='pendiente-recoleccion' element={<PendienteRecoleccion onContinuar={despliegaAlerta} onBorraTarea={despliegaAlerta}/>} />
           <Route path='recolectados-para-atenderse' element={<RecolectadosParaAtenderse onContinuar={despliegaAlerta} />} />

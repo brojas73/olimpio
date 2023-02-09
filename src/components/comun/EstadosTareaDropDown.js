@@ -3,7 +3,7 @@ import { NavDropdown } from 'react-bootstrap'
 import { useTareasExternas } from '../../context/TareasExternasContext'
 
 
-const EstadosTareaDropDown = ({onClick, title, titleOption}) => {
+const EstadosTareaDropDown = ({onClick, title }) => {
   const { estadosTarea } = useTareasExternas()
 
   // This is to avoid a warning when process is just loaded about the title required field in the
@@ -13,16 +13,6 @@ const EstadosTareaDropDown = ({onClick, title, titleOption}) => {
 
   return (
     <NavDropdown title={title}>
-    {
-      titleOption && (
-        <NavDropdown.Item
-          key={0}
-          onClick={() => onClick(0)}
-        >
-          Estado
-        </NavDropdown.Item>
-      )
-    }
     {
       estadosTarea.map(estadoTarea => (
           <NavDropdown.Item 

@@ -1,4 +1,4 @@
-import { Nav, Navbar, Offcanvas } from "react-bootstrap"
+import { Form, Nav, Navbar, Offcanvas } from "react-bootstrap"
 import { useTareasExternas, useTareasExternasUpdate } from "../../context/TareasExternasContext"
 import EstadosTareaDropDown from "../comun/EstadosTareaDropDown"
 import SucursalesDropDown from "../comun/SucursalesDropDown"
@@ -7,9 +7,28 @@ import TiposTrabajoDropDown from "../comun/TiposTrabajoDropDown"
 
 const Filtros = () => {
     const { 
-        sucursalFiltro,  tipoServicioFiltro, tipoTrabajoFiltro,  estadoActual, 
-        getSucursal, getTipoServicio, getTipoTrabajo, getEstadoTarea  } = useTareasExternas()
-    const { asignaSucursalFiltro, asignaTipoTrabajoFiltro, asignaTipoServicioFiltro, asignaEstadoActual } = useTareasExternasUpdate()
+        ticketFiltro,
+        sucursalFiltro,  
+        tipoServicioFiltro, 
+        tipoTrabajoFiltro,  
+        estadoActual, 
+        getSucursal, 
+        getTipoServicio, 
+        getTipoTrabajo, 
+        getEstadoTarea  
+    } = useTareasExternas()
+
+    const { 
+        asignaTicketFiltro, 
+        asignaSucursalFiltro, 
+        asignaTipoTrabajoFiltro, 
+        asignaTipoServicioFiltro, 
+        asignaEstadoActual 
+    } = useTareasExternasUpdate()
+
+    function onSubmit(event) {
+        event.preventDefault()
+    }
 
     return (
         <Navbar expand='sm' className="mb-3">
@@ -17,6 +36,16 @@ const Filtros = () => {
             <Navbar.Offcanvas aria-labelledby="offcanvasNavbarLabel-expand-sm">
                 <Offcanvas.Header closeButton>Filtros</Offcanvas.Header>
                     <Offcanvas.Body>
+                        <Form onSubmit={onSubmit}>
+                            <Form.Control
+                                type='search'
+                                placeholder="Buscar ticket..."
+                                className="ticket"
+                                aria-label="Search"
+                                value={ticketFiltro}
+                                onChange={e => asignaTicketFiltro(e.target.value)}
+                            />
+                        </Form>
                         <Nav className="flex-grow-1 pe-3">
                             <SucursalesDropDown 
                                 title={getSucursal(sucursalFiltro)} 
@@ -35,7 +64,6 @@ const Filtros = () => {
                             />
                             <EstadosTareaDropDown 
                                 title={getEstadoTarea(estadoActual)}
-                                titleOption={true}
                                 onClick={asignaEstadoActual}
                             />
                         </Nav>
