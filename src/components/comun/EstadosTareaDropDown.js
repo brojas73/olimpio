@@ -1,10 +1,10 @@
-import { Nav, NavDropdown } from 'react-bootstrap'
-import { useTareasExternas, useTareasExternasUpdate } from '../../context/TareasExternasContext'
+import { Link } from 'react-router-dom'
+import { NavDropdown } from 'react-bootstrap'
+import { useTareasExternas } from '../../context/TareasExternasContext'
 
 
-const EstadosTareaDropDown = () => {
-  const { estadoActual, estadosTarea, getEstadoTarea } = useTareasExternas()
-  const { asignaEstadoActual } = useTareasExternasUpdate()
+const EstadosTareaDropDown = ({onClick, title, titleOption}) => {
+  const { estadosTarea } = useTareasExternas()
 
   // This is to avoid a warning when process is just loaded about the title required field in the
   // DropDownButton below
@@ -12,20 +12,30 @@ const EstadosTareaDropDown = () => {
     return
 
   return (
-    <Nav className="justify-content-end flex-grow-1 pe-3">
-      <NavDropdown title={getEstadoTarea(estadoActual)}>
-      {
-        estadosTarea.map(estadoTarea => (
+    <NavDropdown title={title}>
+    {
+      titleOption && (
+        <NavDropdown.Item
+          key={0}
+          onClick={() => onClick(0)}
+        >
+          Estado
+        </NavDropdown.Item>
+      )
+    }
+    {
+      estadosTarea.map(estadoTarea => (
           <NavDropdown.Item 
+              as={Link}
+              to={estadoTarea.url}
               key={estadoTarea.id_estado_tarea}
-              onClick={() => asignaEstadoActual(estadoTarea.id_estado_tarea)}
+              onClick={() => onClick(estadoTarea.id_estado_tarea)}
           >
             {estadoTarea.nombre}
           </NavDropdown.Item>
-        ))
-      }
-      </NavDropdown>
-    </Nav>
+      ))
+    }
+    </NavDropdown>
   )
 }
 

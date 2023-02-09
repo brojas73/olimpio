@@ -16,7 +16,7 @@ const TituloTareas = ({titulo}) => {
     return (
         <Navbar>
             <Container className="justify-content-start">
-                <h3>{titulo}</h3>
+                <h4>{titulo}</h4>
             </Container>
             {
                 (esEncargado() && estadoActual === STATUS_TAREA.PENDIENTE_RECOLECCION) && (

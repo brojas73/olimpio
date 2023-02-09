@@ -4,7 +4,7 @@ import { Button, Card, Col } from "react-bootstrap"
 import { useAuth } from "../../hooks/useAuth"
 
 const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBorrar }, key) => {
-    const { estadoActual, getSucursal, getTipoServicio, getTipoTrabajo, getUsuario } = useTareasExternas()
+    const { estadoActual, getSucursal, getTipoServicio, getTipoTrabajo, getEstadoTarea, getUsuario } = useTareasExternas()
     const { esEncargado, esChofer, credenciales } = useAuth()
 
     function formateaFecha(fecha, hora) {
@@ -60,6 +60,7 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
         <Col>
             <Card border={tareaExterna.id_tipo_servicio == TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
                 <Card.Header>
+                    <Card.Subtitle>{getEstadoTarea(tareaExterna.id_estado_tarea)}</Card.Subtitle>
                     <div className="d-flex justify-content-between align-items-center">
                         <Card.Title>Ticket: {tareaExterna.ticket}</Card.Title>
                         <Card.Subtitle>

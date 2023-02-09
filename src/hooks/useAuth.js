@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react"
+import { URL_APIS } from "../context/TareasExternasContext"
 import { useLocalStorage } from './useLocalStorage'
 
 export const ROLES = {
@@ -14,7 +15,7 @@ export const AuthProvider = ({children}) => {
 
     async function login(credenciales) {
         try {
-            const response = await fetch('http://localhost:8080/login', {
+            const response = await fetch(`${URL_APIS}/login`, {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json'

@@ -1,8 +1,8 @@
 import { NavDropdown  } from "react-bootstrap"
 import { useTareasExternas } from "../../context/TareasExternasContext"
 
-const SucursalesDropDown = ({onClick, title, titleOption}) => {
-  const { sucursales } = useTareasExternas()
+const TiposTrabajoDropDown = ({onClick, title, titleOption}) => {
+  const { tiposTrabajo } = useTareasExternas()
 
   return (
     <NavDropdown title={title}>
@@ -12,17 +12,17 @@ const SucursalesDropDown = ({onClick, title, titleOption}) => {
           key={0}
           onClick={() => onClick(0)}
         >
-          Sucursal
+          Tipo de Trabajo
         </NavDropdown.Item>
       )
     }
     {
-      sucursales.map(sucursal => (
+      tiposTrabajo.map(tipoTrabajo => (
           <NavDropdown.Item 
-              key={sucursal.id_sucursal}
-              onClick={() => onClick(sucursal.id_sucursal)}
+              key={tipoTrabajo.id_tipo_trabajo}
+              onClick={() => onClick(tipoTrabajo.id_tipo_trabajo)}
           >
-            {sucursal.nombre}
+            {tipoTrabajo.nombre}
           </NavDropdown.Item>
       ))
     }
@@ -30,4 +30,4 @@ const SucursalesDropDown = ({onClick, title, titleOption}) => {
   )
 }
 
-export default SucursalesDropDown
+export default TiposTrabajoDropDown

@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 
-const URL_APIS='http://localhost:8080'
+export const URL_APIS = 'http://localhost:8080'
 const TareasExternasContext = React.createContext()
 const TareasExternasUpdateContext = React.createContext()
 
@@ -38,7 +38,11 @@ export function useTareasExternasUpdate() {
 }
 
 export function TareasExternasProvider({children}) {
+    const [ticketFiltro, setTicketFiltro] = useState('')
     const [sucursalFiltro, setSucursalFiltro] = useState(0)
+    const [tipoServicioFiltro, setTipoServicioFiltro] = useState(0)
+    const [tipoTrabajoFiltro, setTipoTrabajoFiltro] = useState(0)
+
     const [sucursalActual, setSucursalActual] = useState(0)
     const [estadoActual, setEstadoActual] = useState(STATUS_TAREA.PENDIENTE_RECOLECCION)
     const [tareasExternas, setTareasExternas] = useState([])
@@ -220,24 +224,40 @@ export function TareasExternasProvider({children}) {
         setConectado(conectado)
     }
 
+    function asignaTicketFiltro(ticket) {
+        setTicketFiltro(ticket)
+    }
+
+    function asignaSucursalFiltro(id_sucursal) {
+        setSucursalFiltro(id_sucursal)
+    }
+
+    function asignaTipoTrabajoFiltro(id_tipo_trabajo) {
+        setTipoTrabajoFiltro(id_tipo_trabajo)
+    }
+
+    function asignaTipoServicioFiltro(id_tipo_servicio) {
+        setTipoServicioFiltro(id_tipo_servicio)
+    }
+
     function getSucursal(id_sucursal) {
         const sucursal = sucursales.find(sucursal => sucursal.id_sucursal == id_sucursal)
-        return sucursal?.nombre 
+        return (sucursal ? sucursal.nombre : 'Sucursal')
     }
 
     function getTipoTrabajo(id_tipo_trabajo) {
         const tipoTrabajo  = tiposTrabajo.find(tipoTrabajo => tipoTrabajo.id_tipo_trabajo == id_tipo_trabajo) 
-        return tipoTrabajo?.nombre
+        return (tipoTrabajo ? tipoTrabajo.nombre : 'Tipo de Trabajo')
     }
 
     function getTipoServicio(id_tipo_servicio) {
         const tipoServicio = tiposServicio.find(tipoServicio => tipoServicio.id_tipo_servicio == id_tipo_servicio)
-        return tipoServicio?.nombre
+        return (tipoServicio ? tipoServicio.nombre : 'Tipo de Servicio')
     }
 
     function getEstadoTarea(id_estado_tarea) {
         const estado_tarea = estadosTarea.find(estado_tarea => estado_tarea.id_estado_tarea == id_estado_tarea)
-        return estado_tarea?.nombre
+        return (estado_tarea ? estado_tarea.nombre : 'Estado')
     }
 
     function getUsuario(id_usuario) {
@@ -247,12 +267,14 @@ export function TareasExternasProvider({children}) {
 
     return (
         <TareasExternasContext.Provider value={{
-            tareasExternas, sucursales, tiposTrabajo, tiposServicio, estadosTarea, roles, sucursalFiltro, sucursalActual, estadoActual, conectado,
-            getSucursal, getTipoTrabajo, getTipoServicio, getEstadoTarea, getUsuario, setSucursalFiltro
+            tareasExternas, sucursales, tiposTrabajo, tiposServicio, estadosTarea, roles, sucursalActual, estadoActual, conectado,
+            ticketFiltro, sucursalFiltro, tipoServicioFiltro, tipoTrabajoFiltro,
+            getSucursal, getTipoTrabajo, getTipoServicio, getEstadoTarea, getUsuario
         }}>
             <TareasExternasUpdateContext.Provider value={{
                 agregaTareaExterna, borraTareaExterna, actualizaTareaExterna,
-                asignaSucursalActual, asignaEstadoActual, asignaConectado
+                asignaSucursalActual, asignaEstadoActual, asignaConectado,
+                asignaTicketFiltro, asignaSucursalFiltro, asignaTipoTrabajoFiltro, asignaTipoServicioFiltro
             }}>
                 {children}
             </TareasExternasUpdateContext.Provider>
