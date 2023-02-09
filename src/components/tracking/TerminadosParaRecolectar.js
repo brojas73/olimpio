@@ -27,7 +27,7 @@ const TerminadosParaRecolectar = ({onContinuar}) => {
     <>
       <Filtros />
       <TituloTareas titulo='Terminados para Recolectar' />
-      <Row xs={1} md={2} className="g-1">
+      <Row xs={1} md={2} className="g-3">
       {
         tareasExternas.filter(tareaExterna => 
                                 tareaExterna.id_estado_tarea === STATUS_TAREA.TERMINADO_PARA_RECOLECTAR &&

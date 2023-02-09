@@ -28,7 +28,7 @@ const RecibidosParaAtenderse = ({onContinuar}) => {
     <>
       <Filtros />
       <TituloTareas titulo='Recibidos para Atenderse' />
-      <Row xs={1} md={2} className="g-1">
+      <Row xs={1} md={1} className="g-3">
         {
           tareasExternas.filter(tareaExterna => 
                                   tareaExterna.id_estado_tarea === STATUS_TAREA.RECIBIDO_PARA_ATENDERSE  &&
