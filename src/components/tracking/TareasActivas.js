@@ -1,12 +1,10 @@
 import { Row } from "react-bootstrap"
 import { STATUS_TAREA, useTareasExternas, useTareasExternasUpdate } from "../../context/TareasExternasContext"
-import Filtros from "./Filtros"
+import TareasExternasHeader from "./TareasExternasHeader"
 import TareaExterna from "./TareaExternaCard"
-import TituloTareas from "./TituloTareas"
 
 const TareasActivas = ({onContinuar}) => {
   const { 
-    sucursalActual, 
     tareasExternas, 
     ticketFiltro,
     sucursalFiltro, 
@@ -25,8 +23,7 @@ const TareasActivas = ({onContinuar}) => {
 
   return (
     <>
-      <Filtros />
-      <TituloTareas titulo='Tareas Activas'/>
+      <TareasExternasHeader titulo='Tareas Activas'/>
       <Row xs={1} md={1} className="g-3">
       {
         tareasExternas.filter(tareaExterna => 

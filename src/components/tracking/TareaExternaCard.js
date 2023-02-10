@@ -93,28 +93,35 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
                     </Card.Text>
                 </Card.Body>
                 <Card.Footer className="d-flex justify-content-between align-items-center">
-                    <small>Entregar: {formateaFecha(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}</small>
-                    {
-                        mostrarBotonAcccionBorrar() && (
-                            <Button 
-                                size="sm" 
-                                onClick={() => accionBorrar(tareaExterna.id_tarea_externa)} 
-                                variant='danger'>
-                                Borrar
-                            </Button>
-                        )
-                    }
-                    {
-                        mostrarBotonAccionContinuar() && (
-                            <Button 
-                                size="sm"
-                                onClick={() => accionContinuar(tareaExterna.id_tarea_externa)}
-                                variant={tareaExterna.id_tipo_servicio == TIPOS_SERVICIO.EXPRESS ? 'danger' : 'primary'}
-                            >
-                                {tituloContinuar}
-                            </Button>
-                        )
-                    }
+                    <div>
+                        <small>Entregar: {formateaFecha(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}</small>
+                    </div>
+                    <div>
+                        {
+                            mostrarBotonAcccionBorrar() && (
+                                <>
+                                    <Button 
+                                        size="sm" 
+                                        onClick={() => accionBorrar(tareaExterna.id_tarea_externa)} 
+                                        variant='danger'>
+                                        Borrar
+                                    </Button>
+                                    <span> </span>
+                                </>
+                            )
+                        }
+                        {
+                            mostrarBotonAccionContinuar() && (
+                                <Button 
+                                    size="sm"
+                                    onClick={() => accionContinuar(tareaExterna.id_tarea_externa)}
+                                    variant={tareaExterna.id_tipo_servicio == TIPOS_SERVICIO.EXPRESS ? 'danger' : 'primary'}
+                                >
+                                    {tituloContinuar}
+                                </Button>
+                            )
+                        }
+                    </div>
                 </Card.Footer>
             </Card>
         </Col>

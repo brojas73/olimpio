@@ -51,9 +51,13 @@ export const AuthProvider = ({children}) => {
         return credenciales.id_rol === ROLES.ADMIN
     }
 
+    function getUsuario() {
+        return credenciales.nombre
+    }
+
     return (
         <AuthContext.Provider value={{
-            credenciales, login, logout, esEncargado, esChofer, esAdmin
+            credenciales, login, logout, esEncargado, esChofer, esAdmin, getUsuario
         }}>
             {children}
         </AuthContext.Provider>

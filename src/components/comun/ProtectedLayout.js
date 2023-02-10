@@ -1,14 +1,12 @@
 import { Navigate, useOutlet } from "react-router-dom"
 import { useTareasExternas } from "../../context/TareasExternasContext"
 
-// const ProtectedLayout = ({isLoggedIn}) => {
 const ProtectedLayout = () => {
-        const outlet = useOutlet()
+    const outlet = useOutlet()
     const { conectado } = useTareasExternas()
 
-    // if (!isLoggedIn) {
     if (!conectado) {
-            return <Navigate to='/login' />
+        return <Navigate to='/login' />
     }
 
     return (

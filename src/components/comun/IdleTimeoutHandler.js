@@ -6,14 +6,14 @@ const SECONDS = 1000
 const MINUTES = 60 * SECONDS
 const DEFAULT_TIMEOUT = 15 * MINUTES
 
-const IdleTimeoutHandler = ({onActive, onIdle, onLogout, timeOutInterval}) => {
+// const IdleTimeoutHandler = ({onActive, onIdle, onLogout, timeOutInterval}) => {
+const IdleTimeoutHandler = ({onLogout, timeOutInterval}) => {
     let timer = undefined
     const [isLogout, setIsLogout] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const events = ['click', 'scroll', 'load', 'keydown']
     
     function eventHandler(eventType) {
-        // localStorage.setItem('lastInteractionTime', moment())
         localStorage.setItem('lastInteractionTime', dayjs())
         if (timer) {
             // onActive()
@@ -40,7 +40,6 @@ const IdleTimeoutHandler = ({onActive, onIdle, onLogout, timeOutInterval}) => {
         timer = setTimeout(() => {
             const lastInteractionTime = localStorage.getItem('lastInteractionTime')
             const diff = dayjs().diff(dayjs(lastInteractionTime))
-            // const diff = moment.duration(dayjs().diff(moment(lastInteractionTime)))
 
             if (isLogout) {
                 clearTimeout(timer)
@@ -84,9 +83,7 @@ const IdleTimeoutHandler = ({onActive, onIdle, onLogout, timeOutInterval}) => {
     }
 
     return (
-        <>
-            <IdleTimeoutModal showModal={showModal} handleContinue={handleContinueSession} handleLogout={handleLogout} />
-        </>
+        <IdleTimeoutModal showModal={showModal} handleContinue={handleContinueSession} handleLogout={handleLogout} />
     )
 }
 

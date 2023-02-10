@@ -3,10 +3,12 @@ import { Navbar, Offcanvas, Nav } from "react-bootstrap"
 import { useTareasExternas, useTareasExternasUpdate } from "../../context/TareasExternasContext"
 import SucursalesDropDown from "./SucursalesDropDown"
 import UsuarioDropDown from "./UsuarioDropDown"
+import { useAuth } from "../../hooks/useAuth"
 
 const GlobalNavbar = ({onLogout}) => {
     const { conectado, sucursalActual, getSucursal } = useTareasExternas()
     const { asignaSucursalActual } = useTareasExternasUpdate()
+    const { getUsuario } = useAuth()
 
     return (
         <Navbar bg='dark' variant="dark" expand='sm' className="mb-3"> 
@@ -19,7 +21,7 @@ const GlobalNavbar = ({onLogout}) => {
                         <Offcanvas.Body>
                             <Nav className="justify-content-end flex-grow-1 pe-3">
                                 <SucursalesDropDown title={getSucursal(sucursalActual)} onClick={asignaSucursalActual} />
-                                <UsuarioDropDown onLogout={onLogout}/>
+                                <UsuarioDropDown title={getUsuario()} onLogout={onLogout}/>
                             </Nav>
                         </Offcanvas.Body>
                     )

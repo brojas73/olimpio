@@ -1,6 +1,7 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export const URL_APIS = 'http://localhost:8080'
 const TareasExternasContext = React.createContext()
@@ -39,22 +40,25 @@ export function useTareasExternasUpdate() {
 }
 
 export function TareasExternasProvider({children}) {
+    const { credenciales } = useAuth()
+
+    const [conectado, setConectado] = useState(credenciales !== 'null' ? true : false)
+    const [sucursalActual, setSucursalActual] = useLocalStorage('sucursalActual', SUCURSAL_DEFAULT)
+    const [estadoActual, setEstadoActual] = useLocalStorage('estadoActual', STATUS_TAREA.PENDIENTE_RECOLECCION)
+
     const [ticketFiltro, setTicketFiltro] = useState('')
     const [sucursalFiltro, setSucursalFiltro] = useState(0)
     const [tipoServicioFiltro, setTipoServicioFiltro] = useState(0)
     const [tipoTrabajoFiltro, setTipoTrabajoFiltro] = useState(0)
 
-    const [sucursalActual, setSucursalActual] = useState(0)
-    const [estadoActual, setEstadoActual] = useState(STATUS_TAREA.PENDIENTE_RECOLECCION)
     const [tareasExternas, setTareasExternas] = useState([])
+
     const [roles, setRoles] = useState([])
     const [usuarios, setUsuarios] = useState([])
     const [sucursales, setSucursales] = useState([])
     const [tiposServicio, setTiposServicio] = useState([])
     const [tiposTrabajo, setTiposTrabajo] = useState([])
     const [estadosTarea, setEstadosTarea] = useState([])
-    const [conectado, setConectado] = useState(false)
-    const { credenciales } = useAuth()
 
     useEffect(() => {
         async function fetchSucursales() {
@@ -257,13 +261,13 @@ export function TareasExternasProvider({children}) {
     }
 
     function getEstadoTarea(id_estado_tarea) {
-        const estado_tarea = estadosTarea.find(estado_tarea => estado_tarea.id_estado_tarea == id_estado_tarea)
-        return (estado_tarea ? estado_tarea.nombre : 'Estado')
+        const estadoTarea = estadosTarea.find(estadoTarea => estadoTarea.id_estado_tarea == id_estado_tarea)
+        return (estadoTarea ? estadoTarea.nombre : 'Estado')
     }
 
     function getUsuario(id_usuario) {
         const usuario = usuarios.find(usuario => usuario.id_usuario === id_usuario)
-        return usuario?.nombre
+        return (usuario ? usuario.nombre : 'Usuario')
     }
 
     return (

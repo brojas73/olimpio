@@ -2,8 +2,8 @@ import { NavDropdown  } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import { useAuth } from "../../hooks/useAuth"
 
-const UsuarioDropDown = ({onLogout}) => {
-    const { logout, credenciales } = useAuth()
+const UsuarioDropDown = ({onLogout, title}) => {
+    const { logout } = useAuth()
     
     function handleLogout() {
         logout()
@@ -11,7 +11,7 @@ const UsuarioDropDown = ({onLogout}) => {
     }
 
     return (
-        <NavDropdown title={credenciales.nombre}>
+        <NavDropdown title={title}>
             <NavDropdown.Item tag={Link} to='/login' onClick={handleLogout}>Salir</NavDropdown.Item>
         </NavDropdown>
     )

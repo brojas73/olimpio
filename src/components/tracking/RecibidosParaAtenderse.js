@@ -1,13 +1,12 @@
 import { Row } from "react-bootstrap"
 import { STATUS_TAREA, useTareasExternas, useTareasExternasUpdate } from "../../context/TareasExternasContext"
-import Filtros from "./Filtros"
+import TareasExternasHeader from "./TareasExternasHeader"
 import TareaExterna from "./TareaExternaCard"
-import TituloTareas from "./TituloTareas"
 
 const RecibidosParaAtenderse = ({onContinuar}) => {
   const { 
     tareasExternas, 
-    sucursalActual, 
+    sucursalActual,
     ticketFiltro,
     sucursalFiltro, 
     tipoTrabajoFiltro, 
@@ -26,13 +25,14 @@ const RecibidosParaAtenderse = ({onContinuar}) => {
 
   return (
     <>
-      <Filtros />
-      <TituloTareas titulo='Recibidos para Atenderse' />
+      <TareasExternasHeader />
       <Row xs={1} md={1} className="g-3">
         {
           tareasExternas.filter(tareaExterna => 
-                                  tareaExterna.id_estado_tarea === STATUS_TAREA.RECIBIDO_PARA_ATENDERSE  &&
-                                  tareaExterna.id_sucursal_destino === sucursalActual &&
+                                  // eslint-disable-next-line eqeqeq
+                                  tareaExterna.id_estado_tarea == STATUS_TAREA.RECIBIDO_PARA_ATENDERSE  &&
+                                  // eslint-disable-next-line eqeqeq
+                                  tareaExterna.id_sucursal_destino == sucursalActual &&
                                   (ticketFiltro.length === 0 || (ticketFiltro.length > 0 && tareaExterna.ticket.startsWith(ticketFiltro))) &&
                                   (sucursalFiltro === 0 || (sucursalFiltro !== 0 && (tareaExterna.id_sucursal_origen === sucursalFiltro || tareaExterna.id_sucursal_destino === sucursalFiltro))) &&
                                   (tipoTrabajoFiltro === 0 || (tipoTrabajoFiltro !== 0 && tareaExterna.id_tipo_trabajo === tipoTrabajoFiltro)) &&

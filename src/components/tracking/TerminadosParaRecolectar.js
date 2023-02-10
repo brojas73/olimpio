@@ -1,8 +1,7 @@
 import { Row } from "react-bootstrap"
 import { STATUS_TAREA, useTareasExternas, useTareasExternasUpdate } from "../../context/TareasExternasContext"
-import Filtros from "./Filtros"
+import TareasexternasHeader from "./TituloTareas"
 import TareaExterna from "./TareaExternaCard"
-import TituloTareas from "./TituloTareas"
 
 const TerminadosParaRecolectar = ({onContinuar}) => {
   const { 
@@ -25,13 +24,14 @@ const TerminadosParaRecolectar = ({onContinuar}) => {
 
   return (
     <>
-      <Filtros />
-      <TituloTareas titulo='Terminados para Recolectar' />
+      <TareasexternasHeader />
       <Row xs={1} md={2} className="g-3">
       {
         tareasExternas.filter(tareaExterna => 
-                                tareaExterna.id_estado_tarea === STATUS_TAREA.TERMINADO_PARA_RECOLECTAR &&
-                                tareaExterna.id_sucursal_destino === sucursalActual &&
+                                // eslint-disable-next-line eqeqeq
+                                tareaExterna.id_estado_tarea == STATUS_TAREA.TERMINADO_PARA_RECOLECTAR &&
+                                // eslint-disable-next-line eqeqeq
+                                tareaExterna.id_sucursal_destino == sucursalActual &&
                                 (ticketFiltro.length === 0 || (ticketFiltro.length > 0 && tareaExterna.ticket.startsWith(ticketFiltro))) &&
                                 (sucursalFiltro === 0 || (sucursalFiltro !== 0 && (tareaExterna.id_sucursal_origen === sucursalFiltro || tareaExterna.id_sucursal_destino === sucursalFiltro))) &&
                                 (tipoTrabajoFiltro === 0 || (tipoTrabajoFiltro !== 0 && tareaExterna.id_tipo_trabajo === tipoTrabajoFiltro)) &&
