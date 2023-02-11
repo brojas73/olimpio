@@ -6,7 +6,7 @@ import UsuarioDropDown from "./UsuarioDropDown"
 import { useAuth } from "../../hooks/useAuth"
 
 const GlobalNavbar = ({onLogout}) => {
-    const { conectado, sucursalActual, getSucursal } = useTareasExternas()
+    const { conectado, sucursalActual, getSucursal  } = useTareasExternas()
     const { asignaSucursalActual } = useTareasExternasUpdate()
     const { getUsuario } = useAuth()
 

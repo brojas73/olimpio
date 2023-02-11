@@ -1,11 +1,9 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useSessionStorage } from "../hooks/useSessionStorage";
 
 export const URL_APIS = 'http://localhost:8080'
-const TareasExternasContext = React.createContext()
-const TareasExternasUpdateContext = React.createContext()
 
 export const STATUS_TAREA = {
     TAREAS_ACTIVAS: 0,
@@ -31,6 +29,9 @@ export const TIPO_ACCION = {
 
 export const SUCURSAL_DEFAULT = 1
 
+const TareasExternasContext = React.createContext()
+const TareasExternasUpdateContext = React.createContext()
+
 export function useTareasExternas() {
     return useContext(TareasExternasContext)
 }
@@ -42,9 +43,9 @@ export function useTareasExternasUpdate() {
 export function TareasExternasProvider({children}) {
     const { credenciales } = useAuth()
 
-    const [conectado, setConectado] = useState(credenciales !== 'null' ? true : false)
-    const [sucursalActual, setSucursalActual] = useLocalStorage('sucursalActual', SUCURSAL_DEFAULT)
-    const [estadoActual, setEstadoActual] = useLocalStorage('estadoActual', STATUS_TAREA.PENDIENTE_RECOLECCION)
+    const [conectado, setConectado] = useState((credenciales && credenciales !== 'null') ? true : false)
+    const [sucursalActual, setSucursalActual] = useSessionStorage('sucursalActual', SUCURSAL_DEFAULT)
+    const [estadoActual, setEstadoActual] = useSessionStorage('estadoActual', STATUS_TAREA.PENDIENTE_RECOLECCION)
 
     const [ticketFiltro, setTicketFiltro] = useState('')
     const [sucursalFiltro, setSucursalFiltro] = useState(0)
@@ -62,33 +63,28 @@ export function TareasExternasProvider({children}) {
 
     useEffect(() => {
         async function fetchSucursales() {
-            const sucursales = await fetchData(`${URL_APIS}/sucursales`)
-            setSucursales([...sucursales])
+            await fetchData(`${URL_APIS}/sucursales`)
+                    .then(data => setSucursales([...data]))
         }
 
         async function fetchTiposTrabajo() {
-            const tiposTrabajo  = await fetchData(`${URL_APIS}/tipos-trabajo`)
-            setTiposTrabajo([...tiposTrabajo])
+            await fetchData(`${URL_APIS}/tipos-trabajo`)
+                    .then(data => setTiposTrabajo([...data]))
         }
 
         async function fetchTiposServicio() {
-            const tiposServicio = await fetchData(`${URL_APIS}/tipos-servicio`)
-            setTiposServicio([...tiposServicio])
+            await fetchData(`${URL_APIS}/tipos-servicio`)
+                    .then(data => setTiposServicio([...data]))
         }
 
         async function fetchEstadosTarea() {
-            const estadosTarea = await fetchData(`${URL_APIS}/estados-tarea`)
-            setEstadosTarea([...estadosTarea])
+            await fetchData(`${URL_APIS}/estados-tarea`)
+                    .then(data => setEstadosTarea([...data]))
         }
 
         async function fetchRoles() {
-            const roles = await fetchData(`${URL_APIS}/roles`)
-            setRoles([...roles])
-        }
-
-        async function fetchUsuarios() {
-            const usuarios = await fetchData(`${URL_APIS}/usuarios`)
-            setUsuarios([...usuarios])
+            await fetchData(`${URL_APIS}/roles`)
+                    .fetch(data => setRoles([...data]))
         }
 
         try {
@@ -103,13 +99,13 @@ export function TareasExternasProvider({children}) {
         } catch (err) {
             console.log(err)
         }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },  [conectado])
 
     useEffect(() => {
         if (conectado) {
             fetchTareasExternas()
+            fetchUsuarios()
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [conectado, sucursalActual, estadoActual])
@@ -118,12 +114,15 @@ export function TareasExternasProvider({children}) {
         return await fetch(url).then(response => response.json())
     }    
 
-    function fetchTareasExternas() {
+    async function fetchUsuarios() {
+        const usuarios = await fetchData(`${URL_APIS}/usuarios`)
+        setUsuarios([...usuarios])
+    }
+
+    async function fetchTareasExternas() {
         try {
-            fetchData(`${URL_APIS}/tareas-externas-activas`)
-                .then(tareasExternas => {
-                    setTareasExternas([...tareasExternas])
-                })
+            await fetchData(`${URL_APIS}/tareas-externas-activas`)
+                .then(tareasExternas => setTareasExternas([...tareasExternas]))
         } catch (err) {
             console.log('TareasExternasContext.fetchTareasExternas()', err)
         }
@@ -143,7 +142,7 @@ export function TareasExternasProvider({children}) {
             }
 
             const data = await response.json()
-            setTareasExternas([...tareasExternas, tareaExterna])
+            setTareasExternas(currentTareasExternas => [...currentTareasExternas, tareaExterna])
             return data
         } catch (err) {
             console.log(err)
@@ -164,7 +163,9 @@ export function TareasExternasProvider({children}) {
             }
  
             const data = await response.json()
-            setTareasExternas(tareasExternas.filter(tareaExterna => tareaExterna.id_tarea_externa !== id_tarea_externa))
+            setTareasExternas(currentTareasExternas => {
+                currentTareasExternas.filter(tareaExterna => tareaExterna.id_tarea_externa !== id_tarea_externa)
+            })
             return data
         } catch (err) {
             console.log(err)
@@ -210,7 +211,11 @@ export function TareasExternasProvider({children}) {
                     break
             }
             data.mensaje = mensaje
-            setTareasExternas(tareasExternas.map(tareaExterna => tareaExterna.id_tarea_externa === id_tarea_externa ? {...tareaExterna, id_estado_tarea: id_estado_tarea} : tareaExterna))
+            setTareasExternas(currentTareasExternas => {
+                currentTareasExternas.map(tareaExterna => {
+                    return (tareaExterna.id_tarea_externa === id_tarea_externa) ? {...tareaExterna, id_estado_tarea: id_estado_tarea} : tareaExterna
+                })
+            })
             return data
         } catch (err) {
             console.log(err)
@@ -273,12 +278,12 @@ export function TareasExternasProvider({children}) {
     return (
         <TareasExternasContext.Provider value={{
             tareasExternas, sucursales, tiposTrabajo, tiposServicio, estadosTarea, roles, sucursalActual, estadoActual, conectado,
-            ticketFiltro, sucursalFiltro, tipoServicioFiltro, tipoTrabajoFiltro,
+            ticketFiltro, sucursalFiltro, tipoServicioFiltro, tipoTrabajoFiltro, 
             getSucursal, getTipoTrabajo, getTipoServicio, getEstadoTarea, getUsuario
         }}>
             <TareasExternasUpdateContext.Provider value={{
                 agregaTareaExterna, borraTareaExterna, actualizaTareaExterna,
-                asignaSucursalActual, asignaEstadoActual, asignaConectado,
+                asignaSucursalActual, asignaEstadoActual, asignaConectado, 
                 asignaTicketFiltro, asignaSucursalFiltro, asignaTipoTrabajoFiltro, asignaTipoServicioFiltro
             }}>
                 {children}

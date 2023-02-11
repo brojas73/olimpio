@@ -10,6 +10,10 @@ export const ROLES = {
 
 const AuthContext = createContext()
 
+export const useAuth = () => {
+    return useContext(AuthContext)
+}
+
 export const AuthProvider = ({children}) => {
     const [credenciales, setCredenciales] = useLocalStorage('credenciales', null)
 
@@ -27,7 +31,14 @@ export const AuthProvider = ({children}) => {
             if (data.length > 0) {
                 const { id_usuario, usuario, nombre, email, id_rol } = data[0]
                 const userInfo = { id_usuario: id_usuario, usuario: usuario, nombre: nombre, email: email, id_rol: id_rol} 
-                setCredenciales(userInfo)
+                setCredenciales(currentCredenciales => {
+                    return {...currentCredenciales, 
+                                id_ususario: id_usuario,
+                                nombre: nombre,
+                                email: email,
+                                id_rol: id_rol
+                           }
+                })
                 return userInfo
             }
         } catch (err) {
@@ -40,15 +51,18 @@ export const AuthProvider = ({children}) => {
     }
 
     function esEncargado() {
-        return (esAdmin() || credenciales.id_rol === ROLES.ENCARGADO)
+        // eslint-disable-next-line eqeqeq
+        return (esAdmin() || credenciales.id_rol == ROLES.ENCARGADO)
     }
 
     function esChofer() {
-        return (esAdmin() || credenciales.id_rol === ROLES.CHOFER)
+        // eslint-disable-next-line eqeqeq
+        return (esAdmin() || credenciales.id_rol == ROLES.CHOFER)
     }
 
     function esAdmin() {
-        return credenciales.id_rol === ROLES.ADMIN
+        // eslint-disable-next-line eqeqeq
+        return credenciales.id_rol == ROLES.ADMIN
     }
 
     function getUsuario() {
@@ -64,6 +78,3 @@ export const AuthProvider = ({children}) => {
     )
 }
 
-export const useAuth = () => {
-    return useContext(AuthContext)
-}

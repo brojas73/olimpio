@@ -22,7 +22,7 @@ const TituloTareas = ({titulo}) => {
                 (esEncargado() && estadoActual === STATUS_TAREA.PENDIENTE_RECOLECCION) && (
                     <Container className="justify-content-end">
                         <Button onClick={onClick} variant='dark' size="sm">
-                            Nueva Tarea Externa
+                            Nueva Tarea
                         </Button>
                     </Container>
                 )

@@ -28,10 +28,8 @@ const RecolectadosParaAtenderse = ({onContinuar}) => {
       <Row xs={1} md={1} className="g-3">
       {
         tareasExternas.filter(tareaExterna => 
-                                // eslint-disable-next-line eqeqeq
-                                tareaExterna.id_estado_tarea == STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE &&
-                                // eslint-disable-next-line eqeqeq
-                                tareaExterna.id_sucursal_destino == sucursalActual &&
+                                tareaExterna.id_estado_tarea === STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE &&
+                                tareaExterna.id_sucursal_destino === parseInt(sucursalActual) &&
                                 (ticketFiltro.length === 0 || (ticketFiltro.length > 0 && tareaExterna.ticket.startsWith(ticketFiltro))) &&
                                 (sucursalFiltro === 0 || (sucursalFiltro !== 0 && (tareaExterna.id_sucursal_origen === sucursalFiltro || tareaExterna.id_sucursal_destino === sucursalFiltro))) &&
                                 (tipoTrabajoFiltro === 0 || (tipoTrabajoFiltro !== 0 && tareaExterna.id_tipo_trabajo === tipoTrabajoFiltro)) &&

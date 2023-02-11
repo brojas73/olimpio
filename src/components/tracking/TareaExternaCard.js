@@ -34,13 +34,19 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
         if (!accionContinuar)
             return false
         
-        switch (estadoActual) {
-            case STATUS_TAREA.PENDIENTE_RECOLECCION: return esChofer()
-            case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE: return esEncargado()
-            case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE: return esEncargado()
-            case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR: return esChofer()
-            case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN: return esChofer()
-            case STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN: return esEncargado()
+        switch (parseInt(estadoActual)) {
+            case STATUS_TAREA.PENDIENTE_RECOLECCION: 
+                return esChofer()
+            case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE: 
+                return esEncargado()
+            case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE: 
+                return esEncargado()
+            case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR: 
+                return esChofer()
+            case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN: 
+                return esChofer()
+            case STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN: 
+                return esEncargado()
             default:
                 break
         }
@@ -50,9 +56,8 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
         if (!accionBorrar)
             return false
 
-        // return (estadoActual === STATUS_TAREA.PENDIENTE_RECOLECCION && esEncargado())
-        return (estadoActual === STATUS_TAREA.PENDIENTE_RECOLECCION && 
-                tareaExterna.id_creado_por === credenciales.id_usuario &&
+        return (parseInt(estadoActual) === STATUS_TAREA.PENDIENTE_RECOLECCION && 
+                tareaExterna.id_creado_por == credenciales.id_usuario &&
                 esEncargado())
     }
 

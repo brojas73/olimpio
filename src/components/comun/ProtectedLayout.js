@@ -10,9 +10,9 @@ const ProtectedLayout = () => {
     }
 
     return (
-        <div>
+        <>
             {outlet}
-        </div>
+        </>
     )
 }
 
