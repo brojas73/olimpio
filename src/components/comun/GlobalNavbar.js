@@ -20,7 +20,7 @@ const GlobalNavbar = ({onLogout}) => {
                     conectado && (
                         <Offcanvas.Body>
                             <Nav className="justify-content-end flex-grow-1 pe-3">
-                                <SucursalesDropDown title={getSucursal(sucursalActual)} onClick={asignaSucursalActual} />
+                                <SucursalesDropDown title={getSucursal(sucursalActual)} onSelect={asignaSucursalActual} />
                                 <UsuarioDropDown title={getUsuario()} onLogout={onLogout}/>
                             </Nav>
                         </Offcanvas.Body>

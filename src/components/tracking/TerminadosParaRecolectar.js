@@ -1,17 +1,10 @@
 import { Row } from "react-bootstrap"
 import { STATUS_TAREA, useTareasExternas, useTareasExternasUpdate } from "../../context/TareasExternasContext"
-import TareasexternasHeader from "./TituloTareas"
+import TareasexternasHeader from "./TareasExternasHeader"
 import TareaExterna from "./TareaExternaCard"
 
 const TerminadosParaRecolectar = ({onContinuar}) => {
-  const { 
-    tareasExternas, 
-    sucursalActual, 
-    ticketFiltro,
-    sucursalFiltro, 
-    tipoTrabajoFiltro, 
-    tipoServicioFiltro 
-  } = useTareasExternas()
+  const { tareasExternas, sucursalActual, ticketFiltro, sucursalFiltro, tipoTrabajoFiltro, tipoServicioFiltro } = useTareasExternas()
   const { actualizaTareaExterna } = useTareasExternasUpdate()
 
   function onAccionContinuar(id_tarea_externa) {
@@ -25,8 +18,9 @@ const TerminadosParaRecolectar = ({onContinuar}) => {
   return (
     <>
       <TareasexternasHeader />
-      <Row xs={1} md={2} className="g-3">
+      <Row xs={1} md={1} className="g-3">
       {
+        tareasExternas &&
         tareasExternas.filter(tareaExterna => 
                                 tareaExterna.id_estado_tarea === STATUS_TAREA.TERMINADO_PARA_RECOLECTAR &&
                                 tareaExterna.id_sucursal_destino === parseInt(sucursalActual) &&

@@ -26,6 +26,7 @@ const TareasActivas = ({onContinuar}) => {
       <TareasExternasHeader titulo='Tareas Activas'/>
       <Row xs={1} md={1} className="g-3">
       {
+        tareasExternas &&
         tareasExternas.filter(tareaExterna => 
                                     (ticketFiltro.length === 0 || (ticketFiltro.length > 0 && tareaExterna.ticket.startsWith(ticketFiltro))) &&
                                     (sucursalFiltro === 0 || (sucursalFiltro !== 0 && (tareaExterna.id_sucursal_origen === sucursalFiltro || tareaExterna.id_sucursal_destino === sucursalFiltro))) &&

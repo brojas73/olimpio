@@ -6,25 +6,8 @@ import TiposServicioDropDown from "../comun/TiposServicioDropDown"
 import TiposTrabajoDropDown from "../comun/TiposTrabajoDropDown"
 
 const Filtros = () => {
-    const { 
-        ticketFiltro,
-        sucursalFiltro,  
-        tipoServicioFiltro, 
-        tipoTrabajoFiltro,  
-        estadoActual, 
-        getSucursal, 
-        getTipoServicio, 
-        getTipoTrabajo, 
-        getEstadoTarea  
-    } = useTareasExternas()
-
-    const { 
-        asignaTicketFiltro, 
-        asignaSucursalFiltro, 
-        asignaTipoTrabajoFiltro, 
-        asignaTipoServicioFiltro, 
-        asignaEstadoActual 
-    } = useTareasExternasUpdate()
+    const { ticketFiltro, sucursalFiltro, tipoServicioFiltro, tipoTrabajoFiltro, estadoActual, getSucursal, getTipoServicio, getTipoTrabajo, getEstadoTarea } = useTareasExternas()
+    const { asignaTicketFiltro, asignaSucursalFiltro, asignaTipoTrabajoFiltro, asignaTipoServicioFiltro, asignaEstadoActual } = useTareasExternasUpdate()
 
     function onSubmit(event) {
         event.preventDefault()
@@ -50,21 +33,21 @@ const Filtros = () => {
                             <SucursalesDropDown 
                                 title={getSucursal(sucursalFiltro)} 
                                 titleOption={true}
-                                onClick={asignaSucursalFiltro} 
+                                onSelect={asignaSucursalFiltro} 
                             />
                             <TiposTrabajoDropDown 
                                 title={getTipoTrabajo(tipoTrabajoFiltro)} 
                                 titleOption={true}
-                                onClick={asignaTipoTrabajoFiltro} 
+                                onSelect={asignaTipoTrabajoFiltro} 
                             />
                             <TiposServicioDropDown 
                                 title={getTipoServicio(tipoServicioFiltro)} 
                                 titleOption={true}
-                                onClick={asignaTipoServicioFiltro} 
+                                onSelect={asignaTipoServicioFiltro} 
                             />
                             <EstadosTareaDropDown 
                                 title={getEstadoTarea(estadoActual)}
-                                onClick={asignaEstadoActual}
+                                onSelect={asignaEstadoActual}
                             />
                         </Nav>
                     </Offcanvas.Body>

@@ -3,10 +3,7 @@ import Filtros from "./Filtros"
 import TituloTareas from "./TituloTareas"
 
 const TareasExternasHeader = ({titulo}) => {
-  const { 
-    estadoActual,
-    getEstadoTarea,
-  } = useTareasExternas()
+  const { estadoActual, getEstadoTarea } = useTareasExternas()
 
   return (
     <>

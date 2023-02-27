@@ -1,7 +1,7 @@
 import { NavDropdown  } from "react-bootstrap"
 import { useTareasExternas } from "../../context/TareasExternasContext"
 
-const TiposServicioDropDown = ({onClick, title, titleOption}) => {
+const TiposServicioDropDown = ({onSelect, title, titleOption}) => {
   const { tiposServicio } = useTareasExternas()
 
   return (
@@ -10,7 +10,7 @@ const TiposServicioDropDown = ({onClick, title, titleOption}) => {
       titleOption && (
         <NavDropdown.Item
           key={0}
-          onClick={() => onClick(0)}
+          onClick={() => onSelect(0)}
         >
           Tipo de Servicio
         </NavDropdown.Item>
@@ -20,7 +20,7 @@ const TiposServicioDropDown = ({onClick, title, titleOption}) => {
       tiposServicio.map(tipoServicio => (
           <NavDropdown.Item 
               key={tipoServicio.id_tipo_servicio}
-              onClick={() => onClick(tipoServicio.id_tipo_servicio)}
+              onClick={() => onSelect(tipoServicio.id_tipo_servicio)}
           >
             {tipoServicio.nombre}
           </NavDropdown.Item>

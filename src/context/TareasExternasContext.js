@@ -1,7 +1,6 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { useSessionStorage } from "../hooks/useSessionStorage";
 
 export const URL_APIS = 'http://localhost:8080'
 
@@ -43,9 +42,9 @@ export function useTareasExternasUpdate() {
 export function TareasExternasProvider({children}) {
     const { credenciales } = useAuth()
 
-    const [conectado, setConectado] = useState((credenciales && credenciales !== 'null') ? true : false)
-    const [sucursalActual, setSucursalActual] = useSessionStorage('sucursalActual', SUCURSAL_DEFAULT)
-    const [estadoActual, setEstadoActual] = useSessionStorage('estadoActual', STATUS_TAREA.PENDIENTE_RECOLECCION)
+    const [conectado, setConectado] = useState(false)
+    const [sucursalActual, setSucursalActual] = useState(SUCURSAL_DEFAULT)
+    const [estadoActual, setEstadoActual] = useState(STATUS_TAREA.PENDIENTE_RECOLECCION)
 
     const [ticketFiltro, setTicketFiltro] = useState('')
     const [sucursalFiltro, setSucursalFiltro] = useState(0)
@@ -84,7 +83,7 @@ export function TareasExternasProvider({children}) {
 
         async function fetchRoles() {
             await fetchData(`${URL_APIS}/roles`)
-                    .fetch(data => setRoles([...data]))
+                    .then(data => setRoles([...data]))
         }
 
         try {
@@ -103,10 +102,8 @@ export function TareasExternasProvider({children}) {
     },  [conectado])
 
     useEffect(() => {
-        if (conectado) {
-            fetchTareasExternas()
-            fetchUsuarios()
-        }
+        fetchTareasExternas()
+        fetchUsuarios()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [conectado, sucursalActual, estadoActual])
 
@@ -115,8 +112,8 @@ export function TareasExternasProvider({children}) {
     }    
 
     async function fetchUsuarios() {
-        const usuarios = await fetchData(`${URL_APIS}/usuarios`)
-        setUsuarios([...usuarios])
+        await fetchData(`${URL_APIS}/usuarios`)
+                  .then(data => setUsuarios([...data]))
     }
 
     async function fetchTareasExternas() {
@@ -211,11 +208,11 @@ export function TareasExternasProvider({children}) {
                     break
             }
             data.mensaje = mensaje
-            setTareasExternas(currentTareasExternas => {
-                currentTareasExternas.map(tareaExterna => {
-                    return (tareaExterna.id_tarea_externa === id_tarea_externa) ? {...tareaExterna, id_estado_tarea: id_estado_tarea} : tareaExterna
-                })
-            })
+            // setTareasExternas(currentTareasExternas => {
+            //     currentTareasExternas.map(tareaExterna => {
+            //         return (tareaExterna.id_tarea_externa === id_tarea_externa) ? {...tareaExterna, id_estado_tarea: id_estado_tarea} : tareaExterna
+            //     })
+            setTareasExternas(tareasExternas.map(tareaExterna => (tareaExterna.id_tarea_externa === id_tarea_externa) ? {...tareaExterna, id_estado_tarea: id_estado_tarea} : tareaExterna))
             return data
         } catch (err) {
             console.log(err)
@@ -277,7 +274,8 @@ export function TareasExternasProvider({children}) {
 
     return (
         <TareasExternasContext.Provider value={{
-            tareasExternas, sucursales, tiposTrabajo, tiposServicio, estadosTarea, roles, sucursalActual, estadoActual, conectado,
+            tareasExternas, sucursales, tiposTrabajo, tiposServicio, estadosTarea, roles, 
+            sucursalActual, estadoActual, conectado,
             ticketFiltro, sucursalFiltro, tipoServicioFiltro, tipoTrabajoFiltro, 
             getSucursal, getTipoTrabajo, getTipoServicio, getEstadoTarea, getUsuario
         }}>
