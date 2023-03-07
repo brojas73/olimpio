@@ -3,12 +3,20 @@ import mysql from "mysql"
 import cors from "cors"
 
 const app = express();
-const db = mysql.createConnection({
+const pool = mysql.createPool({
+    connectionLimit: 10,
     host: "localhost",
     user: "root",
     password: "",
     database: "olimpio"  
 })
+
+// const db = mysql.createConnection({
+//     host: "localhost",
+//     user: "root",
+//     password: "",
+//     database: "olimpio"  
+// })
 
 const PORT = 8080
 app.use(cors());
@@ -19,104 +27,158 @@ app.post('/login', (req, res) => {
     const contrasena = req.body.contrasena
     const q = 'select * from usuario where usuario = ? and contrasena = ? and estado = 1'
 
-    db.query(q, [usuario, contrasena], (err, data) => {
-        if (err) {
-            res.send(err)
-        } 
+    pool.getConnection((err, db) => {
+        if (err) throw err
+        console.log('Connected as id: ' + db.threadId)
+        db.query(q, [usuario, contrasena], (err, data) => {
+            db.release()
 
-        if (data) {
-            res.send(data)
-        } else {
-            res.send({ mensaje: 'Combinación de usuario/contraseña no encontrada'})
-        }
+            if (err) {
+                res.send(err)
+            } 
+    
+            if (data) {
+                res.send(data)
+            } else {
+                res.send({ mensaje: 'Combinación de usuario/contraseña no encontrada'})
+            }
+        })
     })
 })
 
 app.use('/sucursales', (req, res) => {
     const q = 'select * from sucursal where estado = 1'
-    db.query(q, (err, data) => {
-        if (err) {
-            res.send(err)
-        }
+    pool.getConnection((err, db) => {
+        if (err) throw err
+        console.log('Connected as id: ' + db.threadId)
 
-        res.send(data)
+        db.query(q, (err, data) => {
+            db.release()
+            if (err) {
+                console.log(err)
+                res.send(err)
+            }
+
+            res.send(data)
+        })
     })
 })
 
 app.use('/roles', (req, res) => {
     const q = 'select * from rol where estado = 1'
-    db.query(q, (err, data) => {
-        if (err) {
-            res.send(err)
-        }
+    pool.getConnection((err, db) => {
+        if (err) throw err
+        console.log('Connected as id: ' + db.threadId)
+        db.query(q, (err, data) => {
+            db.release()
+            if (err) {
+                console.log(err)
+                res.send(err)
+            }
 
-        res.send(data)
+            res.send(data)
+        })
     })
 })
 
 app.use('/usuarios', (req, res) => {
     const q = 'select * from usuario where estado = 1'
-    db.query(q, (err, data) => {
-        if (err) {
-            res.send(err)
-        }
-
-        res.send(data)
+    pool.getConnection((err, db) => {
+        if (err) throw err
+        console.log('Connected as id: ' + db.threadId)
+        db.query(q, (err, data) => {
+            db.release()
+            if (err) {
+                console.log(err)
+                res.send(err)
+            }
+    
+            res.send(data)
+            
+        })
     })
 })
 
 app.use('/tipos-trabajo', (req, res) => {
     const q = 'select * from tipo_trabajo where estado = 1'
-    db.query(q, (err, data) => {
-        if (err) {
-            res.send(err)
-        }
+    pool.getConnection((err, db) => {
+        if (err) throw err
+        console.log('Connected as id: ' + db.threadId)
+        db.query(q, (err, data) => {
+            db.release()
+            if (err) {
+                res.send(err)
+            }
 
-        res.send(data)
+            res.send(data)
+        })
     })
 })
 
 app.use('/tipos-servicio', (req, res) => {
     const q = 'select * from tipo_servicio where estado = 1'
-    db.query(q, (err, data) => {
-        if (err) {
-            res.send(err)
-        }
+    pool.getConnection((err, db) => {
+        if (err) throw err
+        console.log('Connected as id: ' + db.threadId)
+        db.query(q, (err, data) => {
+            db.release()
+            if (err) {
+                console.log(err)
+                res.send(err)
+            }
 
-        res.send(data)
+            res.send(data)
+        })
     })
 })
 
 app.use('/estados-tarea', (req, res) => {
     const q = 'select * from estado_tarea where estado = 1'
-    db.query(q, (err, data) => {
-        if (err) {
-            res.send(err)
-        }
+    pool.getConnection((err, db) => {
+        if (err) throw err
+        console.log('Connected as id: ' + db.threadId)
+        db.query(q, (err, data) => {
+            db.release()
+            if (err) {
+                console.log(err)
+                res.send(err)
+            }
 
-        res.send(data)
+            res.send(data)
+        })
     })
 })
 
 app.use('/tareas-externas-activas', (req, res) => {
     const q = 'select * from tarea_externa where id_estado_tarea < 7 and estado = 1'
-    db.query(q, (err, data) => {
-        if (err) {
-            res.send(err)
-        }
+    pool.getConnection((err, db) => {
+        if (err) throw err
+        console.log('Connected as id: ' + db.threadId)
+        db.query(q, (err, data) => {
+            db.release()
+            if (err) {
+                res.send(err)
+            }
 
-        res.send(data)
+            res.send(data)
+        })
     })
 })
 
 app.get('/tareas-externas', (req, res) => {
     const q = 'select * from tarea_externa where estado = 1'
-    db.query(q, (err, data) => {
-        if (err) {
-            res.send(err)
-        }
+    pool.getConnection((err, db) => {
+        if (err) throw err
+        console.log('Connected as id: ' + db.threadId)
+        db.query(q, (err, data) => {
+            db.release()
+            if (err) {
+                console.log(err)
+                res.send(err)
+            }
 
-        res.send(data)
+            res.send(data)
+        })
     })
 })
 
@@ -150,9 +212,17 @@ app.post("/tareas-externas", (req, res) => {
         req.body.estado
     ]
 
-    db.query(q, [values], (err, data) => {
-        if (err) res.send(err)
-        res.send({"status": 200, "mensaje": "La tarea se creó exitosamente"})
+    pool.getConnection((err, db) => {
+        if (err) throw err
+        console.log('Connected as id: ' + db.threadId)
+        db.query(q, [values], (err, data) => {
+            db.release()
+            if (err) {
+                console.log(err)
+                res.send(err)
+            }
+            res.send({"status": 200, "mensaje": "La tarea se creó exitosamente"})
+        })
     })
 })
 
@@ -160,12 +230,20 @@ app.delete('/tareas-externas/:id_tarea_externa', (req, res) => {
     try {
         const idTareaExterna = req.params.id_tarea_externa
         const q = 'delete from tarea_externa where id_tarea_externa = ?'
-        db.query(q, [idTareaExterna], (err, data) => {
-            if (err) res.send(err)
-            res.send({"status": 200, "mensaje": "La tarea se borró exitosamente"})
-        })
+        pool.getConnection((err, db) => {
+            if (err) throw err
+            console.log('Connected as id: ' + db.threadId)
+            db.query(q, [idTareaExterna], (err, data) => {
+                db.release()
+                if (err) {
+                    console.log(err)
+                    res.send(err)
+                }
+                res.send({"status": 200, "mensaje": "La tarea se borró exitosamente"})
+            })
+        }) 
     } catch (err) {
-        console.log('delete', err)
+            console.log('delete', err)
     }
 })
 
@@ -180,10 +258,18 @@ app.put('/tareas-externas/:id_tarea_externa/:id_estado_tarea/:id_usuario', (req,
                   '         id_modificado_por = ?, ' +
                   '         id_estado_tarea = ? ' +
                   ' where   id_tarea_externa = ?'
-        db.query(q, [idUsuario, idEstadoTarea, idTareaExterna], (err, data) => {
-            if (err) res.send(err)
-            res.send({"status": 200, "mensaje": "El estado se cambió con éxito"})
-        })
+        pool.getConnection((err, db) => {
+            if (err) throw err
+            console.log('Connected as id: ' + db.threadId)
+            db.query(q, [idUsuario, idEstadoTarea, idTareaExterna], (err, data) => {
+                db.release()
+                if (err) {
+                    console.log(err)
+                    res.send(err)
+                }
+                res.send({"status": 200, "mensaje": "El estado se cambió con éxito"})
+            })
+        }) 
     } catch (err) {
         console.log('update', err)
     }
