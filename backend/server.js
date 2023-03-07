@@ -8,15 +8,9 @@ const pool = mysql.createPool({
     host: "localhost",
     user: "root",
     password: "",
-    database: "olimpio"  
+    database: "olimpio"
+    // , socketPath: '/var/run/mysqld/mysqld.sock'
 })
-
-// const db = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
-//     password: "",
-//     database: "olimpio"  
-// })
 
 const PORT = 8080
 app.use(cors());
@@ -29,7 +23,6 @@ app.post('/login', (req, res) => {
 
     pool.getConnection((err, db) => {
         if (err) throw err
-        console.log('Connected as id: ' + db.threadId)
         db.query(q, [usuario, contrasena], (err, data) => {
             db.release()
 
@@ -50,7 +43,6 @@ app.use('/sucursales', (req, res) => {
     const q = 'select * from sucursal where estado = 1'
     pool.getConnection((err, db) => {
         if (err) throw err
-        console.log('Connected as id: ' + db.threadId)
 
         db.query(q, (err, data) => {
             db.release()
@@ -68,7 +60,6 @@ app.use('/roles', (req, res) => {
     const q = 'select * from rol where estado = 1'
     pool.getConnection((err, db) => {
         if (err) throw err
-        console.log('Connected as id: ' + db.threadId)
         db.query(q, (err, data) => {
             db.release()
             if (err) {
@@ -85,7 +76,6 @@ app.use('/usuarios', (req, res) => {
     const q = 'select * from usuario where estado = 1'
     pool.getConnection((err, db) => {
         if (err) throw err
-        console.log('Connected as id: ' + db.threadId)
         db.query(q, (err, data) => {
             db.release()
             if (err) {
@@ -103,7 +93,6 @@ app.use('/tipos-trabajo', (req, res) => {
     const q = 'select * from tipo_trabajo where estado = 1'
     pool.getConnection((err, db) => {
         if (err) throw err
-        console.log('Connected as id: ' + db.threadId)
         db.query(q, (err, data) => {
             db.release()
             if (err) {
@@ -119,7 +108,6 @@ app.use('/tipos-servicio', (req, res) => {
     const q = 'select * from tipo_servicio where estado = 1'
     pool.getConnection((err, db) => {
         if (err) throw err
-        console.log('Connected as id: ' + db.threadId)
         db.query(q, (err, data) => {
             db.release()
             if (err) {
@@ -136,7 +124,6 @@ app.use('/estados-tarea', (req, res) => {
     const q = 'select * from estado_tarea where estado = 1'
     pool.getConnection((err, db) => {
         if (err) throw err
-        console.log('Connected as id: ' + db.threadId)
         db.query(q, (err, data) => {
             db.release()
             if (err) {
@@ -153,7 +140,6 @@ app.use('/tareas-externas-activas', (req, res) => {
     const q = 'select * from tarea_externa where id_estado_tarea < 7 and estado = 1'
     pool.getConnection((err, db) => {
         if (err) throw err
-        console.log('Connected as id: ' + db.threadId)
         db.query(q, (err, data) => {
             db.release()
             if (err) {
@@ -169,7 +155,6 @@ app.get('/tareas-externas', (req, res) => {
     const q = 'select * from tarea_externa where estado = 1'
     pool.getConnection((err, db) => {
         if (err) throw err
-        console.log('Connected as id: ' + db.threadId)
         db.query(q, (err, data) => {
             db.release()
             if (err) {
@@ -214,7 +199,6 @@ app.post("/tareas-externas", (req, res) => {
 
     pool.getConnection((err, db) => {
         if (err) throw err
-        console.log('Connected as id: ' + db.threadId)
         db.query(q, [values], (err, data) => {
             db.release()
             if (err) {
@@ -232,7 +216,6 @@ app.delete('/tareas-externas/:id_tarea_externa', (req, res) => {
         const q = 'delete from tarea_externa where id_tarea_externa = ?'
         pool.getConnection((err, db) => {
             if (err) throw err
-            console.log('Connected as id: ' + db.threadId)
             db.query(q, [idTareaExterna], (err, data) => {
                 db.release()
                 if (err) {
@@ -260,7 +243,6 @@ app.put('/tareas-externas/:id_tarea_externa/:id_estado_tarea/:id_usuario', (req,
                   ' where   id_tarea_externa = ?'
         pool.getConnection((err, db) => {
             if (err) throw err
-            console.log('Connected as id: ' + db.threadId)
             db.query(q, [idUsuario, idEstadoTarea, idTareaExterna], (err, data) => {
                 db.release()
                 if (err) {
