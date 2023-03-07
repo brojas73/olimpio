@@ -20,7 +20,6 @@ const TerminadosParaRecolectar = ({onContinuar}) => {
       <TareasexternasHeader />
       <Row xs={1} md={1} className="g-3">
       {
-        tareasExternas &&
         tareasExternas.filter(tareaExterna => 
                                 tareaExterna.id_estado_tarea === STATUS_TAREA.TERMINADO_PARA_RECOLECTAR &&
                                 tareaExterna.id_sucursal_destino === parseInt(sucursalActual) &&

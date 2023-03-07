@@ -1,0 +1,22 @@
+•	Usuario: 
+lavand32
+•	Contraseña: 
+m2*IqH2R9mW!5w
+•	URL del Panel de Control (cPanel): 
+http://50.6.138.26/cpanel
+
+
+base de datos: valand32_olimpio
+usuario: lavand32_tracking
+password: AACP43xB2nWFru5
+
+
+user: id_rsa
+pwd: E$teEsElP@asswordYD3b3S3rMuyC0mpl1cado!
+
+########
+
+IP: 157.230.228.153     (DigitalOcean)
+mysql -u brojas -p
+sudo systemctl start mysql.service
+systemctl status mysql.service

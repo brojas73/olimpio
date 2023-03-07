@@ -28,7 +28,6 @@ const PendienteRecoleccion = ({onContinuar, onBorraTarea}) => {
       <TareasExternasHeader />
       <Row xs={1} md={1} className="g-3">
       {
-          tareasExternas &&
           tareasExternas.filter(tareaExterna => 
                               tareaExterna.id_estado_tarea === STATUS_TAREA.PENDIENTE_RECOLECCION &&
                               tareaExterna.id_sucursal_origen === parseInt(sucursalActual) &&
