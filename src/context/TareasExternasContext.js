@@ -2,7 +2,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 
-export const URL_APIS = 'http://localhost:8080'
+export const URL_APIS = 'http://localhost:8080/api'
+// export const URL_APIS = process.env.REACT_APP_API_URL;
 
 export const STATUS_TAREA = {
     TAREAS_ACTIVAS: 0,

@@ -16,9 +16,11 @@ const PORT = 8080
 app.use(cors());
 app.use(express.json())
 
-app.post('/login', (req, res) => {
+app.post('/api/login', (req, res) => {
     const usuario = req.body.usuario
     const contrasena = req.body.contrasena
+    console.log('backend.loging.usuario', usuario)
+    console.log('backend.loging.contrasena ', contrasena)
     const q = 'select * from usuario where usuario = ? and contrasena = ? and estado = 1'
 
     pool.getConnection((err, db) => {
@@ -39,7 +41,7 @@ app.post('/login', (req, res) => {
     })
 })
 
-app.use('/sucursales', (req, res) => {
+app.use('/api/sucursales', (req, res) => {
     const q = 'select * from sucursal where estado = 1'
     pool.getConnection((err, db) => {
         if (err) throw err
@@ -56,7 +58,7 @@ app.use('/sucursales', (req, res) => {
     })
 })
 
-app.use('/roles', (req, res) => {
+app.use('/api/roles', (req, res) => {
     const q = 'select * from rol where estado = 1'
     pool.getConnection((err, db) => {
         if (err) throw err
@@ -72,7 +74,7 @@ app.use('/roles', (req, res) => {
     })
 })
 
-app.use('/usuarios', (req, res) => {
+app.use('/api/usuarios', (req, res) => {
     const q = 'select * from usuario where estado = 1'
     pool.getConnection((err, db) => {
         if (err) throw err
@@ -89,7 +91,7 @@ app.use('/usuarios', (req, res) => {
     })
 })
 
-app.use('/tipos-trabajo', (req, res) => {
+app.use('/api/tipos-trabajo', (req, res) => {
     const q = 'select * from tipo_trabajo where estado = 1'
     pool.getConnection((err, db) => {
         if (err) throw err
@@ -104,7 +106,7 @@ app.use('/tipos-trabajo', (req, res) => {
     })
 })
 
-app.use('/tipos-servicio', (req, res) => {
+app.use('/api/tipos-servicio', (req, res) => {
     const q = 'select * from tipo_servicio where estado = 1'
     pool.getConnection((err, db) => {
         if (err) throw err
@@ -120,7 +122,7 @@ app.use('/tipos-servicio', (req, res) => {
     })
 })
 
-app.use('/estados-tarea', (req, res) => {
+app.use('/api/estados-tarea', (req, res) => {
     const q = 'select * from estado_tarea where estado = 1'
     pool.getConnection((err, db) => {
         if (err) throw err
@@ -136,7 +138,7 @@ app.use('/estados-tarea', (req, res) => {
     })
 })
 
-app.use('/tareas-externas-activas', (req, res) => {
+app.use('/api/tareas-externas-activas', (req, res) => {
     const q = 'select * from tarea_externa where id_estado_tarea < 7 and estado = 1'
     pool.getConnection((err, db) => {
         if (err) throw err
@@ -151,7 +153,7 @@ app.use('/tareas-externas-activas', (req, res) => {
     })
 })
 
-app.get('/tareas-externas', (req, res) => {
+app.get('/api/tareas-externas', (req, res) => {
     const q = 'select * from tarea_externa where estado = 1'
     pool.getConnection((err, db) => {
         if (err) throw err
@@ -167,7 +169,7 @@ app.get('/tareas-externas', (req, res) => {
     })
 })
 
-app.post("/tareas-externas", (req, res) => {
+app.post("/api/tareas-externas", (req, res) => {
     const q = 'insert into tarea_externa (' +  
               ' id_sucursal_origen, ' +
               ' ticket, ' +
@@ -210,7 +212,7 @@ app.post("/tareas-externas", (req, res) => {
     })
 })
 
-app.delete('/tareas-externas/:id_tarea_externa', (req, res) => {
+app.delete('/api/tareas-externas/:id_tarea_externa', (req, res) => {
     try {
         const idTareaExterna = req.params.id_tarea_externa
         const q = 'delete from tarea_externa where id_tarea_externa = ?'
@@ -231,7 +233,7 @@ app.delete('/tareas-externas/:id_tarea_externa', (req, res) => {
 })
 
 
-app.put('/tareas-externas/:id_tarea_externa/:id_estado_tarea/:id_usuario', (req, res) => {
+app.put('/api/tareas-externas/:id_tarea_externa/:id_estado_tarea/:id_usuario', (req, res) => {
     try {
         const idUsuario = req.params.id_usuario
         const idTareaExterna = req.params.id_tarea_externa

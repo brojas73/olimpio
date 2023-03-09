@@ -20,3 +20,6 @@ IP: 157.230.228.153     (DigitalOcean)
 mysql -u brojas -p
 sudo systemctl start mysql.service
 systemctl status mysql.service
+
+
+Ol!mp!0!!@@

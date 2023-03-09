@@ -1,7 +1,7 @@
 {
   "name": "olimpio",
   "version": "0.1.0",
-  "private": true,
+  "homepage": ".",
   "dependencies": {
     "bootstrap": "^5.2.3",
     "dayjs": "^1.11.7",
