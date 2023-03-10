@@ -163,7 +163,9 @@ https://www.youtube.com/watch?v=Nxw2j1-srVc&ab_channel=LamaDev
 
 ######### REVISION DE LOGS #########
 
- ls -l /root/.pm2/logs/*
+Los logs de pm2 se pueden revisar así:
+
+            ls -l /root/.pm2/logs/*
 
 
       
