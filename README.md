@@ -66,6 +66,7 @@ https://www.youtube.com/watch?v=Nxw2j1-srVc&ab_channel=LamaDev
 9. Borrar los archivos default de nginx
 
       rm /etc/nginx/sites-available/default
+
       rm /etc/nginx/sites-enabled/default
 
 10. Crear un archivo de configuracion para nginx
@@ -116,11 +117,11 @@ https://www.youtube.com/watch?v=Nxw2j1-srVc&ab_channel=LamaDev
 14. Crear repositorio en github
 15. Hacer la carga del proyecto a github (Posicionarse en el root del proyecto), en .gitignore hay que agregar .env
 
-      git init
-      git add .
-      git commit -m "commit"
-      git remote add origin "<github url>"
-      git push origin master
+            git init
+            git add .
+            git commit -m "commit"
+            git remote add origin "<github url>"
+            git push origin master
 
 16. Crear las aplicaciones en la máquinad de producción
       Irse a root de la maquina
