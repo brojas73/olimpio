@@ -10,18 +10,9 @@ base de datos: valand32_olimpio
 usuario: lavand32_tracking
 password: AACP43xB2nWFru5
 
-
-user: id_rsa
-pwd: E$teEsElP@asswordYD3b3S3rMuyC0mpl1cado!
-
 ########
-
-IP: 157.230.228.153     (DigitalOcean)
-mysql -u brojas -p
-sudo systemctl start mysql.service
-systemctl status mysql.service
-
 
 Hostinger: 5.183.8.10
 8qpmDuHemc@k2cQ
+Ol!mp!0!!@@
 

@@ -26,7 +26,7 @@ const NuevaTareaForm = ({onExito}) => {
   })
 
   function handleChange(e) {
-    setTareaExterna(prevValue => ({...prevValue, [e.target.name]: e.target.value}))
+    setTareaExterna(prevValue => ({...prevValue, [e.target.name]: e.target.value.toUpperCase()}))
   }
 
   function handleCancelar() {

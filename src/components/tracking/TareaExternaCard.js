@@ -43,8 +43,10 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
                 return esEncargado()
             case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR: 
                 return esChofer()
-            case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN: 
+            case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
                 return esChofer()
+            case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN: 
+                return esEncargado()
             case STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN: 
                 return esEncargado()
             default:
@@ -75,7 +77,8 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
                         <Card.Subtitle>
                         {
                             (estadoActual === STATUS_TAREA.PENDIENTE_RECOLECCION ||
-                             estadoActual === STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN) ? (
+                             estadoActual === STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN ||
+                             estadoActual === STATUS_TAREA.RECOLECTADO_PARA_ENTREGA) ? (
                                 `Destino: ${getSucursal(tareaExterna.id_sucursal_destino)}`
                             ) : (
                                 `Origen: ${getSucursal(tareaExterna.id_sucursal_origen)}`

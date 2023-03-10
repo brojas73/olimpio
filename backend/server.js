@@ -1,6 +1,11 @@
-import express from "express"
-import mysql from "mysql"
-import cors from "cors"
+const PORT = 8080
+
+// import express from "express"
+// import mysql from "mysql"
+// import cors from "cors"
+const express = require('express')
+const cors = require('cors')
+const mysql = require('mysql')
 
 const app = express();
 const pool = mysql.createPool({
@@ -9,10 +14,8 @@ const pool = mysql.createPool({
     user: "root",
     password: "",
     database: "olimpio"
-    // , socketPath: '/var/run/mysqld/mysqld.sock'
 })
 
-const PORT = 8080
 app.use(cors());
 app.use(express.json())
 
@@ -75,7 +78,13 @@ app.use('/api/roles', (req, res) => {
 })
 
 app.use('/api/usuarios', (req, res) => {
-    const q = 'select * from usuario where estado = 1'
+    const q = `select   id_usuario,
+                        usuario,
+                        nombre,
+                        email,
+                        id_rol 
+                from    usuario 
+                where   estado = 1`
     pool.getConnection((err, db) => {
         if (err) throw err
         db.query(q, (err, data) => {
