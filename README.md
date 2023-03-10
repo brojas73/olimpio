@@ -1,21 +1,29 @@
 ############## INSTALACION DE MYSQL #################
 1. Instalar mysql
+
       apt update
       apt install mysql-server
       sytemctl start mysql.service
+
 2. Configurar usuarios
+
       $ mysql
       mysql> alter user 'root'@'localhost' identified with mysql_native_password by 'password' ;
       mysql> create user 'brojas'@'localhost' identified with mysql_native_password by 'password' ;
       mysql> grant all privileges on *.* to 'brojas'@'localhost' with grant option ;
       mysql> flush privileges ;
       mysql> exit ;
+
 3. Revisar status de mysql
+
       systemctl status mysql.service
+
 4. Instalar la BD
+
       mysql> create database olimpio;
       mysql> exit
       $ mysql -u root -p olimpio < olimpio.sql
+
 
 
 ############## INSTALACION DE LA APLICACION Y EL SERVER DE API ####################
@@ -52,6 +60,7 @@ https://www.youtube.com/watch?v=Nxw2j1-srVc&ab_channel=LamaDev
 
       mkdir /var/www/olimpio
       vi /var/www/olimpio/index.htm
+
           Este es un archivo de prueba
 
 9. Borrar los archivos default de nginx
@@ -60,6 +69,7 @@ https://www.youtube.com/watch?v=Nxw2j1-srVc&ab_channel=LamaDev
       rm /etc/nginx/sites-enabled/default
 
 10. Crear un archivo de configuracion para nginx
+
       vi /etc/nginx/sites-available/olimpio
 
           server {
@@ -154,7 +164,7 @@ https://www.youtube.com/watch?v=Nxw2j1-srVc&ab_channel=LamaDev
 ######### REVISION DE LOGS #########
 
  ls -l /root/.pm2/logs/*
- 
+
 
       
       
