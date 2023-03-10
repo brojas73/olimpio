@@ -1,28 +1,25 @@
 ############## INSTALACION DE MYSQL #################
 1. Instalar mysql
-
-      apt update
-      apt install mysql-server
-      sytemctl start mysql.service
+            apt update
+            apt install mysql-server
+            sytemctl start mysql.service
 
 2. Configurar usuarios
 
-      $ mysql
-      mysql> alter user 'root'@'localhost' identified with mysql_native_password by 'password' ;
-      mysql> create user 'brojas'@'localhost' identified with mysql_native_password by 'password' ;
-      mysql> grant all privileges on *.* to 'brojas'@'localhost' with grant option ;
-      mysql> flush privileges ;
-      mysql> exit ;
+            $ mysql
+            mysql> alter user 'root'@'localhost' identified with mysql_native_password by 'password' ;
+            mysql> create user 'brojas'@'localhost' identified with mysql_native_password by 'password' ;
+            mysql> grant all privileges on *.* to 'brojas'@'localhost' with grant option ;
+            mysql> flush privileges ;
+            mysql> exit ;
 
 3. Revisar status de mysql
-
-      systemctl status mysql.service
+            systemctl status mysql.service
 
 4. Instalar la BD
-
-      mysql> create database olimpio;
-      mysql> exit
-      $ mysql -u root -p olimpio < olimpio.sql
+            mysql> create database olimpio;
+            mysql> exit
+            $ mysql -u root -p olimpio < olimpio.sql
 
 
 
