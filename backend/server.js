@@ -1,8 +1,5 @@
 const PORT = 8080
 
-// import express from "express"
-// import mysql from "mysql"
-// import cors from "cors"
 const express = require('express')
 const cors = require('cors')
 const mysql = require('mysql')
