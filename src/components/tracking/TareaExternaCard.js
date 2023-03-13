@@ -5,7 +5,7 @@ import { useAuth } from "../../hooks/useAuth"
 
 const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBorrar }, key) => {
     const { estadoActual, getSucursal, getTipoServicio, getTipoTrabajo, getEstadoTarea, getUsuario } = useTareasExternas()
-    const { esEncargado, esChofer, credenciales } = useAuth()
+    const { esMaquila, esEncargado, esChofer, credenciales } = useAuth()
 
     function formateaFecha(fecha, hora) {
         const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
@@ -38,17 +38,17 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
             case STATUS_TAREA.PENDIENTE_RECOLECCION: 
                 return esChofer()
             case STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE: 
-                return esEncargado()
+                return esEncargado() || esMaquila()
             case STATUS_TAREA.RECIBIDO_PARA_ATENDERSE: 
-                return esEncargado()
+                return esEncargado() || esMaquila()
             case STATUS_TAREA.TERMINADO_PARA_RECOLECTAR: 
                 return esChofer()
             case STATUS_TAREA.RECOLECTADO_PARA_ENTREGA:
                 return esChofer()
             case STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN: 
-                return esEncargado()
+                return esEncargado() || esMaquila()
             case STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN: 
-                return esEncargado()
+                return esEncargado() || esMaquila()
             default:
                 break
         }

@@ -5,7 +5,8 @@ import { URL_APIS } from "../context/TareasExternasContext"
 export const ROLES = {
     ADMIN: 1,
     ENCARGADO: 2,
-    CHOFER: 3
+    CHOFER: 3,
+    MAQUILA: 4
 }
 
 const AuthContext = createContext()
@@ -44,6 +45,10 @@ export const AuthProvider = ({children}) => {
         setCredenciales(null)
     }
 
+    function esMaquila() {
+        return credenciales.id_rol === ROLES.MAQUILA
+    }
+
     function esEncargado() {
         return (esAdmin() || credenciales.id_rol === ROLES.ENCARGADO)
     }
@@ -62,7 +67,7 @@ export const AuthProvider = ({children}) => {
 
     return (
         <AuthContext.Provider value={{
-            credenciales, login, logout, esEncargado, esChofer, esAdmin, getUsuario
+            credenciales, login, logout, esMaquila, esEncargado, esChofer, esAdmin, getUsuario
         }}>
             {children}
         </AuthContext.Provider>
