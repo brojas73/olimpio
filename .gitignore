@@ -11,6 +11,9 @@
 # production
 /build
 
+# Configuration
+configuracion.olimpio
+
 # misc
 .DS_Store
 .env
