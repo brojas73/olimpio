@@ -67,22 +67,13 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
         <Col>
             <Card border={tareaExterna.id_tipo_servicio == TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
                 <Card.Header>
-                    {
-                        estadoActual === STATUS_TAREA.TAREAS_ACTIVAS && (
-                            <Card.Subtitle className="text-primary">{getEstadoTarea(tareaExterna.id_estado_tarea)}</Card.Subtitle>
-                        )
-                    }
+                    <Card.Subtitle className="text-primary">{getEstadoTarea(tareaExterna.id_estado_tarea)}</Card.Subtitle>
                     <div className="d-flex justify-content-between align-items-center">
                         <Card.Title>Ticket: {tareaExterna.ticket}</Card.Title>
                         <Card.Subtitle>
                         {
-                            (estadoActual === STATUS_TAREA.PENDIENTE_RECOLECCION ||
-                             estadoActual === STATUS_TAREA.ENTREGADO_A_SUCURSAL_ORIGEN ||
-                             estadoActual === STATUS_TAREA.RECOLECTADO_PARA_ENTREGA) ? (
-                                `Destino: ${getSucursal(tareaExterna.id_sucursal_destino)}`
-                            ) : (
-                                `Origen: ${getSucursal(tareaExterna.id_sucursal_origen)}`
-                            )
+                                   `Origen: ${getSucursal(tareaExterna.id_sucursal_origen)} ->   
+                                    Destino: ${getSucursal(tareaExterna.id_sucursal_destino)}`
                         }
                         </Card.Subtitle>
                     </div>
