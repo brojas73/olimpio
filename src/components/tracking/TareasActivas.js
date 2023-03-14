@@ -21,19 +21,21 @@ const TareasActivas = ({onContinuar}) => {
     })
   }
 
+  // Obtengo las tareas que voy a deplegar
+  const tareas = tareasExternas.filter(tareaExterna => 
+    (ticketFiltro.length === 0 || (ticketFiltro.length > 0 && tareaExterna.ticket.startsWith(ticketFiltro))) &&
+    (sucursalFiltro === 0 || (sucursalFiltro !== 0 && (tareaExterna.id_sucursal_origen === sucursalFiltro || tareaExterna.id_sucursal_destino === sucursalFiltro))) &&
+    (tipoTrabajoFiltro === 0 || (tipoTrabajoFiltro !== 0 && tareaExterna.id_tipo_trabajo === tipoTrabajoFiltro)) &&
+    (tipoServicioFiltro === 0 || (tipoServicioFiltro !== 0 && tareaExterna.id_tipo_servicio === tipoServicioFiltro))
+  )
+
   return (
     <>
-      <TareasExternasHeader titulo='Tareas Activas'/>
+      <TareasExternasHeader titulo='Tareas Activas' renglones={tareas.length} />
       <Row xs={1} md={1} className="g-3">
       {
-        tareasExternas &&
-        tareasExternas.filter(tareaExterna => 
-                                    (ticketFiltro.length === 0 || (ticketFiltro.length > 0 && tareaExterna.ticket.startsWith(ticketFiltro))) &&
-                                    (sucursalFiltro === 0 || (sucursalFiltro !== 0 && (tareaExterna.id_sucursal_origen === sucursalFiltro || tareaExterna.id_sucursal_destino === sucursalFiltro))) &&
-                                    (tipoTrabajoFiltro === 0 || (tipoTrabajoFiltro !== 0 && tareaExterna.id_tipo_trabajo === tipoTrabajoFiltro)) &&
-                                    (tipoServicioFiltro === 0 || (tipoServicioFiltro !== 0 && tareaExterna.id_tipo_servicio === tipoServicioFiltro))
-                             )
-                      .map(tareaExterna => (
+        tareas &&
+        tareas.map(tareaExterna => (
           <TareaExterna 
               tareaExterna={tareaExterna} 
               tituloContinuar="Recibir" 

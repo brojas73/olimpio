@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom"
-import { Navbar, Container, Button } from 'react-bootstrap'
+import { Navbar, Container, Button, Badge } from 'react-bootstrap'
 import { useTareasExternas } from "../../context/TareasExternasContext"
 import { STATUS_TAREA } from "../../context/TareasExternasContext"
 import { useAuth } from "../../hooks/useAuth"
 
-const TituloTareas = ({titulo}) => {
+const TituloTareas = ({titulo, renglones}) => {
     const navigate = useNavigate()
     const { estadoActual } = useTareasExternas()
     const { esEncargado } = useAuth()
@@ -16,7 +16,10 @@ const TituloTareas = ({titulo}) => {
     return (
         <Navbar>
             <Container className="justify-content-start">
-                <h4>{titulo}</h4>
+                <Button variant="dark" size="lg">
+                    {titulo} { " "}
+                    <Badge bg="primary">{renglones}</Badge>
+                </Button>
             </Container>
             {
                 (esEncargado() && estadoActual === STATUS_TAREA.PENDIENTE_RECOLECCION) && (
