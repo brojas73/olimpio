@@ -33,7 +33,7 @@ function App() {
   function handleLoginOk({usuario, nombre}) {
     asignaConectado(true)
     asignaSucursalActual(SUCURSAL_DEFAULT)
-    navigate('/tracking/pendiente-recoleccion')
+    navigate('/tracking/tareas-activas')
   }
 
   function handleLoginFail(mensaje) {

@@ -2,6 +2,7 @@
 import { STATUS_TAREA, TIPOS_SERVICIO, useTareasExternas } from "../../context/TareasExternasContext"
 import { Button, Card, Col } from "react-bootstrap"
 import { useAuth } from "../../hooks/useAuth"
+import { FaArrowAltCircleRight } from 'react-icons/fa'
 
 const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBorrar }, key) => {
     const { estadoActual, getSucursal, getTipoServicio, getTipoTrabajo, getEstadoTarea, getUsuario } = useTareasExternas()
@@ -69,12 +70,11 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
                 <Card.Header>
                     <Card.Subtitle className="text-primary">{getEstadoTarea(tareaExterna.id_estado_tarea)}</Card.Subtitle>
                     <div className="d-flex justify-content-between align-items-center">
-                        <Card.Title>Ticket: {tareaExterna.ticket}</Card.Title>
+                        <Card.Title>Ticket: {tareaExterna.ticket.padStart(6, '0')}</Card.Title>
                         <Card.Subtitle>
-                        {
-                                   `Origen: ${getSucursal(tareaExterna.id_sucursal_origen)} ->   
-                                    Destino: ${getSucursal(tareaExterna.id_sucursal_destino)}`
-                        }
+                        { getSucursal(tareaExterna.id_sucursal_origen) }
+                        { " " } <FaArrowAltCircleRight /> { " " }
+                        { getSucursal(tareaExterna.id_sucursal_destino) }
                         </Card.Subtitle>
                     </div>
                     <div className="d-flex justify-content-between align-items-center">

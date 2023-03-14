@@ -46,7 +46,7 @@ export function TareasExternasProvider({children}) {
 
     const [conectado, setConectado] = useState(false)
     const [sucursalActual, setSucursalActual] = useState(SUCURSAL_DEFAULT)
-    const [estadoActual, setEstadoActual] = useState(STATUS_TAREA.PENDIENTE_RECOLECCION)
+    const [estadoActual, setEstadoActual] = useState(STATUS_TAREA.TAREAS_ACTIVAS)
 
     const [ticketFiltro, setTicketFiltro] = useState('')
     const [sucursalFiltro, setSucursalFiltro] = useState(0)
