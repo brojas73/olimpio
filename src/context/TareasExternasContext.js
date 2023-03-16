@@ -142,7 +142,7 @@ export function TareasExternasProvider({children}) {
             }
 
             const data = await response.json()
-            setTareasExternas(currentTareasExternas => [...currentTareasExternas, tareaExterna])
+            setTareasExternas(prevTareasExternas => [...prevTareasExternas, tareaExterna])
             return data
         } catch (err) {
             console.log(err)
@@ -151,7 +151,8 @@ export function TareasExternasProvider({children}) {
 
     async function borraTareaExterna(id_tarea_externa) {
         try {
-            const response = await fetch(`${URL_APIS}/tareas-externas/${id_tarea_externa}/${credenciales.usuario}`, {
+            console.log('TareasExternasContext.borraTareaExterna.id_tarea_externa', id_tarea_externa)
+            const response = await fetch(`${URL_APIS}/tareas-externas/${id_tarea_externa}`, {
                 method: 'DELETE',
                 header: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id_tarea_externa })
@@ -163,9 +164,10 @@ export function TareasExternasProvider({children}) {
             }
  
             const data = await response.json()
-            setTareasExternas(currentTareasExternas => {
-                currentTareasExternas.filter(tareaExterna => tareaExterna.id_tarea_externa !== id_tarea_externa)
-            })
+            // setTareasExternas(currentTareasExternas => {
+            //     return currentTareasExternas.filter(tareaExterna => tareaExterna.id_tarea_externa !== id_tarea_externa)
+            // })
+            setTareasExternas(currentTareasExternas => currentTareasExternas.filter(tareaExterna => tareaExterna.id_tarea_externa !== id_tarea_externa))
             return data
         } catch (err) {
             console.log(err)

@@ -55,9 +55,9 @@ const NuevaTareaForm = ({onExito}) => {
     agregaTareaExterna(nuevaTareaExterna).then(data => {
         if (data.status === 200) {
             onExito(data.mensaje)
+            navigate('/tracking/pendiente-recoleccion')
         }
     })
-    navigate('/tracking/pendiente-recoleccion')
   }
 
   function formateaFecha(fecha) {

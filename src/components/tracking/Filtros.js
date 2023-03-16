@@ -34,16 +34,16 @@ const Filtros = () => {
                                 titleOption={true}
                                 onSelect={asignaSucursalFiltro} 
                             />
-                            <TiposTrabajoDropDown 
+                            {/* <TiposTrabajoDropDown 
                                 title={getTipoTrabajo(tipoTrabajoFiltro)} 
                                 titleOption={true}
                                 onSelect={asignaTipoTrabajoFiltro} 
-                            />
-                            <TiposServicioDropDown 
+                            /> */}
+                            {/* <TiposServicioDropDown 
                                 title={getTipoServicio(tipoServicioFiltro)} 
                                 titleOption={true}
                                 onSelect={asignaTipoServicioFiltro} 
-                            />
+                            /> */}
                             <EstadosTareaDropDown 
                                 title={getEstadoTarea(estadoActual)}
                                 onSelect={asignaEstadoActual}

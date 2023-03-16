@@ -1,22 +1,42 @@
+import { useState } from "react"
 import { Row } from "react-bootstrap"
 import { STATUS_TAREA, useTareasExternas, useTareasExternasUpdate } from "../../context/TareasExternasContext"
 import TareasExternasHeader from "./TareasExternasHeader"
 import TareaExterna from "./TareaExternaCard"
+import ConfirmacionActualizacion from './ConfirmacionActualizacion'
 
 const PendienteRecoleccion = ({onContinuar, onBorraTarea}) => {
   const { tareasExternas, sucursalActual, ticketFiltro, sucursalFiltro, tipoTrabajoFiltro, tipoServicioFiltro } = useTareasExternas()
   const { actualizaTareaExterna, borraTareaExterna } = useTareasExternasUpdate()
+  const [mensajeConfirmacion, setMensajeConfirmacion] = useState('')
+  const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false)
+  const [borrando, setBorrando] = useState(false)
+  const [idTareaExterna, setIdTareaExterna] = useState(0)
 
   function onAccionBorrar(id_tarea_externa) {
-    borraTareaExterna(id_tarea_externa).then(data => {
+    setMensajeConfirmacion('¿Seguro que quieres borrar la tarea?')
+    setMostrarConfirmacion(true)
+    setBorrando(true)
+    setIdTareaExterna(id_tarea_externa)
+  }
+
+  function onAccionContinuar(id_tarea_externa) {
+    setMensajeConfirmacion('¿Seguro que quieres recolectar la tarea?')
+    setMostrarConfirmacion(true)
+    setBorrando(false)
+    setIdTareaExterna(id_tarea_externa)
+  }
+
+  function accionBorrar() {
+    borraTareaExterna(idTareaExterna).then(data => {
       if (data.status === 200) {
         onBorraTarea(data.mensaje)
       }
     })
   }
 
-  function onAccionContinuar(id_tarea_externa) {
-    actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE).then(data => {
+  function accionContinuar() {
+    actualizaTareaExterna(idTareaExterna, STATUS_TAREA.RECOLECTADO_PARA_ATENDERSE).then(data => {
       if (data.status === 200) {
         onContinuar(data.mensaje)
       }
@@ -35,6 +55,13 @@ const PendienteRecoleccion = ({onContinuar, onBorraTarea}) => {
 
   return (
     <>
+      <ConfirmacionActualizacion 
+        show={mostrarConfirmacion} 
+        setShow={setMostrarConfirmacion}
+        title='Confirmación' 
+        body={mensajeConfirmacion}
+        onContinuar={borrando ? accionBorrar : accionContinuar }
+      />
       <TareasExternasHeader renglones={tareas.length}/>
       <Row xs={1} md={1} className="g-3">
       {

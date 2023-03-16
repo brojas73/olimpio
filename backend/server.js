@@ -217,7 +217,7 @@ app.post("/api/tareas-externas", (req, res) => {
 
 app.delete('/api/tareas-externas/:id_tarea_externa', (req, res) => {
     try {
-        const { id_tarea_externa } = req.params.id_tarea_externa
+        const { id_tarea_externa } = req.params
         const q = 'delete from tarea_externa where id_tarea_externa = ?'
         pool.getConnection((err, db) => {
             if (err) throw err
@@ -231,7 +231,7 @@ app.delete('/api/tareas-externas/:id_tarea_externa', (req, res) => {
             })
         }) 
     } catch (err) {
-            console.log('delete', err)
+        console.log('delete', err)
     }
 })
 
@@ -265,9 +265,6 @@ app.get('/api/tareas-externas-log', (req, res) => {
     // Si no recibimos el ticket
     if (!ticket) ticket = '%'
     if (!descripcion) descripcion = '%'
-
-    // console.log('tareas-externas-log.ticket', ticket)
-    // console.log('tareas-externas-log.descripcion', descripcion)
 
     const q = `
         select   te.ticket,

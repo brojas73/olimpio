@@ -9,6 +9,14 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
     const { estadoActual, getSucursal, getTipoServicio, getTipoTrabajo, getEstadoTarea, getUsuario } = useTareasExternas()
     const { esMaquila, esEncargado, esChofer, credenciales } = useAuth()
 
+    function handleContinuar() {
+        accionContinuar(tareaExterna.id_tarea_externa)
+    }
+
+    function handleBorrar() {
+        accionBorrar(tareaExterna.id_tarea_externa)
+    }
+
     function mostrarBotonAccionContinuar() {
         if (!accionContinuar)
             return false
@@ -43,65 +51,67 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
     }
 
     return (
-        <Col>
-            <Card border={tareaExterna.id_tipo_servicio == TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
-                <Card.Header>
-                    <Card.Subtitle className="text-primary">{getEstadoTarea(tareaExterna.id_estado_tarea)}</Card.Subtitle>
-                    <div className="d-flex justify-content-between align-items-center">
-                        <Card.Title>Ticket: {tareaExterna.ticket.padStart(6, '0')}</Card.Title>
+        <>
+            <Col>
+                <Card border={tareaExterna.id_tipo_servicio == TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >
+                    <Card.Header>
+                        <Card.Subtitle className="text-primary">{getEstadoTarea(tareaExterna.id_estado_tarea)}</Card.Subtitle>
+                        <div className="d-flex justify-content-between align-items-center">
+                            <Card.Title>Ticket: {tareaExterna.ticket.padStart(6, '0')}</Card.Title>
+                            <Card.Subtitle>
+                            { getSucursal(tareaExterna.id_sucursal_origen) }
+                            { " " } <FaArrowAltCircleRight /> { " " }
+                            { getSucursal(tareaExterna.id_sucursal_destino) }
+                            </Card.Subtitle>
+                        </div>
+                        <div className="d-flex justify-content-between align-items-center">
+                            <small>{formateaFecha(tareaExterna.fecha_creacion)}</small>
+                            <small>{getUsuario(tareaExterna.id_creado_por)}</small>
+                        </div>
+                    </Card.Header>
+                    <Card.Body>
                         <Card.Subtitle>
-                        { getSucursal(tareaExterna.id_sucursal_origen) }
-                        { " " } <FaArrowAltCircleRight /> { " " }
-                        { getSucursal(tareaExterna.id_sucursal_destino) }
+                            {getTipoTrabajo(tareaExterna.id_tipo_trabajo)} { " - "}
+                            {getTipoServicio(tareaExterna.id_tipo_servicio)}
                         </Card.Subtitle>
-                    </div>
-                    <div className="d-flex justify-content-between align-items-center">
-                        <small>{formateaFecha(tareaExterna.fecha_creacion)}</small>
-                        <small>{getUsuario(tareaExterna.id_creado_por)}</small>
-                    </div>
-                </Card.Header>
-                <Card.Body>
-                    <Card.Subtitle>
-                        {getTipoTrabajo(tareaExterna.id_tipo_trabajo)} { " - "}
-                        {getTipoServicio(tareaExterna.id_tipo_servicio)}
-                    </Card.Subtitle>
-                    <Card.Text>
-                        {tareaExterna.descripcion}
-                    </Card.Text>
-                </Card.Body>
-                <Card.Footer className="d-flex justify-content-between align-items-center">
-                    <div>
-                        <small>Entregar: {formateaFechaHora(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}</small>
-                    </div>
-                    <div>
-                        {
-                            mostrarBotonAcccionBorrar() && (
-                                <>
+                        <Card.Text>
+                            {tareaExterna.descripcion}
+                        </Card.Text>
+                    </Card.Body>
+                    <Card.Footer className="d-flex justify-content-between align-items-center">
+                        <div>
+                            <small>Entregar: {formateaFechaHora(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}</small>
+                        </div>
+                        <div>
+                            {
+                                mostrarBotonAcccionBorrar() && (
+                                    <>
+                                        <Button 
+                                            size="sm" 
+                                            onClick={handleBorrar} 
+                                            variant='danger'>
+                                            Borrar
+                                        </Button>
+                                        <span> </span>
+                                    </>
+                                )
+                            }
+                            {
+                                mostrarBotonAccionContinuar() && (
                                     <Button 
-                                        size="sm" 
-                                        onClick={() => accionBorrar(tareaExterna.id_tarea_externa)} 
-                                        variant='danger'>
-                                        Borrar
+                                        size="sm"
+                                        onClick={handleContinuar}
+                                        variant={tareaExterna.id_tipo_servicio == TIPOS_SERVICIO.EXPRESS ? 'danger' : 'primary'}
+                                    >
+                                        {tituloContinuar}
                                     </Button>
-                                    <span> </span>
-                                </>
-                            )
-                        }
-                        {
-                            mostrarBotonAccionContinuar() && (
-                                <Button 
-                                    size="sm"
-                                    onClick={() => accionContinuar(tareaExterna.id_tarea_externa)}
-                                    variant={tareaExterna.id_tipo_servicio == TIPOS_SERVICIO.EXPRESS ? 'danger' : 'primary'}
-                                >
-                                    {tituloContinuar}
-                                </Button>
-                            )
-                        }
-                    </div>
-                </Card.Footer>
-            </Card>
-        </Col>
+                                )
+                            }
+                        </div>
+                    </Card.Footer>
+                </Card>
+            </Col>
+        </>
     )
 }
 

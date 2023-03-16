@@ -14,7 +14,7 @@ const SucursalSelect = ({onChange, name, value, label, filtraSucursalActual }) =
             >
                 <option key={0} value="">Selecciona una...</option>
                 {
-                    sucursales.filter(sucursal => (!filtraSucursalActual || sucursal.id_sucursal !== sucursalActual)).map(sucursal => (
+                    sucursales.filter(sucursal => (!filtraSucursalActual || sucursal.id_sucursal !== parseInt(sucursalActual))).map(sucursal => (
                         <option key={sucursal.id_sucursal} value={sucursal.id_sucursal}>{sucursal.nombre}</option>
                     ))
                 }

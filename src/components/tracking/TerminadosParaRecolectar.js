@@ -1,14 +1,23 @@
+import { useState } from 'react'
 import { Row } from "react-bootstrap"
 import { STATUS_TAREA, useTareasExternas, useTareasExternasUpdate } from "../../context/TareasExternasContext"
 import TareasexternasHeader from "./TareasExternasHeader"
 import TareaExterna from "./TareaExternaCard"
+import ConfirmacionActualizacion from './ConfirmacionActualizacion'
 
 const TerminadosParaRecolectar = ({onContinuar}) => {
   const { tareasExternas, sucursalActual, ticketFiltro, sucursalFiltro, tipoTrabajoFiltro, tipoServicioFiltro } = useTareasExternas()
   const { actualizaTareaExterna } = useTareasExternasUpdate()
+  const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false)
+  const [idTareaExterna, setIdTareaExterna] = useState(0)
 
   function onAccionContinuar(id_tarea_externa) {
-    actualizaTareaExterna(id_tarea_externa, STATUS_TAREA.RECOLECTADO_PARA_ENTREGA).then(data => {
+    setMostrarConfirmacion(true)
+    setIdTareaExterna(id_tarea_externa)
+  }
+
+  function accionContinuar() {
+    actualizaTareaExterna(idTareaExterna, STATUS_TAREA.RECOLECTADO_PARA_ENTREGA).then(data => {
       if (data.status === 200) {
         onContinuar(data.mensaje)
       }
@@ -27,6 +36,13 @@ const TerminadosParaRecolectar = ({onContinuar}) => {
 
   return (
     <>
+      <ConfirmacionActualizacion 
+        show={mostrarConfirmacion} 
+        setShow={setMostrarConfirmacion}
+        title='Confirmación' 
+        body='¿Seguro que quieres recolectar la tarea?'
+        onContinuar={accionContinuar}
+      />
       <TareasexternasHeader renglones={tareas.length} />
       <Row xs={1} md={1} className="g-3">
       {
