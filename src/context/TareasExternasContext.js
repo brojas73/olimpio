@@ -89,8 +89,9 @@ export function TareasExternasProvider({children}) {
         }
 
         try {
+            fetchSucursales()
+            
             if (conectado) {
-                fetchSucursales()
                 fetchTiposTrabajo()
                 fetchTiposServicio()
                 fetchEstadosTarea()

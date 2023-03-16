@@ -10,6 +10,7 @@ import RecibidosParaAtenderse from './components/tracking/RecibidosParaAtenderse
 import TerminadosParaRecolectar from './components/tracking/TerminadosParaRecolectar';
 import RecolectadosParaEntrega from './components/tracking/RecolectadosParaEntrega';
 import EntregadosASucursalOrigen from './components/tracking/EntregadosASucursalOrigen';
+import Bitacora from './components/reports/Bitacora'
 import Login from "./components/login/Login";
 import ProtectedLayout from "./components/comun/ProtectedLayout";
 import Home from "./components/comun/Home";
@@ -72,6 +73,8 @@ function App() {
           <Route path='terminados-para-recolectar' element={<TerminadosParaRecolectar onContinuar={despliegaAlerta} />} />
           <Route path='recolectados-para-entrega' element={<RecolectadosParaEntrega onContinuar={despliegaAlerta} />} />
           <Route path='entregados-a-sucursal-origen' element={<EntregadosASucursalOrigen onContinuar={despliegaAlerta} />} />
+        </Route>
+        <Route path='/reports' element={<Bitacora />}>
         </Route>
       </Routes>
     </Container>

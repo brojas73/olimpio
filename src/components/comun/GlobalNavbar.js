@@ -11,7 +11,7 @@ const GlobalNavbar = ({onLogout}) => {
     const { getUsuario } = useAuth()
 
     return (
-        <Navbar bg='dark' variant="dark" expand='sm' className="mb-3"> 
+        <Navbar bg="dark" variant="dark" expand='md' className="mb-3"> 
             <Navbar.Brand as={Link} to="/" className="mx-3">Olimpio</Navbar.Brand>
             <Navbar.Toggle aria-controls="offcanvasNavbar-expand-sm"/>
             <Navbar.Offcanvas aria-labelledby="offcanvasNavbarLabel-expand-sm">
@@ -19,8 +19,12 @@ const GlobalNavbar = ({onLogout}) => {
                 {
                     conectado && (
                         <Offcanvas.Body>
+                            <Nav className="justify-content-start flex-grow-1 pe-3">
+                                <Nav.Link as={Link} to='/tracking/tareas-activas'>Tracking</Nav.Link>
+                                <Nav.Link as={Link} to='/reports'>Consultas</Nav.Link>
+                            </Nav>
                             <Nav className="justify-content-end flex-grow-1 pe-3">
-                                <SucursalesDropDown title={getSucursal(sucursalActual)} onSelect={asignaSucursalActual} />
+                                <SucursalesDropDown title={getSucursal(sucursalActual)} onSelect={asignaSucursalActual} showIcon={true} />
                                 <UsuarioDropDown title={getUsuario()} onLogout={onLogout}/>
                             </Nav>
                         </Offcanvas.Body>

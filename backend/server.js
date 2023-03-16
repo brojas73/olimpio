@@ -17,10 +17,7 @@ app.use(cors());
 app.use(express.json())
 
 app.post('/api/login', (req, res) => {
-    const usuario = req.body.usuario
-    const contrasena = req.body.contrasena
-    console.log('backend.loging.usuario', usuario)
-    console.log('backend.loging.contrasena ', contrasena)
+    const { usuario, contrasena } = req.body
     const q = 'select * from usuario where usuario = ? and contrasena = ? and estado = 1'
 
     pool.getConnection((err, db) => {
@@ -176,20 +173,20 @@ app.get('/api/tareas-externas', (req, res) => {
 })
 
 app.post("/api/tareas-externas", (req, res) => {
-    const q = 'insert into tarea_externa (' +  
-              ' id_sucursal_origen, ' +
-              ' ticket, ' +
-              ' descripcion, ' +
-              ' id_tipo_trabajo, ' +
-              ' id_sucursal_destino, ' +
-              ' fecha_requerida, ' +
-              ' hora_requerida, ' +
-              ' id_tipo_servicio, ' + 
-              ' id_estado_tarea, ' +
-              ' id_creado_por,' +
-              ' id_modificado_por,' +
-              ' estado' +
-              ') values (?)' 
+    const q = `insert into tarea_externa (
+                  id_sucursal_origen,
+                  ticket,
+                  descripcion,
+                  id_tipo_trabajo,
+                  id_sucursal_destino,
+                  fecha_requerida,
+                  hora_requerida,
+                  id_tipo_servicio,
+                  id_estado_tarea,
+                  id_creado_por,
+                  id_modificado_por,
+                  estado
+              ) values (?)` 
     const values = [
         req.body.id_sucursal_origen, 
         req.body.ticket, 
@@ -220,11 +217,11 @@ app.post("/api/tareas-externas", (req, res) => {
 
 app.delete('/api/tareas-externas/:id_tarea_externa', (req, res) => {
     try {
-        const idTareaExterna = req.params.id_tarea_externa
+        const { id_tarea_externa } = req.params.id_tarea_externa
         const q = 'delete from tarea_externa where id_tarea_externa = ?'
         pool.getConnection((err, db) => {
             if (err) throw err
-            db.query(q, [idTareaExterna], (err, data) => {
+            db.query(q, [id_tarea_externa], (err, data) => {
                 db.release()
                 if (err) {
                     console.log(err)
@@ -238,20 +235,17 @@ app.delete('/api/tareas-externas/:id_tarea_externa', (req, res) => {
     }
 })
 
-
 app.put('/api/tareas-externas/:id_tarea_externa/:id_estado_tarea/:id_usuario', (req, res) => {
     try {
-        const idUsuario = req.params.id_usuario
-        const idTareaExterna = req.params.id_tarea_externa
-        const idEstadoTarea = req.params.id_estado_tarea
-        const q = 'update   tarea_externa ' +
-                  '     set fecha_modificacion = CURRENT_TIMESTAMP,' +
-                  '         id_modificado_por = ?, ' +
-                  '         id_estado_tarea = ? ' +
-                  ' where   id_tarea_externa = ?'
+        const { id_usuario, id_estado_tarea, id_tarea_externa } = req.params
+        const q = `update   tarea_externa
+                       set  fecha_modificacion = CURRENT_TIMESTAMP,
+                            id_modificado_por = ?,
+                            id_estado_tarea = ?
+                      where id_tarea_externa = ?`
         pool.getConnection((err, db) => {
             if (err) throw err
-            db.query(q, [idUsuario, idEstadoTarea, idTareaExterna], (err, data) => {
+            db.query(q, [id_usuario, id_estado_tarea, id_tarea_externa], (err, data) => {
                 db.release()
                 if (err) {
                     console.log(err)
@@ -263,6 +257,60 @@ app.put('/api/tareas-externas/:id_tarea_externa/:id_estado_tarea/:id_usuario', (
     } catch (err) {
         console.log('update', err)
     }
+})
+
+app.get('/api/tareas-externas-log', (req, res) => {
+    let { ticket, descripcion } = req.query
+
+    // Si no recibimos el ticket
+    if (!ticket) ticket = '%'
+    if (!descripcion) descripcion = '%'
+
+    // console.log('tareas-externas-log.ticket', ticket)
+    // console.log('tareas-externas-log.descripcion', descripcion)
+
+    const q = `
+        select   te.ticket,
+                 te.descripcion,
+                 case tel.id_tipo_accion
+                    when 1 then
+                       'Creación'
+                    when 2 then 
+                       'Borrado'
+                    when 3 then 
+                       'Actualización'
+                 end as tipo_accion,
+                 tel.fecha,
+                 u.nombre as usuario,
+                 estado_final.nombre as estado_fin,
+                 estado_inicial.nombre as estado_ini,
+                 tel.id_tarea_externa_log as id
+           from  tarea_externa_log as tel
+                 inner join tarea_externa as te
+                    on    te.id_tarea_externa = tel.id_tarea_externa
+                 left outer join usuario as u
+                    on    u.id_usuario = tel.id_usuario
+                 inner join estado_tarea as estado_final
+                    on    estado_final.id_estado_tarea = tel.id_estado_tarea_fin
+                 inner join estado_tarea as estado_inicial
+                    on    estado_inicial.id_estado_tarea = tel.id_estado_tarea_ini
+           where te.ticket like '${ticket}'
+           and   te.descripcion like '${descripcion}' 
+        order by tel.id_tarea_externa,
+                 tel.fecha     
+    `
+    pool.getConnection((err, db) => {
+        if (err) throw err
+        db.query(q, (err, data) => {
+            db.release()
+            if (err) {
+                console.log(err)
+                res.send(err)
+            }
+
+            res.send(data)
+        })
+    })
 })
 
 app.listen(PORT, () => console.log(`API is running on http://localhost:${PORT}`));

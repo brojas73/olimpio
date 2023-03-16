@@ -3,33 +3,11 @@ import { STATUS_TAREA, TIPOS_SERVICIO, useTareasExternas } from "../../context/T
 import { Button, Card, Col } from "react-bootstrap"
 import { useAuth } from "../../hooks/useAuth"
 import { FaArrowAltCircleRight } from 'react-icons/fa'
+import { formateaFecha, formateaFechaHora } from '../comun/Funciones'
 
 const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBorrar }, key) => {
     const { estadoActual, getSucursal, getTipoServicio, getTipoTrabajo, getEstadoTarea, getUsuario } = useTareasExternas()
     const { esMaquila, esEncargado, esChofer, credenciales } = useAuth()
-
-    function formateaFecha(fecha, hora) {
-        const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
-        const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
-        const fechaTmp = new Date(Date.parse(fecha.substring(0, 10) + 'T' + hora))
-        return dias[fechaTmp.getDay()] + ', ' + 
-               fechaTmp.getDate() + ' ' + 
-               meses[fechaTmp.getMonth()] + ' ' +
-               fechaTmp.getFullYear() + ' @ ' +
-               hora.substring(0, 5) + ' hr'
-    }
-
-    function formateaFecha2(fecha) {
-        const fechaTmp = new Date(fecha)
-        const year = fechaTmp.getFullYear()
-        const month = String(fechaTmp.getMonth() + 1).padStart(2, '0')
-        const date = String(fechaTmp.getDate()).padStart(2, '0')
-        const hours = String(fechaTmp.getHours()).padStart(2, '0')
-        const minutes = String(fechaTmp.getMinutes()).padStart(2, '0')
-        const fechaStr = `${year}-${month}-${date}`
-        const hora = `${hours}:${minutes}`
-        return formateaFecha(fechaStr, hora)
-    }
 
     function mostrarBotonAccionContinuar() {
         if (!accionContinuar)
@@ -78,7 +56,7 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
                         </Card.Subtitle>
                     </div>
                     <div className="d-flex justify-content-between align-items-center">
-                        <small>{formateaFecha2(tareaExterna.fecha_creacion)}</small>
+                        <small>{formateaFecha(tareaExterna.fecha_creacion)}</small>
                         <small>{getUsuario(tareaExterna.id_creado_por)}</small>
                     </div>
                 </Card.Header>
@@ -93,7 +71,7 @@ const TareaExterna = ({tareaExterna, tituloContinuar, accionContinuar, accionBor
                 </Card.Body>
                 <Card.Footer className="d-flex justify-content-between align-items-center">
                     <div>
-                        <small>Entregar: {formateaFecha(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}</small>
+                        <small>Entregar: {formateaFechaHora(tareaExterna.fecha_requerida, tareaExterna.hora_requerida)}</small>
                     </div>
                     <div>
                         {
