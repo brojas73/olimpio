@@ -277,7 +277,7 @@ app.get('/api/tareas-externas-log', (req, res) => {
                     when 3 then 
                        'Actualización'
                  end as tipo_accion,
-                 tel.fecha,
+                 convert_tz(tel.fecha, @@session.time_zone, '-05:00') as fecha,
                  u.nombre as usuario,
                  estado_final.nombre as estado_fin,
                  estado_inicial.nombre as estado_ini,

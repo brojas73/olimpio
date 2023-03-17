@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory from 'react-bootstrap-table2-paginator'
 import Filtros from "./Filtros"
+import { formateaFecha } from '../comun/Funciones'
 
 export default function Bitacora() {
   const [bitacora, setBitacora] = useState([])
@@ -34,11 +35,19 @@ export default function Bitacora() {
     fetchBitacora(ticketFiltro, descripcionFiltro)
   }, [ticketFiltro, descripcionFiltro])
 
+  const fechaFormatter = (data, row) => {
+    return  (
+      <>
+        { formateaFecha(data, false, false) }
+      </>
+    )
+  }
+
   const columns = [
     { dataField: "ticket", text: "Ticket", sort: true},
     { dataField: "descripcion", text: "Descripción", sort: true },
     { dataField: "tipo_accion", text: "Acción", sort: true },
-    { dataField: "fecha", text: "Fecha", sort: true },
+    { dataField: "fecha", text: "Fecha", sort: true, formatter: fechaFormatter},
     { dataField: "usuario", text: "Usuario", sort: true },
     { dataField: "estado_fin", text: "Estado Final", sort: true },
     { dataField: "estado_ini", text: "Estado Inicial", sort: true },
