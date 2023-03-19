@@ -4,6 +4,14 @@ import { schema } from './Schema'
 import cors from "cors"
 import { createConnection } from "typeorm"
 import { Sucursal } from './Entities/Sucursal'
+import { Rol } from './Entities/Rol'
+import { EstadoTarea } from "./Entities/EstadoTarea"
+import { TipoAccion } from "./Entities/TipoAccion"
+import { TipoServicio } from "./Entities/TipoServicio"
+import { TipoTrabajo } from "./Entities/TipoTrabajo"
+import { Usuario } from "./Entities/Usuario"
+import { TareaExterna } from "./Entities/TareaExterna"
+import { TareaExternaLog } from "./Entities/TareaExternaLog"
 
 const main = async () => {
     await createConnection({
@@ -11,9 +19,11 @@ const main = async () => {
         database: "olimpio",
         username: "root",
         password: "Ol!mp!0!!@@",
-        logging: true,
+        // logging: true,
         synchronize: false,
-        entities: [Sucursal],
+        entities: [
+            EstadoTarea, Rol, Sucursal, TareaExterna, TareaExternaLog, TipoAccion, TipoServicio, TipoTrabajo, Usuario
+        ],
     })
 
     const app = express()

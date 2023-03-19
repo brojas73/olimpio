@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class TareaExterna extends BaseEntity {
@@ -20,8 +20,29 @@ export class TareaExterna extends BaseEntity {
     @Column()
     id_sucursal_destino!: number
 
+    @Column({type: 'date'})
+    fecha_requerida!: string
+
+    @Column({type: 'time'})
+    hora_requerida!: string
+
     @Column()
-    nombre!: string
+    id_tipo_servicio!: number
+
+    @Column()
+    id_estado_tarea!: number
+
+    @CreateDateColumn()
+    fecha_creacion!: Date
+
+    @Column()
+    id_creado_por!: number
+
+    @UpdateDateColumn()
+    fecha_modificacion!: Date
+
+    @Column()
+    id_modificado_por!: number
 
     @Column()
     estado!: number

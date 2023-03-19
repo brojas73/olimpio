@@ -1,9 +1,9 @@
 import { GraphQLObjectType, GraphQLID, GraphQLInt, GraphQLString } from 'graphql'
 
-export const SucursalType = new GraphQLObjectType({
-    name: 'Sucursal',
+export const RolType = new GraphQLObjectType({
+    name: 'Rol',
     fields: () => ({
-        id_sucursal: { type: GraphQLID },
+        id_rol: { type:  GraphQLID },
         nombre: { type: GraphQLString },
         estado: { type: GraphQLInt }
     })

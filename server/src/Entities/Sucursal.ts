@@ -2,12 +2,13 @@ import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Sucursal extends BaseEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('increment')
     id_sucursal!: number
 
-    @Column({type: "string"})
+    @Column()
     nombre!: string
 
     @Column()
     estado!: number
 }
+
