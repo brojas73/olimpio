@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { NavDropdown } from 'react-bootstrap'
 import { useTareasExternas } from '../../context/TareasExternasContext'
+import { STATUS_TAREA } from '../../context/TareasExternasContext'
 
 
 const EstadosTareaDropDown = ({onSelect, title }) => {
@@ -14,7 +15,9 @@ const EstadosTareaDropDown = ({onSelect, title }) => {
   return (
     <NavDropdown title={title}>
     {
-      estadosTarea.map(estadoTarea => (
+      estadosTarea
+        .filter(estadoTarea => estadoTarea.id_estado_tarea !== STATUS_TAREA.RECIBIDO_EN_SUCURSAL_ORIGEN)
+        .map(estadoTarea => (
           <NavDropdown.Item 
               as={Link}
               to={estadoTarea.url}

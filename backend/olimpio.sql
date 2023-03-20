@@ -160,6 +160,8 @@ CREATE TRIGGER `ti_tarea_externa` AFTER INSERT ON `tarea_externa` FOR EACH ROW i
 $$
 DELIMITER ;
 DELIMITER $$
+DROP TRIGGER tu_tarea_externa
+$$
 CREATE TRIGGER `tu_tarea_externa` AFTER UPDATE ON `tarea_externa` FOR EACH ROW insert into tarea_externa_log (
       id_tarea_externa,
       id_tipo_accion,
@@ -169,7 +171,7 @@ CREATE TRIGGER `tu_tarea_externa` AFTER UPDATE ON `tarea_externa` FOR EACH ROW i
    ) values (
        OLD.id_tarea_externa,
        3,    
-       OLD.id_modificado_por,
+       NEW.id_modificado_por,
        OLD.id_estado_tarea,
        NEW.id_estado_tarea
    )

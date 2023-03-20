@@ -12,12 +12,17 @@ export function formateaFechaHora(fecha, hora, mostrarDia = true, mostrarAt = tr
 
 export function formateaFecha(fecha, mostrarDia = true, mostrarAt = true) {
     const fechaTmp = new Date(fecha)
-    const year = fechaTmp.getFullYear()
-    const month = String(fechaTmp.getMonth() + 1).padStart(2, '0')
-    const date = String(fechaTmp.getDate()).padStart(2, '0')
-    const hours = String(fechaTmp.getHours()).padStart(2, '0')
-    const minutes = String(fechaTmp.getMinutes()).padStart(2, '0')
-    const fechaStr = `${year}-${month}-${date}`
-    const hora = `${hours}:${minutes}`
-    return formateaFechaHora(fechaStr, hora, mostrarDia, false, mostrarAt)
+    const anio = fechaTmp.getFullYear()
+    const mes = String(fechaTmp.getMonth() + 1).padStart(2, '0')
+    const dia = String(fechaTmp.getDate()).padStart(2, '0')
+    const horas = String(fechaTmp.getHours()).padStart(2, '0')
+    const minutos = String(fechaTmp.getMinutes()).padStart(2, '0')
+    const fechaStr = `${anio}-${mes}-${dia}`
+    const hora = `${horas}:${minutos}`
+    return formateaFechaHora(fechaStr, hora, mostrarDia, mostrarAt)
 }
+
+export async function fetchData(url) { 
+    return await fetch(url).then(response => response.json())
+}    
+

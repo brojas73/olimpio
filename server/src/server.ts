@@ -13,13 +13,17 @@ import { Usuario } from "./Entities/Usuario"
 import { TareaExterna } from "./Entities/TareaExterna"
 import { TareaExternaLog } from "./Entities/TareaExternaLog"
 
+require('dotenv').config()
+
+const port = process.env.PORT || 3010
+
 const main = async () => {
     await createConnection({
         type: "mysql",
         database: "olimpio",
         username: "root",
         password: "Ol!mp!0!!@@",
-        // logging: true,
+        logging: true,
         synchronize: false,
         entities: [
             EstadoTarea, Rol, Sucursal, TareaExterna, TareaExternaLog, TipoAccion, TipoServicio, TipoTrabajo, Usuario
@@ -32,11 +36,11 @@ const main = async () => {
     app.use(express.json())
     app.use("/graphql", graphqlHTTP({
         schema,
-        graphiql: true
+        graphiql: process.env.NODE_ENV === 'development'
     }))
 
-    app.listen(3010, () => {
-        console.log('Sever running on port 3010')
+    app.listen(port, () => {
+        console.log(`Sever running on port ${port}`)
     })
 }
 

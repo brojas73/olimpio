@@ -14,17 +14,17 @@ const PendienteRecoleccion = ({onContinuar, onBorraTarea}) => {
   const [idTareaExterna, setIdTareaExterna] = useState(0)
 
   function onAccionBorrar(id_tarea_externa) {
+    setIdTareaExterna(id_tarea_externa)
     setMensajeConfirmacion('¿Seguro que quieres borrar la tarea?')
     setMostrarConfirmacion(true)
     setBorrando(true)
-    setIdTareaExterna(id_tarea_externa)
   }
 
   function onAccionContinuar(id_tarea_externa) {
+    setIdTareaExterna(id_tarea_externa)
     setMensajeConfirmacion('¿Seguro que quieres recolectar la tarea?')
     setMostrarConfirmacion(true)
     setBorrando(false)
-    setIdTareaExterna(id_tarea_externa)
   }
 
   function accionBorrar() {

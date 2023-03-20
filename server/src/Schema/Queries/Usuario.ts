@@ -5,7 +5,8 @@ import { IUsuario } from '../../Interfaces/Usuario'
 
 export const GET_ALL_USUARIOS = {
     type: new GraphQLList(UsuarioType),
-    async resolve(): Promise<IUsuario[]> {
+    // async resolve(): Promise<IUsuario[]> {
+    async resolve() {
         return await Usuario.find()
     }
 }

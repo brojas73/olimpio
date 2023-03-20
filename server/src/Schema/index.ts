@@ -50,14 +50,14 @@ const RootQuery = new GraphQLObjectType({
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
-        createSucursal: CREATE_SUCURSAL,
-        createRol: CREATE_ROL,
-        creteEstadoTarea: CREATE_ESTADO_TAREA,
-        createTipoAccion: CREATE_TIPO_ACCION,
-        createTipoServicio: CREATE_TIPO_SERVICIO,
-        createTipoTrabajo: CREATE_TIPO_TRABAJO,
+        // createSucursal: CREATE_SUCURSAL,
+        // createRol: CREATE_ROL,
+        // creteEstadoTarea: CREATE_ESTADO_TAREA,
+        // createTipoAccion: CREATE_TIPO_ACCION,
+        // createTipoServicio: CREATE_TIPO_SERVICIO,
+        // createTipoTrabajo: CREATE_TIPO_TRABAJO,
         createUsuario: CREATE_USUARIO,
-        creaTareaExterna: CREATE_TAREA_EXTERNA,
+        // creaTareaExterna: CREATE_TAREA_EXTERNA,
     }
 })
 

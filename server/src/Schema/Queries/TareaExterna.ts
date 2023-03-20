@@ -18,7 +18,8 @@ export const GET_TAREA_EXTERNA_BY_ID = {
         id_tarea_externa: { type: GraphQLID },
     },
     async resolve(_: any, args: ITareaExterna) {
-        return await TareaExterna.findOne({ where: { id_tarea_externa: args.id_tarea_externa }})    
+        const { id_tarea_externa } = args
+        return await TareaExterna.findOne({ where: { id_tarea_externa: id_tarea_externa }})    
     }
 }
 
@@ -28,7 +29,8 @@ export const GET_TAREAS_EXTERNAS_BY_TICKET = {
         ticket: { type: GraphQLString },
     },
     async resolve(_: any, args: ITareaExterna) {
-        return await TareaExterna.find({ where: { ticket: Like(`${args.ticket}`) }})    
+        const { ticket } = args
+        return await TareaExterna.find({ where: { ticket: Like(`${ticket}`) }})    
     }
 }
 
@@ -38,7 +40,8 @@ export const GET_TAREAS_EXTERNAS_BY_DESCRIPCION = {
         descripcion: { type: GraphQLString },
     },
     async resolve(_: any, args: ITareaExterna) {
-        return await TareaExterna.find({ where: { descripcion: Like(`${args.descripcion}`)}})    
+        const { descripcion } = args
+        return await TareaExterna.find({ where: { descripcion: Like(`${descripcion}`)}})    
     }
 }
 
@@ -49,9 +52,10 @@ export const GET_TAREAS_EXTERNAS_BY_TICKET_AND_DESCRIPCION = {
         descripcion: { type: GraphQLString },
     },
     async resolve(_: any, args: ITareaExterna) {
+        const { ticket, descripcion } = args
         return await TareaExterna.find({ where: { 
-            ticket: Like(`${args.ticket}`),
-            descripcion: Like(`${args.descripcion}`)
+            ticket: Like(`${ticket}`),
+            descripcion: Like(`${descripcion}`)
         }})    
     }
 }

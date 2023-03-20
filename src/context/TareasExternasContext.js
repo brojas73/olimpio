@@ -1,6 +1,7 @@
 /* eslint-disable eqeqeq */
 import React, { useContext, useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { fetchData } from "../components/comun/Funciones";
 
 export const URL_APIS = 'http://localhost:8080/api'
 // export const URL_APIS = 'http://5.183.8.10/api'
@@ -91,13 +92,13 @@ export function TareasExternasProvider({children}) {
         try {
             fetchSucursales()
             
-            if (conectado) {
+            // if (conectado) {
                 fetchTiposTrabajo()
                 fetchTiposServicio()
                 fetchEstadosTarea()
                 fetchRoles()
                 fetchUsuarios()
-            }
+            // }
         } catch (err) {
             console.log(err)
         }
@@ -109,10 +110,6 @@ export function TareasExternasProvider({children}) {
         fetchUsuarios()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [conectado, sucursalActual, estadoActual])
-
-    async function fetchData(url) {
-        return await fetch(url).then(response => response.json())
-    }    
 
     async function fetchUsuarios() {
         await fetchData(`${URL_APIS}/usuarios`)

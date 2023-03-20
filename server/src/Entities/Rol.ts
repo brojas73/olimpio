@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Usuario } from "./Usuario";
 
 @Entity()
 export class Rol extends BaseEntity {
@@ -10,4 +11,7 @@ export class Rol extends BaseEntity {
 
     @Column()
     estado!: number
+
+    @OneToMany(type => Usuario, usuario => usuario.rol)
+    usuarios!: Usuario[]
 }

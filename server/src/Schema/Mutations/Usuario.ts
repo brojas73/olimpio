@@ -1,6 +1,7 @@
 import { UsuarioType } from "../TypeDefs/Usuario"
 import { GraphQLString, GraphQLInt } from "graphql"
 import { Usuario } from "../../Entities/Usuario"
+import { RolType } from "../TypeDefs/Rol"
 
 export const CREATE_USUARIO = {
     type: UsuarioType,

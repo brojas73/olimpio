@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { TareaExternaLog } from "./TareaExternaLog";
 
 @Entity()
 export class TipoAccion extends BaseEntity {
@@ -10,4 +11,7 @@ export class TipoAccion extends BaseEntity {
 
     @Column()
     estado!: number
+
+    @OneToMany(type => TareaExternaLog, tarea_externa => tarea_externa.tipo_accion)
+    tareas_externas_log!: TareaExternaLog[]
 }

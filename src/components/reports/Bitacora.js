@@ -4,21 +4,20 @@ import { useEffect, useState } from 'react'
 import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory from 'react-bootstrap-table2-paginator'
 import Filtros from "./Filtros"
-import { formateaFecha } from '../comun/Funciones'
+import { formateaFecha, fetchData } from '../comun/Funciones'
+import TareaExternaModal from "./TareaExternaModal"
 
 export default function Bitacora() {
   const [bitacora, setBitacora] = useState([])
   const [loading, setLoading] = useState(false)
+  const [idTareaExterna, setIdTareaExterna] = useState(0)
+  const [muestraTareaExterna, setMuestraTareaExterna] = useState(false)
   const [ticketFiltro, setTicketFiltro] = useState('')
   const [descripcionFiltro, setDescripcionFiltro] = useState('')
 
   function isBlank(str) {
     return (!str || /^\s*$/.test(str))
   }
-
-  async function fetchData(url) { 
-    return await fetch(url).then(response => response.json())
-  }    
 
   useEffect(() => {
     async function fetchBitacora (ticket, descripcion) {
@@ -43,6 +42,13 @@ export default function Bitacora() {
     )
   }
 
+  const tableRowEvents = {
+    onDoubleClick: (e, row, rowIndex) => {
+      setIdTareaExterna(row.id_tarea_externa)
+      setMuestraTareaExterna(true)
+    }
+  }
+
   const columns = [
     { dataField: "ticket", text: "Ticket", sort: true},
     { dataField: "descripcion", text: "Descripción", sort: true },
@@ -55,6 +61,11 @@ export default function Bitacora() {
 
   return (
     <>
+      <TareaExternaModal 
+        show={muestraTareaExterna} 
+        setShow={setMuestraTareaExterna} 
+        idTareaExterna={idTareaExterna}
+      />
       <Filtros 
         ticketFiltro={ticketFiltro} 
         descripcionFiltro={descripcionFiltro} 
@@ -81,6 +92,7 @@ export default function Bitacora() {
               columns={columns} 
               striped hover condensed 
               pagination={paginationFactory()}
+              rowEvents={tableRowEvents}
             />
           </>
         )

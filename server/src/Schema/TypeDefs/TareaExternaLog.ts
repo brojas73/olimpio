@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLID, GraphQLInt, GraphQLString } from 'graphql'
+import { GraphQLObjectType, GraphQLID, GraphQLString } from 'graphql'
 import { EstadoTarea } from '../../Entities/EstadoTarea'
 import { TareaExterna } from '../../Entities/TareaExterna'
 import { TipoAccion } from '../../Entities/TipoAccion'
@@ -12,12 +12,7 @@ export const TareaExternaLogType = new GraphQLObjectType({
     name: 'TareaExternaLog',
     fields: () => ({
         id_tarea_externa_log: { type:  GraphQLID },
-        id_tarea_externa: { type:  GraphQLInt },
-        id_tipo_accion: { type:  GraphQLInt },
         fecha: { type:  GraphQLString },
-        id_usuario: { type:  GraphQLInt },
-        id_estado_tarea_ini: { type:  GraphQLInt },
-        id_estado_tarea_fin: { type:  GraphQLInt },
 
         tarea_externa: {
             type: TareaExternaType,

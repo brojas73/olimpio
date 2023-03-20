@@ -172,6 +172,23 @@ app.get('/api/tareas-externas', (req, res) => {
     })
 })
 
+app.get('/api/tareas-externas/:id_tarea_externa', (req, res) => {
+    const { id_tarea_externa } = req.params
+    const q = 'select * from tarea_externa where id_tarea_externa = ?'
+    pool.getConnection((err, db) => {
+        if (err) throw err
+        db.query(q, [id_tarea_externa], (err, data) => {
+            db.release()
+            if (err) {
+                console.log(err)
+                res.send(err)
+            }
+
+            res.send(data)
+        })
+    })
+})
+
 app.post("/api/tareas-externas", (req, res) => {
     const q = `insert into tarea_externa (
                   id_sucursal_origen,
@@ -281,6 +298,7 @@ app.get('/api/tareas-externas-log', (req, res) => {
                  u.nombre as usuario,
                  estado_final.nombre as estado_fin,
                  estado_inicial.nombre as estado_ini,
+                 te.id_tarea_externa as id_tarea_externa,
                  tel.id_tarea_externa_log as id
            from  tarea_externa_log as tel
                  inner join tarea_externa as te

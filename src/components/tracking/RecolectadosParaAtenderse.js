@@ -19,8 +19,8 @@ const RecolectadosParaAtenderse = ({onContinuar}) => {
   const [idTareaExterna, setIdTareaExterna] = useState(0)
 
   function onAccionContinuar(id_tarea_externa) {
-    setMostrarConfirmacion(true)
     setIdTareaExterna(id_tarea_externa)
+    setMostrarConfirmacion(true)
   }
 
   function accionContinuar() {

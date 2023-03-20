@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { TareaExterna } from "./TareaExterna";
 
 @Entity()
 export class TipoServicio extends BaseEntity {
@@ -10,4 +11,7 @@ export class TipoServicio extends BaseEntity {
 
     @Column()
     estado!: number
+
+    @ManyToOne(type => TareaExterna, tarea_externa => tarea_externa.tipo_servicio)
+    tareas_externas!: TareaExterna[]
 }
