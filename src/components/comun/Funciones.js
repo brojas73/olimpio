@@ -26,3 +26,20 @@ export async function fetchData(url) {
     return await fetch(url).then(response => response.json())
 }    
 
+export const ticketFormatter = (data, row) => {
+    return (
+      <>
+        { data.padStart(6, '0') }
+      </>
+    )
+}
+
+export const fechaFormatter = (data, row) => {
+    return  (
+      <>
+        { formateaFecha(data, false, true) }
+      </>
+    )
+}
+
+

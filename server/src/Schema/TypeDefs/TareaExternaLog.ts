@@ -18,7 +18,6 @@ export const TareaExternaLogType = new GraphQLObjectType({
     fields: () => ({
         id_tarea_externa_log: { type:  GraphQLID },
         fecha: { type:  GraphQLString },
-        // id_tarea_externa: { type: GraphQLInt },
 
         tarea_externa: {
             type: TareaExternaType,

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Navbar, Offcanvas, Nav } from "react-bootstrap"
+import { Navbar, Offcanvas, Nav, NavDropdown } from "react-bootstrap"
 import { useTareasExternas, useTareasExternasUpdate } from "../../context/TareasExternasContext"
 import SucursalesDropDown from "./SucursalesDropDown"
 import UsuarioDropDown from "./UsuarioDropDown"
@@ -21,7 +21,10 @@ const GlobalNavbar = ({onLogout}) => {
                         <Offcanvas.Body>
                             <Nav className="justify-content-start flex-grow-1 pe-3">
                                 <Nav.Link as={Link} to='/tracking/tareas-activas'>Tracking</Nav.Link>
-                                <Nav.Link as={Link} to='/reports'>Consultas</Nav.Link>
+                                <NavDropdown title="Consultas">
+                                    <NavDropdown.Item as={Link} to='/reports/tareas-por-atenderse-hoy'>Tareas para Hoy</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to='/reports/bitacora'>Bitácora</NavDropdown.Item>
+                                </NavDropdown>
                             </Nav>
                             <Nav className="justify-content-end flex-grow-1 pe-3">
                                 <SucursalesDropDown title={getSucursal(sucursalActual)} onSelect={asignaSucursalActual} showIcon={true} />

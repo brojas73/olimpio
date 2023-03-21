@@ -16,6 +16,7 @@ import ProtectedLayout from "./components/comun/ProtectedLayout";
 import Home from "./components/comun/Home";
 import IdleTimeoutHandler from "./components/comun/IdleTimeoutHandler";
 import { SUCURSAL_DEFAULT, useTareasExternas, useTareasExternasUpdate } from "./context/TareasExternasContext";
+import TareasPorAtenderseHoy from "./components/reports/TareasPorAtenderseHoy";
 
 
 function App() {
@@ -74,7 +75,10 @@ function App() {
           <Route path='recolectados-para-entrega' element={<RecolectadosParaEntrega onContinuar={despliegaAlerta} />} />
           <Route path='entregados-a-sucursal-origen' element={<EntregadosASucursalOrigen onContinuar={despliegaAlerta} />} />
         </Route>
-        <Route path='/reports' element={<Bitacora />}>
+
+        <Route path='/reports' element={<ProtectedLayout />}>
+          <Route path='bitacora' element={<Bitacora />} />
+          <Route path='tareas-por-atenderse-hoy' element={<TareasPorAtenderseHoy />} />
         </Route>
       </Routes>
     </Container>

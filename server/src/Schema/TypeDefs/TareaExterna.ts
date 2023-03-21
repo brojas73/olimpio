@@ -76,11 +76,11 @@ export const TareaExternaType = new GraphQLObjectType({
             }
         },
 
-        // tareas_externas_log: {
-        //     type: new GraphQLList(TareaExternaLogType),
-        //     async resolve(parent: ITareaExterna, _): Promise<ITareaExternaLog | null> {
-        //         return await TareaExternaLog.findOne({where: { id_tarea_externa: parent.id_tarea_externa}})
-        //     }
-        // },
+        tareas_externas_log: {
+            type: new GraphQLList(TareaExternaLogType),
+            resolve(parent: ITareaExterna, _: any): Promise<ITareaExternaLog[]> {
+                return TareaExternaLog.find({where: { id_tarea_externa: parent.id_tarea_externa}})
+            }
+        },
     })
 })

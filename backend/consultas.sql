@@ -1,27 +1,21 @@
-select   te.ticket,
-         te.descripcion,
-         case tel.id_tipo_accion
-            when 1 then
-               'Creación'
-            when 2 then 
-               'Borrado'
-            when 3 then 
-               'Actualización'
-         end as tipo_accion,
-         tel.fecha,
-         u.nombre,
-         estado_final.nombre as estado_fin,
-         estado_inicial.nombre as estado_ini
-   from  tarea_externa_log as tel
-         inner join tarea_externa as te
-            on    te.id_tarea_externa = tel.id_tarea_externa
-         left outer join usuario as u
-            on    u.id_usuario = tel.id_usuario
-         inner join estado_tarea as estado_final
-            on    estado_final.id_estado_tarea = tel.id_estado_tarea_fin
-         inner join estado_tarea as estado_inicial
-            on    estado_inicial.id_estado_tarea = tel.id_estado_tarea_ini
-   where te.ticket like '%'
-   and   te.descripcion like '%' 
-order by tel.id_tarea_externa,
-         tel.fecha ;
+        select   te.id_tarea_externa,
+                 te.id_sucursal_origen,
+                 te.ticket,
+                 te.descripcion,
+                 te.id_tipo_trabajo,
+                 te.id_sucursal_destino,
+                 te.fecha_requerida,
+                 te.hora_requerida,
+                 te.id_tipo_servicio,
+                 te.id_estado_tarea,
+                 convert_tz(te.fecha_creacion, @@session.time_zone, '-05:00') as fecha_creacion,
+                 te.id_creado_por,
+                 convert_tz(te.fecha_modificacion, @@session.time_zone, '-05:00') as fecha_modificacion,
+                 te.id_modificado_por,
+                 te.estado 
+           from  tarea_externa te
+           where te.id_estado_tarea = 3
+           and   te.estado = 1
+           and   concat(te.fecha_requerida, ' ', te.hora_requerida) < date_add(curdate(), interval 1 day)
+           and   te.id_sucursal_destino = 1 
+        order by te.fecha_creacion  ;

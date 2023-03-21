@@ -1,10 +1,10 @@
-import { Badge, Button, Container, Navbar, Spinner } from "react-bootstrap"
-import { URL_APIS } from '../../context/TareasExternasContext'
-import { useEffect, useState } from 'react'
 import BootstrapTable from "react-bootstrap-table-next"
 import paginationFactory from 'react-bootstrap-table2-paginator'
+import { useEffect, useState } from 'react'
+import { Badge, Button, Container, Navbar, Spinner } from "react-bootstrap"
+import { URL_APIS } from '../../context/TareasExternasContext'
+import { fechaFormatter, fetchData } from '../comun/Funciones'
 import Filtros from "./Filtros"
-import { formateaFecha, fetchData } from '../comun/Funciones'
 import TareaExternaModal from "./TareaExternaModal"
 
 export default function Bitacora() {
@@ -33,14 +33,6 @@ export default function Bitacora() {
 
     fetchBitacora(ticketFiltro, descripcionFiltro)
   }, [ticketFiltro, descripcionFiltro])
-
-  const fechaFormatter = (data, row) => {
-    return  (
-      <>
-        { formateaFecha(data, false, false) }
-      </>
-    )
-  }
 
   const tableRowEvents = {
     onDoubleClick: (e, row, rowIndex) => {

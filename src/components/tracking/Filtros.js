@@ -14,7 +14,7 @@ const Filtros = () => {
     }
 
     return (
-        <Navbar expand='md' className="mb-3">
+        <Navbar expand='sm' className="mb-3">
             <Navbar.Toggle aria-controls="offcanvasNavbar-expand-sm"/>
             <Navbar.Offcanvas aria-labelledby="offcanvasNavbarLabel-expand-sm">
                 <Offcanvas.Header closeButton>Filtros</Offcanvas.Header>
@@ -34,11 +34,11 @@ const Filtros = () => {
                                 titleOption={true}
                                 onSelect={asignaSucursalFiltro} 
                             />
-                            {/* <TiposTrabajoDropDown 
+                            <TiposTrabajoDropDown 
                                 title={getTipoTrabajo(tipoTrabajoFiltro)} 
                                 titleOption={true}
                                 onSelect={asignaTipoTrabajoFiltro} 
-                            /> */}
+                            />
                             {/* <TiposServicioDropDown 
                                 title={getTipoServicio(tipoServicioFiltro)} 
                                 titleOption={true}

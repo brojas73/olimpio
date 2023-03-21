@@ -161,6 +161,7 @@ app.use('/api/tareas-externas-activas', (req, res) => {
             from    tarea_externa 
             where   id_estado_tarea < 7 
             and     estado = 1
+        order by    fecha_creacion
     `
 
     pool.getConnection((err, db) => {
@@ -178,23 +179,24 @@ app.use('/api/tareas-externas-activas', (req, res) => {
 
 app.get('/api/tareas-externas', (req, res) => {
     const q = `
-        select  id_tarea_externa,
-                id_sucursal_origen,
-                ticket,
-                descripcion,
-                id_tipo_trabajo,
-                id_sucursal_destino,
-                fecha_requerida,
-                hora_requerida,
-                id_tipo_servicio,
-                id_estado_tarea,
-                convert_tz(fecha_creacion, @@session.time_zone, '-05:00') as fecha_creacion,
-                id_creado_por,
-                convert_tz(fecha_modificacion, @@session.time_zone, '-05:00') as fecha_modificacion,
-                id_modificado_por,
-                estado 
-        from    tarea_externa 
-        where   estado = 1
+        select   id_tarea_externa,
+                 id_sucursal_origen,
+                 ticket,
+                 descripcion,
+                 id_tipo_trabajo,
+                 id_sucursal_destino,
+                 fecha_requerida,
+                 hora_requerida,
+                 id_tipo_servicio,
+                 id_estado_tarea,
+                 convert_tz(fecha_creacion, @@session.time_zone, '-05:00') as fecha_creacion,
+                 id_creado_por,
+                 convert_tz(fecha_modificacion, @@session.time_zone, '-05:00') as fecha_modificacion,
+                 id_modificado_por,
+                 estado 
+           from  tarea_externa 
+           where estado = 1
+        order by fecha_creacion  
     `
     pool.getConnection((err, db) => {
         if (err) throw err
@@ -332,7 +334,7 @@ app.get('/api/tareas-externas-log', (req, res) => {
                     when 3 then 
                        'Actualización'
                  end as tipo_accion,
-                 convert_tz(tel.fecha, @@session.time_zone, '-05:00') as fecha,
+                 tel.fecha, 
                  u.nombre as usuario,
                  estado_final.nombre as estado_fin,
                  estado_inicial.nombre as estado_ini,
@@ -365,5 +367,46 @@ app.get('/api/tareas-externas-log', (req, res) => {
         })
     })
 })
+
+
+app.get('/api/tareas-por-atenderse-hoy/:id_sucursal_destino', (req, res) => {
+    const { id_sucursal_destino } = req.params
+
+    const q = `
+        select   te.id_tarea_externa,
+                 te.ticket,
+                 te.descripcion,
+                 concat(te.fecha_requerida, ' ', te.hora_requerida) as fecha_requerida,
+                 so.nombre as sucursal_origen,
+                 ts.nombre as tipo_servicio,
+                 tt.nombre as tipo_trabajo
+           from  tarea_externa te
+                 inner join tipo_servicio ts
+                    on    ts.id_tipo_servicio = te.id_tipo_servicio
+                 inner join tipo_trabajo tt
+                    on    tt.id_tipo_trabajo = te.id_tipo_trabajo
+                 inner join sucursal so
+                    on    so.id_sucursal = te.id_sucursal_origen
+           where te.id_estado_tarea = 3
+           and   te.estado = 1
+           and   concat(te.fecha_requerida, ' ', te.hora_requerida) < date_add(curdate(), interval 1 day)
+           and   te.id_sucursal_destino = ? 
+        order by te.fecha_creacion  
+    `
+
+    pool.getConnection((err, db) => {
+        if (err) throw err
+        db.query(q, [id_sucursal_destino], (err, data) => {
+            db.release()
+            if (err) {
+                console.log(err)
+                res.send(err)
+            }
+
+            res.send(data)
+        })
+    })
+})
+
 
 app.listen(PORT, () => console.log(`API is running on http://localhost:${PORT}`));
