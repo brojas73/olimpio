@@ -11,7 +11,4 @@ export class TipoAccion extends BaseEntity {
 
     @Column()
     estado!: number
-
-    @OneToMany(type => TareaExternaLog, tarea_externa => tarea_externa.tipo_accion)
-    tareas_externas_log!: TareaExternaLog[]
 }

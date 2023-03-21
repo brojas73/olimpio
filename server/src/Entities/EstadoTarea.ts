@@ -12,13 +12,4 @@ export class EstadoTarea extends BaseEntity {
 
     @Column()
     estado!: number
-
-    @ManyToOne(type => TareaExterna, tarea_externa => tarea_externa.estado_tarea)
-    tareas_externas!: TareaExterna[]
-
-    @ManyToOne(type => TareaExternaLog, tarea_externa_log => tarea_externa_log.estado_tarea_ini)
-    tareas_externas_log_ini!: TareaExternaLog[]
-
-    @ManyToOne(type => TareaExternaLog, tarea_externa_log => tarea_externa_log.estado_tarea_fin)
-    tareas_externas_log_fin!: TareaExternaLog[]
 }

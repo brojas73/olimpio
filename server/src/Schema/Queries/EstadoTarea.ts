@@ -5,9 +5,8 @@ import { IEstadoTarea } from '../../Interfaces/EstadoTarea'
 
 export const GET_ALL_ESTADOS_TAREA = {
     type: new GraphQLList(EstadoTareaType),
-    // resolve(): Promise<IEstadoTarea[]> {
-    resolve() {
-        return EstadoTarea.find()
+    async resolve(): Promise<IEstadoTarea[]> {
+        return await EstadoTarea.find()
     }
 }
 
@@ -16,7 +15,7 @@ export const GET_ESTADO_TAREA_BY_ID = {
     args: {
         id_estado_tarea: { type: GraphQLID },
     },
-    async resolve(_: any, args: IEstadoTarea) {
+    async resolve(_: any, args: IEstadoTarea): Promise<IEstadoTarea | null> {
         return await EstadoTarea.findOne({ where: { id_estado_tarea: args.id_estado_tarea }})    
     }
 }

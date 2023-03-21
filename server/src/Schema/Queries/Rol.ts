@@ -5,9 +5,8 @@ import { IRol } from '../../Interfaces/Rol'
 
 export const GET_ALL_ROLES = {
     type: new GraphQLList(RolType),
-    // resolve(): Promise<ISucursal[]> {
-    resolve() {
-        return Rol.find()
+    async resolve(): Promise<IRol[]> {
+        return await Rol.find()
     }
 }
 
@@ -16,7 +15,7 @@ export const GET_ROL_BY_ID = {
     args: {
         id_rol: { type: GraphQLID },
     },
-    async resolve(_: any, args: IRol) {
+    async resolve(_: any, args: IRol): Promise<IRol | null> {
         return await Rol.findOne({ where: { id_rol: args.id_rol }})    
     }
 }

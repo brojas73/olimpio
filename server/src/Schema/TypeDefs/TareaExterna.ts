@@ -1,11 +1,23 @@
-import { GraphQLObjectType, GraphQLID, GraphQLInt, GraphQLString } from 'graphql'
+import { GraphQLObjectType, GraphQLID, GraphQLInt, GraphQLString, GraphQLScalarType, GraphQLList } from 'graphql'
+
 import { EstadoTarea } from '../../Entities/EstadoTarea'
 import { Sucursal } from '../../Entities/Sucursal'
+import { TareaExternaLog } from '../../Entities/TareaExternaLog'
 import { TipoServicio } from '../../Entities/TipoServicio'
 import { TipoTrabajo } from '../../Entities/TipoTrabajo'
 import { Usuario } from '../../Entities/Usuario'
+
+import { IEstadoTarea } from '../../Interfaces/EstadoTarea'
+import { ISucursal } from '../../Interfaces/Sucursal'
+import { ITareaExterna } from '../../Interfaces/TareaExterna'
+import { ITareaExternaLog } from '../../Interfaces/TareaExternaLog'
+import { ITipoServicio } from '../../Interfaces/TipoServicio'
+import { ITipoTrabajo } from '../../Interfaces/TipoTrabajo'
+import { IUsuario } from '../../Interfaces/Usuario'
+
 import { EstadoTareaType } from './EstadoTarea'
 import { SucursalType } from './Sucursal'
+import { TareaExternaLogType } from './TareaExternaLog'
 import { TipoServicioType } from './TipoServicio'
 import { TipoTrabajoType } from './TipoTrabajo'
 import { UsuarioType } from './Usuario'
@@ -14,6 +26,7 @@ export const TareaExternaType = new GraphQLObjectType({
     name: 'TareaExterna',
     fields: () => ({
         id_tarea_externa: { type:  GraphQLID },
+        ticket: { type: GraphQLString }, 
         descripcion: { type: GraphQLString },
         fecha_requerida: { type:  GraphQLString },
         hora_requerida: { type:  GraphQLString },
@@ -22,45 +35,52 @@ export const TareaExternaType = new GraphQLObjectType({
         estado: { type: GraphQLInt },
         sucursal_origen: {
             type: SucursalType,
-            resolve(parent, _) {
-                return Sucursal.findOne({where: {id_sucursal: parent.id_sucursal_origen}})
+            async resolve(parent: ITareaExterna, _): Promise<ISucursal | null> {
+                return await Sucursal.findOne({where: {id_sucursal: parent.id_sucursal_origen}})
             }
         },
         sucursal_destino: {
             type: SucursalType,
-            resolve(parent, _) {
-                return Sucursal.findOne({where: {id_sucursal: parent.id_sucursal_destino}})
+            async resolve(parent: ITareaExterna, _): Promise<ISucursal | null> {
+                return await Sucursal.findOne({where: {id_sucursal: parent.id_sucursal_destino}})
             }
         },
         tipo_trabajo: {
             type: TipoTrabajoType,
-            resolve(parent, _) {
-                return TipoTrabajo.findOne({where: {id_tipo_trabajo: parent.id_tipo_trabajo}})
+            async resolve(parent: ITareaExterna, _): Promise<ITipoTrabajo | null> {
+                return await TipoTrabajo.findOne({where: {id_tipo_trabajo: parent.id_tipo_trabajo}})
             }
         },
         tipo_servicio: {
             type: TipoServicioType,
-            resolve(parent, _) {
+            async resolve(parent: ITareaExterna, _): Promise<ITipoServicio | null> {
                 return TipoServicio.findOne({where: {id_tipo_servicio: parent.id_tipo_servicio}})
             }
         },
         estado_tarea: {
             type: EstadoTareaType,
-            resolve(parent, _) {
-                return EstadoTarea.findOne({where: {id_estado_tarea: parent.id_estado_tarea}})
+            async resolve(parent: ITareaExterna, _): Promise<IEstadoTarea | null> {
+                return await EstadoTarea.findOne({where: {id_estado_tarea: parent.id_estado_tarea}})
             }
         },
         creado_por: {
             type: UsuarioType,
-            resolve(parent, _) {
-                return Usuario.findOne({where: { id_usuario: parent.id_creado_por }})
+            async resolve(parent: ITareaExterna, _): Promise<IUsuario | null> {
+                return await Usuario.findOne({where: { id_usuario: parent.id_creado_por }})
             }
         },
         modificado_por: {
             type: UsuarioType,
-            resolve(parent, _) {
-                return Usuario.findOne({where: { id_usuario: parent.id_modificado_por }})
+            async resolve(parent: ITareaExterna, _): Promise<IUsuario | null> {
+                return await Usuario.findOne({where: { id_usuario: parent.id_modificado_por }})
             }
         },
+
+        // tareas_externas_log: {
+        //     type: new GraphQLList(TareaExternaLogType),
+        //     async resolve(parent: ITareaExterna, _): Promise<ITareaExternaLog | null> {
+        //         return await TareaExternaLog.findOne({where: { id_tarea_externa: parent.id_tarea_externa}})
+        //     }
+        // },
     })
 })

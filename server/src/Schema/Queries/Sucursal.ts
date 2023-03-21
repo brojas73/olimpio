@@ -5,9 +5,8 @@ import { ISucursal } from '../../Interfaces/Sucursal'
 
 export const GET_ALL_SUCURSALES = {
     type: new GraphQLList(SucursalType),
-    // resolve(): Promise<ISucursal[]> {
-    resolve() {
-        return Sucursal.find()
+    async resolve(): Promise<ISucursal[]> {
+        return await Sucursal.find()
     }
 }
 
@@ -16,7 +15,7 @@ export const GET_SUCURSAL_BY_ID = {
     args: {
         id_sucursal: { type: GraphQLID },
     },
-    async resolve(_: any, args: ISucursal) {
+    async resolve(_: any, args: ISucursal): Promise<ISucursal | null> {
         return await Sucursal.findOne({ where: { id_sucursal: args.id_sucursal }})    
     }
 }

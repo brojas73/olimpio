@@ -11,7 +11,4 @@ export class TipoTrabajo extends BaseEntity {
 
     @Column()
     estado!: number
-
-    @OneToMany(type => TareaExterna, tarea_externa => tarea_externa.tipo_trabajo)
-    tareas_externas!: TareaExterna[]
 }

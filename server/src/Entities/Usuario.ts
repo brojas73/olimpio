@@ -23,18 +23,6 @@ export class Usuario extends BaseEntity {
     @Column()
     id_rol!: number
 
-    // @ManyToOne(type => Rol, rol => rol.usuarios)
-    // rol!: Rol
-
     @Column()
     estado!: number
-
-    @OneToMany(type => TareaExterna, tarea_externa => tarea_externa.creado_por)
-    creados_por!: TareaExterna[]
-
-    @OneToMany(type => TareaExterna, tarea_externa => tarea_externa.modificado_por)
-    modificados_por!: TareaExterna[]
-
-    @OneToMany(type => TareaExternaLog, tarea_externa_log => tarea_externa_log.usuario)
-    tareas_externas_log!: TareaExternaLog[]
 }

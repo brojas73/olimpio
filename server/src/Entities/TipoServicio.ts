@@ -11,7 +11,4 @@ export class TipoServicio extends BaseEntity {
 
     @Column()
     estado!: number
-
-    @ManyToOne(type => TareaExterna, tarea_externa => tarea_externa.tipo_servicio)
-    tareas_externas!: TareaExterna[]
 }

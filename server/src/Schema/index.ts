@@ -8,7 +8,7 @@ import { GET_ALL_TIPOS_SERVICIO } from "./Queries/TipoServicio";
 import { GET_ALL_TIPOS_TRABAJO } from "./Queries/TipoTrabajo";
 import { GET_ALL_USUARIOS, GET_USUARIO_BY_ID, GET_USUARIO_BY_USUARIO, GET_USUARIO_BY_USUARIO_AND_CONTRASENA } from "./Queries/Usuario";
 import { GET_ALL_TAREAS_EXTERNAS, GET_TAREAS_EXTERNAS_BY_DESCRIPCION, GET_TAREA_EXTERNA_BY_ID, GET_TAREAS_EXTERNAS_BY_TICKET, GET_TAREAS_EXTERNAS_BY_TICKET_AND_DESCRIPCION } from "./Queries/TareaExterna";
-import { GET_ALL_TAREAS_EXTERNAS_LOG } from "./Queries/TareaExternaLog";
+import { GET_ALL_TAREAS_EXTERNAS_LOG, GET_TAREA_EXTERNA_LOG_BY_ID } from "./Queries/TareaExternaLog";
 
 import { CREATE_ESTADO_TAREA } from "./Mutations/EstadoTarea";
 import { CREATE_ROL } from "./Mutations/Rol";
@@ -37,6 +37,7 @@ const RootQuery = new GraphQLObjectType({
         getEstadoTareaById: GET_ESTADO_TAREA_BY_ID,
         getUsuarioById: GET_USUARIO_BY_ID,
         getTareaExternaById: GET_TAREA_EXTERNA_BY_ID,
+        getTareaExternaLogById: GET_TAREA_EXTERNA_LOG_BY_ID,
 
         getUsuarioByUsuario: GET_USUARIO_BY_USUARIO,
         getUsuarioByUsuarioAndContrasena: GET_USUARIO_BY_USUARIO_AND_CONTRASENA,
@@ -56,8 +57,8 @@ const Mutation = new GraphQLObjectType({
         // createTipoAccion: CREATE_TIPO_ACCION,
         // createTipoServicio: CREATE_TIPO_SERVICIO,
         // createTipoTrabajo: CREATE_TIPO_TRABAJO,
-        createUsuario: CREATE_USUARIO,
-        // creaTareaExterna: CREATE_TAREA_EXTERNA,
+        // createUsuario: CREATE_USUARIO,
+        creaTareaExterna: CREATE_TAREA_EXTERNA,
     }
 })
 

@@ -11,7 +11,4 @@ export class Rol extends BaseEntity {
 
     @Column()
     estado!: number
-
-    @OneToMany(type => Usuario, usuario => usuario.rol)
-    usuarios!: Usuario[]
 }
