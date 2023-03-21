@@ -142,7 +142,27 @@ app.use('/api/estados-tarea', (req, res) => {
 })
 
 app.use('/api/tareas-externas-activas', (req, res) => {
-    const q = 'select * from tarea_externa where id_estado_tarea < 7 and estado = 1'
+    const q = `
+        select      id_tarea_externa,
+                    id_sucursal_origen,
+                    ticket,
+                    descripcion,
+                    id_tipo_trabajo,
+                    id_sucursal_destino,
+                    fecha_requerida,
+                    hora_requerida,
+                    id_tipo_servicio,
+                    id_estado_tarea,
+                    convert_tz(fecha_creacion, @@session.time_zone, '-05:00') as fecha_creacion,
+                    id_creado_por,
+                    convert_tz(fecha_modificacion, @@session.time_zone, '-05:00') as fecha_modificacion,
+                    id_modificado_por,
+                    estado 
+            from    tarea_externa 
+            where   id_estado_tarea < 7 
+            and     estado = 1
+    `
+
     pool.getConnection((err, db) => {
         if (err) throw err
         db.query(q, (err, data) => {
@@ -157,7 +177,25 @@ app.use('/api/tareas-externas-activas', (req, res) => {
 })
 
 app.get('/api/tareas-externas', (req, res) => {
-    const q = 'select * from tarea_externa where estado = 1'
+    const q = `
+        select  id_tarea_externa,
+                id_sucursal_origen,
+                ticket,
+                descripcion,
+                id_tipo_trabajo,
+                id_sucursal_destino,
+                fecha_requerida,
+                hora_requerida,
+                id_tipo_servicio,
+                id_estado_tarea,
+                convert_tz(fecha_creacion, @@session.time_zone, '-05:00') as fecha_creacion,
+                id_creado_por,
+                convert_tz(fecha_modificacion, @@session.time_zone, '-05:00') as fecha_modificacion,
+                id_modificado_por,
+                estado 
+        from    tarea_externa 
+        where   estado = 1
+    `
     pool.getConnection((err, db) => {
         if (err) throw err
         db.query(q, (err, data) => {
