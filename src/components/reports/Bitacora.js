@@ -42,6 +42,7 @@ export default function Bitacora() {
   }
 
   const columns = [
+    { dataField: "sucursal_origen", text: "Sucursal", sort: true},
     { dataField: "ticket", text: "Ticket", sort: true},
     { dataField: "descripcion", text: "Descripción", sort: true },
     { dataField: "tipo_accion", text: "Acción", sort: true },

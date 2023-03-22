@@ -1,8 +1,9 @@
 import express from "express"
+import cors from "cors"
+
+import { createConnection } from "typeorm"
 import { graphqlHTTP } from "express-graphql"
 import { schema } from './Schema'
-import cors from "cors"
-import { createConnection } from "typeorm"
 import { Sucursal } from './Entities/Sucursal'
 import { Rol } from './Entities/Rol'
 import { EstadoTarea } from "./Entities/EstadoTarea"

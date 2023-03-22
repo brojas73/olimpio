@@ -325,6 +325,7 @@ app.get('/api/tareas-externas-log', (req, res) => {
 
     const q = `
         select   te.ticket,
+                 so.nombre sucursal_origen,
                  te.descripcion,
                  case tel.id_tipo_accion
                     when 1 then
@@ -343,6 +344,8 @@ app.get('/api/tareas-externas-log', (req, res) => {
            from  tarea_externa_log as tel
                  inner join tarea_externa as te
                     on    te.id_tarea_externa = tel.id_tarea_externa
+                 inner join sucursal so
+                    on    so.id_sucursal = te.id_sucursal_origen
                  left outer join usuario as u
                     on    u.id_usuario = tel.id_usuario
                  inner join estado_tarea as estado_final
