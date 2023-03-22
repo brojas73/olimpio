@@ -1,4 +1,5 @@
-import { GraphQLObjectType, GraphQLID, GraphQLInt, GraphQLString, GraphQLScalarType, GraphQLList } from 'graphql'
+import { GraphQLObjectType, GraphQLID, GraphQLInt, GraphQLString, GraphQLList } from 'graphql'
+import { GraphQLDateTime } from 'graphql-iso-date'
 
 import { EstadoTarea } from '../../Entities/EstadoTarea'
 import { Sucursal } from '../../Entities/Sucursal'
@@ -30,8 +31,8 @@ export const TareaExternaType = new GraphQLObjectType({
         descripcion: { type: GraphQLString },
         fecha_requerida: { type:  GraphQLString },
         hora_requerida: { type:  GraphQLString },
-        fecha_creacion: { type:  GraphQLString },
-        fecha_modificacion: { type:  GraphQLString },
+        fecha_creacion: { type:  GraphQLDateTime },
+        fecha_modificacion: { type:  GraphQLDateTime },
         estado: { type: GraphQLInt },
         sucursal_origen: {
             type: SucursalType,

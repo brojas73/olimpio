@@ -26,7 +26,15 @@ const main = async () => {
         // logging: true,
         synchronize: false,
         entities: [
-            EstadoTarea, Rol, Sucursal, TareaExterna, TareaExternaLog, TipoAccion, TipoServicio, TipoTrabajo, Usuario
+            EstadoTarea, 
+            Rol, 
+            Sucursal, 
+            TareaExterna, 
+            TareaExternaLog, 
+            TipoAccion, 
+            TipoServicio, 
+            TipoTrabajo, 
+            Usuario
         ],
     })
 

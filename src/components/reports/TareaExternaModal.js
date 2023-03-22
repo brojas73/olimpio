@@ -29,7 +29,7 @@ const TareaExternaModal = ({show, setShow, idTareaExterna}) => {
     <>
     {
       tareaExterna &&  (
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose} animation={true}> 
           <Modal.Body>
             <Col>
               <Card border={tareaExterna.id_tipo_servicio === TIPOS_SERVICIO.EXPRESS ? 'danger' : ''} >

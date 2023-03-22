@@ -22,30 +22,6 @@ import { CREATE_TAREA_EXTERNA } from "./Mutations/TareaExterna";
 const RootQuery = new GraphQLObjectType({
     name: 'RootQuery',
     fields: {
-        // getAllSucursales: GET_ALL_SUCURSALES,
-        // getAllRoles: GET_ALL_ROLES,
-        // getAllEstadosTarea: GET_ALL_ESTADOS_TAREA,
-        // getAllTiposAccion: GET_ALL_TIPOS_ACCION,
-        // getAllTiposServicio: GET_ALL_TIPOS_SERVICIO,
-        // getAllTiposTrabajo: GET_ALL_TIPOS_TRABAJO,
-        // getAllUsuarios: GET_ALL_USUARIOS,
-        // getAllTareasExternas: GET_ALL_TAREAS_EXTERNAS,
-        // getAllTareasExternasLog: GET_ALL_TAREAS_EXTERNAS_LOG,
-
-        // getSucursalById: GET_SUCURSAL_BY_ID,
-        // getRolById: GET_ROL_BY_ID,
-        // getEstadoTareaById: GET_ESTADO_TAREA_BY_ID,
-        // getUsuarioById: GET_USUARIO_BY_ID,
-        // getTareaExternaById: GET_TAREA_EXTERNA_BY_ID,
-        // getTareaExternaLogById: GET_TAREA_EXTERNA_LOG_BY_ID,
-
-        // getUsuarioByUsuario: GET_USUARIO_BY_USUARIO,
-        // getUsuarioByUsuarioAndContrasena: GET_USUARIO_BY_USUARIO_AND_CONTRASENA,
-
-        // getTareasExternasByTicket: GET_TAREAS_EXTERNAS_BY_TICKET,
-        // getTareasExternasByDescripcion: GET_TAREAS_EXTERNAS_BY_DESCRIPCION,
-        // getTareasExternasByTicketAndDescripcion: GET_TAREAS_EXTERNAS_BY_TICKET_AND_DESCRIPCION,
-
         sucursales: GET_ALL_SUCURSALES,
         roles: GET_ALL_ROLES,
         estadosTarea: GET_ALL_ESTADOS_TAREA,
