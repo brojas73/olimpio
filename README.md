@@ -146,8 +146,10 @@ https://www.youtube.com/watch?v=Nxw2j1-srVc&ab_channel=LamaDev
 
             npm i -g pm2
             pm2 start --name api server.js
-            pm2 startup ubuntu                  # Esto es para que se arranque cuando arranca el SO
-            pm2 status                          # Con esto podemos ver los procesos corriendo como pm2
+            pm2 startup ubuntu                                # Esto es para que se arranque cuando arranca el SO
+            pm2 status                                        # Con esto podemos ver los procesos corriendo como pm2
+            
+            pm2 start --name api-v1 "node -- src/index.js"    # Para la nueva versión
 
 21. Hacer deploy de la app
 
